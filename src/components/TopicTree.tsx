@@ -31,32 +31,36 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
       <div key={topic.id} className="mb-2">
         <Button
           variant={isSelected ? "default" : "ghost"}
-          className={`w-full justify-start text-left h-auto p-3 ${
-            isSelected ? 'bg-primary text-primary-foreground' : 'hover:bg-muted/50'
+          className={`w-full justify-start text-left h-auto p-3 transition-colors ${
+            isSelected 
+              ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+              : 'hover:bg-accent hover:text-accent-foreground bg-transparent'
           }`}
           style={{ paddingLeft: `${level * 16 + 12}px` }}
           onClick={() => onTopicSelect(topic.id)}
         >
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
               <span className="font-medium truncate">{topic.name}</span>
               {isSearchResult(topic) && topic.similarity && (
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="text-xs shrink-0">
                   {Math.round(topic.similarity * 100)}%
                 </Badge>
               )}
               {topic.childTopics.length > 0 && (
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs shrink-0">
                   {topic.childTopics.length}
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {topic.description}
-            </p>
+            {topic.description && (
+              <p className="text-sm text-muted-foreground line-clamp-2 mb-1">
+                {topic.description}
+              </p>
+            )}
             {topic.projectLinks.length > 0 && (
               <div className="flex items-center gap-1 mt-1">
-                <svg className="w-3 h-3 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3 text-muted-foreground shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                 </svg>
                 <span className="text-xs text-muted-foreground">
@@ -73,7 +77,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
         </Button>
         
         {!isSearch && topic.childTopics.length > 0 && (
-          <div className="ml-2">
+          <div className="ml-2 mt-1">
             {topic.childTopics.map(child => renderTopic(child, level + 1))}
           </div>
         )}
