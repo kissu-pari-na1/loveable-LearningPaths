@@ -23,10 +23,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [newTopic, setNewTopic] = useState({
     name: '',
     description: '',
-    parentId: ''
+    parentId: 'root'
   });
   const [moveTopicId, setMoveTopicId] = useState('');
-  const [moveToParentId, setMoveToParentId] = useState('');
+  const [moveToParentId, setMoveToParentId] = useState('root');
 
   const flattenTopics = (topics: Topic[], level: number = 0): Array<{ topic: Topic, level: number }> => {
     const result: Array<{ topic: Topic, level: number }> = [];
@@ -52,18 +52,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           projectLinks: [],
           childTopics: []
         },
-        newTopic.parentId || undefined
+        newTopic.parentId === 'root' ? undefined : newTopic.parentId
       );
       
-      setNewTopic({ name: '', description: '', parentId: '' });
+      setNewTopic({ name: '', description: '', parentId: 'root' });
     }
   };
 
   const handleMoveTopic = () => {
     if (moveTopicId) {
-      onMoveTopic(moveTopicId, moveToParentId || undefined);
+      onMoveTopic(moveTopicId, moveToParentId === 'root' ? undefined : moveToParentId);
       setMoveTopicId('');
-      setMoveToParentId('');
+      setMoveToParentId('root');
     }
   };
 
@@ -93,7 +93,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <SelectValue placeholder="Select parent (optional)" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Root Level</SelectItem>
+              <SelectItem value="root">Root Level</SelectItem>
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
                   {'  '.repeat(level)}└ {topic.name}
@@ -131,7 +131,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <SelectValue placeholder="Select new parent" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Root Level</SelectItem>
+              <SelectItem value="root">Root Level</SelectItem>
               {flatTopics
                 .filter(({ topic }) => topic.id !== moveTopicId)
                 .map(({ topic, level }) => (

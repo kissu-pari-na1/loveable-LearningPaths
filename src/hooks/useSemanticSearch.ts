@@ -1,159 +1,108 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { pipeline } from '@huggingface/transformers';
 import { Topic, SearchResult } from '@/types/Topic';
 
 export const useSemanticSearch = (topics: Topic[]) => {
-  const [extractor, setExtractor] = useState<any>(null);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [isInitializing, setIsInitializing] = useState(true);
-
-  useEffect(() => {
-    const initializeExtractor = async () => {
-      try {
-        console.log('Initializing semantic search model...');
-        const extractorPipeline = await pipeline(
-          'feature-extraction',
-          'Xenova/all-MiniLM-L6-v2',
-          { device: 'webgpu' }
-        );
-        setExtractor(extractorPipeline);
-        console.log('Semantic search model initialized successfully');
-      } catch (error) {
-        console.error('Failed to initialize semantic search:', error);
-        // Fallback to CPU if WebGPU fails
-        try {
-          const extractorPipeline = await pipeline(
-            'feature-extraction',
-            'Xenova/all-MiniLM-L6-v2'
-          );
-          setExtractor(extractorPipeline);
-          console.log('Semantic search model initialized with CPU fallback');
-        } catch (cpuError) {
-          console.error('Failed to initialize semantic search with CPU:', cpuError);
-        }
-      } finally {
-        setIsInitializing(false);
-      }
-    };
-
-    initializeExtractor();
-  }, []);
-
-  const flattenTopics = useCallback((topics: Topic[]): Topic[] => {
-    const result: Topic[] = [];
-    
-    const traverse = (topicList: Topic[]) => {
-      for (const topic of topicList) {
-        result.push(topic);
-        if (topic.childTopics.length > 0) {
-          traverse(topic.childTopics);
-        }
-      }
-    };
-    
-    traverse(topics);
-    return result;
-  }, []);
-
-  const getTopicEmbedding = async (topic: Topic): Promise<number[]> => {
-    if (!extractor) return [];
-    
-    const text = `${topic.name} ${topic.description} ${topic.projectLinks.map(link => `${link.title} ${link.description}`).join(' ')}`;
-    
-    try {
-      const embedding = await extractor(text, { pooling: 'mean', normalize: true });
-      return Array.from(embedding.data);
-    } catch (error) {
-      console.error('Error generating embedding:', error);
-      return [];
-    }
-  };
-
-  const calculateSimilarity = (embedding1: number[], embedding2: number[]): number => {
-    if (embedding1.length !== embedding2.length || embedding1.length === 0) {
-      return 0;
-    }
-
-    let dotProduct = 0;
-    let magnitude1 = 0;
-    let magnitude2 = 0;
-
-    for (let i = 0; i < embedding1.length; i++) {
-      dotProduct += embedding1[i] * embedding2[i];
-      magnitude1 += embedding1[i] * embedding1[i];
-      magnitude2 += embedding2[i] * embedding2[i];
-    }
-
-    magnitude1 = Math.sqrt(magnitude1);
-    magnitude2 = Math.sqrt(magnitude2);
-
-    if (magnitude1 === 0 || magnitude2 === 0) {
-      return 0;
-    }
-
-    return dotProduct / (magnitude1 * magnitude2);
-  };
 
   const search = async (query: string) => {
-    if (!extractor || !query.trim()) {
+    if (!query.trim()) {
       setSearchResults([]);
       return;
     }
 
     setIsSearching(true);
-
+    
     try {
-      const queryEmbedding = await extractor(query, { pooling: 'mean', normalize: true });
-      const queryVector = Array.from(queryEmbedding.data);
+      // Load the sentence transformer model
+      const extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
       
-      const flatTopics = flattenTopics(topics);
+      // Get embedding for the search query
+      const queryEmbedding = await extractor(query, { pooling: 'mean', normalize: true });
+      const queryVector = Array.from(queryEmbedding.data) as number[];
+      
+      // Function to get all topics flattened
+      const getAllTopics = (topics: Topic[]): Topic[] => {
+        const result: Topic[] = [];
+        for (const topic of topics) {
+          result.push(topic);
+          if (topic.childTopics.length > 0) {
+            result.push(...getAllTopics(topic.childTopics));
+          }
+        }
+        return result;
+      };
+
+      const allTopics = getAllTopics(topics);
       const results: SearchResult[] = [];
 
-      for (const topic of flatTopics) {
-        const topicEmbedding = await getTopicEmbedding(topic);
-        const similarity = calculateSimilarity(queryVector, topicEmbedding);
+      for (const topic of allTopics) {
+        // Generate embeddings for topic if not exists
+        if (!topic.embedding) {
+          const topicText = `${topic.name} ${topic.description}`;
+          const topicEmbedding = await extractor(topicText, { pooling: 'mean', normalize: true });
+          topic.embedding = Array.from(topicEmbedding.data) as number[];
+        }
+
+        // Calculate cosine similarity
+        const similarity = cosineSimilarity(queryVector, topic.embedding);
         
-        // Also check for exact text matches for better results
-        const textMatch = (
-          topic.name.toLowerCase().includes(query.toLowerCase()) ||
-          topic.description.toLowerCase().includes(query.toLowerCase()) ||
-          topic.projectLinks.some(link => 
-            link.title.toLowerCase().includes(query.toLowerCase()) ||
-            (link.description && link.description.toLowerCase().includes(query.toLowerCase()))
-          )
-        );
+        // Check if query matches in name, description, or project links
+        let matchedIn: 'name' | 'description' | 'projectLinks' = 'description';
+        
+        if (topic.name.toLowerCase().includes(query.toLowerCase())) {
+          matchedIn = 'name';
+        } else if (topic.projectLinks.some(link => 
+          link.title.toLowerCase().includes(query.toLowerCase()) ||
+          link.description?.toLowerCase().includes(query.toLowerCase())
+        )) {
+          matchedIn = 'projectLinks';
+        }
 
-        const finalSimilarity = textMatch ? Math.max(similarity, 0.8) : similarity;
-
-        if (finalSimilarity > 0.3) { // Threshold for relevance
+        // Only include results with similarity above threshold
+        if (similarity > 0.3) {
           results.push({
             ...topic,
-            similarity: finalSimilarity,
-            matchedIn: textMatch 
-              ? (topic.name.toLowerCase().includes(query.toLowerCase()) ? 'name' : 'description')
-              : undefined
+            similarity,
+            matchedIn
           });
         }
       }
 
+      // Sort by similarity score
       results.sort((a, b) => (b.similarity || 0) - (a.similarity || 0));
-      setSearchResults(results.slice(0, 20)); // Limit to top 20 results
-
+      
+      setSearchResults(results);
     } catch (error) {
       console.error('Search error:', error);
       setSearchResults([]);
-    } finally {
-      setIsSearching(false);
     }
+    
+    setIsSearching(false);
   };
 
   return {
     searchResults,
     search,
-    isSearching,
-    isInitializing,
-    isReady: !isInitializing && extractor !== null
+    isSearching
   };
 };
+
+// Helper function to calculate cosine similarity
+function cosineSimilarity(a: number[], b: number[]): number {
+  if (a.length !== b.length) return 0;
+  
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+  
+  for (let i = 0; i < a.length; i++) {
+    dotProduct += a[i] * b[i];
+    normA += a[i] * a[i];
+    normB += b[i] * b[i];
+  }
+  
+  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+}
