@@ -44,8 +44,10 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
               <span className="font-medium truncate">{topic.name}</span>
               {isSearchResult(topic) && topic.similarity && (
                 <Badge 
-                  variant="secondary"
-                  className="text-xs shrink-0"
+                  variant={isSelected ? "outline" : "secondary"} 
+                  className={`text-xs shrink-0 ${
+                    isSelected ? 'border-primary-foreground/20 text-primary-foreground' : ''
+                  }`}
                 >
                   {Math.round(topic.similarity * 100)}%
                 </Badge>
@@ -53,7 +55,9 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
               {topic.childTopics.length > 0 && (
                 <Badge 
                   variant="outline" 
-                  className="text-xs shrink-0"
+                  className={`text-xs shrink-0 ${
+                    isSelected ? 'border-primary-foreground/20 text-primary-foreground' : ''
+                  }`}
                 >
                   {topic.childTopics.length}
                 </Badge>
@@ -61,7 +65,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
             </div>
             {topic.description && (
               <p className={`text-sm line-clamp-2 mb-1 ${
-                isSelected ? 'text-primary-foreground/90' : 'text-muted-foreground'
+                isSelected ? 'text-primary-foreground/80' : 'text-muted-foreground'
               }`}>
                 {topic.description}
               </p>
@@ -70,7 +74,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
               <div className="flex items-center gap-1 mt-1">
                 <svg 
                   className={`w-3 h-3 shrink-0 ${
-                    isSelected ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                    isSelected ? 'text-primary-foreground/60' : 'text-muted-foreground'
                   }`} 
                   fill="none" 
                   stroke="currentColor" 
@@ -79,7 +83,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                 </svg>
                 <span className={`text-xs ${
-                  isSelected ? 'text-primary-foreground/90' : 'text-muted-foreground'
+                  isSelected ? 'text-primary-foreground/80' : 'text-muted-foreground'
                 }`}>
                   {topic.projectLinks.length} link{topic.projectLinks.length !== 1 ? 's' : ''}
                 </span>
@@ -88,7 +92,9 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
             {isSearchResult(topic) && topic.matchedIn && (
               <Badge 
                 variant="outline" 
-                className="text-xs mt-1"
+                className={`text-xs mt-1 ${
+                  isSelected ? 'border-primary-foreground/20 text-primary-foreground' : ''
+                }`}
               >
                 Matched in {topic.matchedIn}
               </Badge>
