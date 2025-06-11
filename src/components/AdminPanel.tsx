@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Topic } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
@@ -42,6 +41,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   };
 
   const flatTopics = flattenTopics(topics);
+
+  const renderTopicOption = (topic: Topic, level: number) => {
+    const indent = '│  '.repeat(level);
+    const connector = level > 0 ? '├─ ' : '';
+    return `${indent}${connector}${topic.name}`;
+  };
 
   const handleAddTopic = () => {
     if (newTopic.name.trim()) {
@@ -92,11 +97,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <SelectTrigger>
               <SelectValue placeholder="Select parent (optional)" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="root">Root Level</SelectItem>
+            <SelectContent className="max-h-60">
+              <SelectItem value="root">🏠 Root Level</SelectItem>
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
-                  {'  '.repeat(level)}└ {topic.name}
+                  <span className="font-mono text-sm">
+                    {renderTopicOption(topic, level)}
+                  </span>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -117,10 +124,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <SelectTrigger>
               <SelectValue placeholder="Select topic to move" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-60">
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
-                  {'  '.repeat(level)}└ {topic.name}
+                  <span className="font-mono text-sm">
+                    {renderTopicOption(topic, level)}
+                  </span>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -130,13 +139,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <SelectTrigger>
               <SelectValue placeholder="Select new parent" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="root">Root Level</SelectItem>
+            <SelectContent className="max-h-60">
+              <SelectItem value="root">🏠 Root Level</SelectItem>
               {flatTopics
                 .filter(({ topic }) => topic.id !== moveTopicId)
                 .map(({ topic, level }) => (
                   <SelectItem key={topic.id} value={topic.id}>
-                    {'  '.repeat(level)}└ {topic.name}
+                    <span className="font-mono text-sm">
+                      {renderTopicOption(topic, level)}
+                    </span>
                   </SelectItem>
                 ))}
             </SelectContent>
