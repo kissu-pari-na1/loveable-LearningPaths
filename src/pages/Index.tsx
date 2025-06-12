@@ -5,7 +5,7 @@ import { TopicTree } from '@/components/TopicTree';
 import { TopicDetail } from '@/components/TopicDetail';
 import { AdminPanel } from '@/components/AdminPanel';
 import { AuthHeader } from '@/components/AuthHeader';
-import { useTopics } from '@/hooks/useTopics';
+import { useSupabaseTopics } from '@/hooks/useSupabaseTopics';
 import { useSemanticSearch } from '@/hooks/useSemanticSearch';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -15,7 +15,7 @@ const Index = () => {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   
-  const { topics, addTopic, moveTopic, updateTopic, deleteTopic } = useTopics();
+  const { topics, loading: topicsLoading, addTopic, moveTopic, updateTopic, deleteTopic } = useSupabaseTopics();
   const { searchResults, search, isSearching } = useSemanticSearch(topics);
 
   // Only allow admin mode if user is an admin
@@ -40,7 +40,7 @@ const Index = () => {
 
   const displayTopics = searchQuery.trim() ? searchResults : topics;
 
-  if (authLoading) {
+  if (authLoading || topicsLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center">
         <div className="text-center">
