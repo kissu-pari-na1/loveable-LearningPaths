@@ -4,16 +4,26 @@ import { SearchHeader } from '@/components/SearchHeader';
 import { TopicTree } from '@/components/TopicTree';
 import { TopicDetail } from '@/components/TopicDetail';
 import { AdminPanel } from '@/components/AdminPanel';
+import { AuthHeader } from '@/components/AuthHeader';
 import { useTopics } from '@/hooks/useTopics';
 import { useSemanticSearch } from '@/hooks/useSemanticSearch';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
+  const { user, isAdmin, loading: authLoading } = useAuth();
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   
   const { topics, addTopic, moveTopic, updateTopic, deleteTopic } = useTopics();
   const { searchResults, search, isSearching } = useSemanticSearch(topics);
+
+  // Only allow admin mode if user is an admin
+  useEffect(() => {
+    if (!isAdmin && isAdminMode) {
+      setIsAdminMode(false);
+    }
+  }, [isAdmin, isAdminMode]);
 
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
@@ -22,18 +32,38 @@ const Index = () => {
     }
   };
 
+  const handleModeToggle = () => {
+    if (isAdmin) {
+      setIsAdminMode(!isAdminMode);
+    }
+  };
+
   const displayTopics = searchQuery.trim() ? searchResults : topics;
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       <div className="flex h-screen">
         {/* Sidebar */}
         <div className="w-80 bg-card border-r border-border shadow-lg flex flex-col">
+          <AuthHeader />
+          
           <SearchHeader 
             isAdminMode={isAdminMode}
-            onModeToggle={() => setIsAdminMode(!isAdminMode)}
+            onModeToggle={handleModeToggle}
             onSearch={handleSearch}
             isSearching={isSearching}
+            showAdminToggle={isAdmin}
           />
           
           <div className="flex-1 overflow-auto p-4">
@@ -66,14 +96,20 @@ const Index = () => {
                   </svg>
                 </div>
                 <h2 className="text-2xl font-semibold text-foreground mb-2">Welcome to Learning Paths</h2>
-                <p className="text-muted-foreground">Select a topic from the sidebar to view details, or use the search to find specific content.</p>
+                <p className="text-muted-foreground">
+                  {user ? (
+                    <>Select a topic from the sidebar to view details, or use the search to find specific content.</>
+                  ) : (
+                    <>Sign in to access all features, or browse topics in view mode.</>
+                  )}
+                </p>
               </div>
             </div>
           )}
         </div>
 
-        {/* Admin Panel */}
-        {isAdminMode && (
+        {/* Admin Panel - only show if user is admin and in admin mode */}
+        {isAdmin && isAdminMode && (
           <AdminPanel 
             topics={topics}
             onAddTopic={addTopic}
