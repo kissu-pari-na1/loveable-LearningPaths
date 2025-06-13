@@ -34,12 +34,6 @@ export const AuthHeader: React.FC = () => {
             <div className="text-sm font-medium truncate">
               {user.email}
             </div>
-            <Badge 
-              variant={userRole === 'admin' ? 'default' : 'secondary'}
-              className="text-xs"
-            >
-              {userRole === 'admin' ? 'Admin' : 'View'}
-            </Badge>
           </div>
           <Button 
             variant="outline" 
