@@ -59,22 +59,22 @@ const Index = () => {
 
   if (authLoading || pathsLoading || topicsLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+          <p className="text-muted-foreground text-lg">Loading your learning journey...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-800">
       <div className="flex h-screen">
         <ResizablePanelGroup direction="horizontal" className="h-full">
           {/* Sidebar Panel */}
-          <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
-            <div className="bg-card border-r border-border shadow-lg flex flex-col h-full">
+          <ResizablePanel defaultSize={25} minSize={15} maxSize={75}>
+            <div className="bg-card/95 backdrop-blur-xl border-r border-border/50 shadow-2xl flex flex-col h-full">
               <AuthHeader />
               
               <DashboardSelector
@@ -118,24 +118,26 @@ const Index = () => {
                   onDeleteTopic={deleteTopic}
                 />
               ) : (
-                <div className="flex-1 flex items-center justify-center bg-muted/10">
-                  <div className="text-center max-w-md">
-                    <div className="w-24 h-24 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
-                      <svg className="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-background/50 to-muted/30 backdrop-blur-sm">
+                  <div className="text-center max-w-md mx-auto p-8">
+                    <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-violet-400 to-blue-500 rounded-full flex items-center justify-center shadow-2xl">
+                      <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     </div>
-                    <h2 className="text-2xl font-semibold text-foreground mb-2">Welcome to Learning Paths</h2>
-                    <p className="text-muted-foreground">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-4">
+                      Welcome to Learning Paths
+                    </h2>
+                    <p className="text-muted-foreground text-lg leading-relaxed">
                       {user ? (
-                        <>Select a topic from the sidebar to view details, or use the search to find specific content.</>
+                        <>Discover knowledge through beautifully organized learning paths. Select a topic to begin your journey of exploration.</>
                       ) : (
-                        <>Sign in to access all features, or browse topics in view mode.</>
+                        <>Join our community of learners. Sign in to unlock the full potential of personalized learning paths.</>
                       )}
                     </p>
                     {userPermission && userPermission !== 'owner' && (
-                      <p className="text-sm text-muted-foreground mt-2">
-                        You have {userPermission} access to this learning path.
+                      <p className="text-sm text-violet-600 dark:text-violet-400 mt-4 px-4 py-2 bg-violet-50 dark:bg-violet-900/30 rounded-full">
+                        You have {userPermission} access to this learning path
                       </p>
                     )}
                   </div>
@@ -149,7 +151,7 @@ const Index = () => {
             <>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
-                <div className="bg-card border-l border-border shadow-lg flex flex-col overflow-auto h-full">
+                <div className="bg-card/95 backdrop-blur-xl border-l border-border/50 shadow-2xl flex flex-col overflow-auto h-full">
                   <div className="p-4">
                     <AdminPanel 
                       topics={topics}
@@ -160,7 +162,7 @@ const Index = () => {
                   </div>
                   
                   {isOwner && (
-                    <div className="p-4 border-t border-border">
+                    <div className="p-4 border-t border-border/50">
                       <SharingPanel isOwner={isOwner} />
                     </div>
                   )}

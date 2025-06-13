@@ -21,7 +21,7 @@ export const AuthHeader: React.FC = () => {
   if (loading) {
     return (
       <div className="p-4 border-b border-border">
-        <div className="w-20 h-6 bg-muted animate-pulse rounded"></div>
+        <div className="w-20 h-6 bg-muted animate-pulse rounded mx-auto"></div>
       </div>
     );
   }
@@ -30,8 +30,8 @@ export const AuthHeader: React.FC = () => {
     <div className="p-4 border-b border-border">
       {user ? (
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="text-sm font-medium truncate">
+          <div className="flex items-center justify-center">
+            <div className="text-sm font-medium text-center truncate max-w-full">
               {user.email}
             </div>
           </div>
@@ -46,7 +46,7 @@ export const AuthHeader: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground text-center">
             Sign in to access admin features
           </p>
           <Button 
