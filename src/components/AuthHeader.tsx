@@ -68,20 +68,6 @@ export const AuthHeader: React.FC = () => {
                   <div className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate max-w-full mb-1">
                     {user.email}
                   </div>
-                  {userRole && (
-                    <Badge 
-                      variant="outline" 
-                      className={`text-xs border-0 font-medium ${
-                        userRole === 'admin' 
-                          ? 'bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 dark:from-amber-900/30 dark:to-orange-900/30 dark:text-amber-300'
-                          : userRole === 'owner'
-                          ? 'bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 dark:from-emerald-900/30 dark:to-green-900/30 dark:text-emerald-300'
-                          : 'bg-gradient-to-r from-blue-100 to-violet-100 text-blue-700 dark:from-blue-900/30 dark:to-violet-900/30 dark:text-blue-300'
-                      }`}
-                    >
-                      {userRole}
-                    </Badge>
-                  )}
                 </div>
               </div>
             </div>
