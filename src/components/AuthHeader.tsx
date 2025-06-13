@@ -21,7 +21,7 @@ export const AuthHeader: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="p-6 border-b border-gradient-to-r from-violet-200/30 via-purple-200/30 to-blue-200/30">
+      <div className="p-6 border-t border-gradient-to-r from-violet-200/30 via-purple-200/30 to-blue-200/30">
         <div className="flex items-center justify-center space-x-3">
           <div className="w-12 h-12 bg-gradient-to-br from-violet-200/50 to-blue-200/50 animate-pulse rounded-full"></div>
           <div className="space-y-2">
@@ -34,7 +34,7 @@ export const AuthHeader: React.FC = () => {
   }
 
   return (
-    <div className="relative overflow-hidden border-b border-gradient-to-r from-violet-200/30 via-purple-200/30 to-blue-200/30">
+    <div className="relative overflow-hidden border-t border-gradient-to-r from-violet-200/30 via-purple-200/30 to-blue-200/30">
       {/* Background gradient and effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-purple-500/5 to-blue-500/10" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,69,19,0.1),transparent_50%)]" />

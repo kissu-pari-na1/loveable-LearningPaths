@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Topic } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
@@ -5,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus, Move, Settings } from 'lucide-react';
 
 interface AdminPanelProps {
   topics: Topic[];
@@ -73,61 +75,78 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   };
 
   return (
-    <div className="w-80 bg-card border-l border-border shadow-lg p-4 overflow-auto">
-      <h2 className="text-lg font-semibold mb-4">Admin Panel</h2>
+    <div className="space-y-6">
+      <div className="flex items-center gap-2 mb-6">
+        <Settings className="w-5 h-5 text-violet-600" />
+        <h2 className="text-xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+          Admin Panel
+        </h2>
+      </div>
       
       {/* Add Topic */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-base">Add New Topic</CardTitle>
+      <Card className="border border-violet-200/50 bg-gradient-to-br from-violet-50/50 to-blue-50/50 dark:from-violet-900/20 dark:to-blue-900/20 shadow-lg backdrop-blur-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2 text-violet-700 dark:text-violet-300">
+            <Plus className="w-4 h-4" />
+            Add New Topic
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-4">
           <Input
             placeholder="Topic name"
             value={newTopic.name}
             onChange={(e) => setNewTopic({ ...newTopic, name: e.target.value })}
+            className="border-violet-200/50 focus:border-violet-400"
           />
           <Textarea
             placeholder="Description"
             value={newTopic.description}
             onChange={(e) => setNewTopic({ ...newTopic, description: e.target.value })}
             rows={3}
+            className="border-violet-200/50 focus:border-violet-400 resize-none"
           />
           <Select value={newTopic.parentId} onValueChange={(value) => setNewTopic({ ...newTopic, parentId: value })}>
-            <SelectTrigger>
+            <SelectTrigger className="border-violet-200/50 focus:border-violet-400">
               <SelectValue placeholder="Select parent (optional)" />
             </SelectTrigger>
-            <SelectContent className="max-h-60">
+            <SelectContent className="max-h-48">
               <SelectItem value="root">🏠 Root Level</SelectItem>
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
-                  <span className="font-mono text-sm">
+                  <span className="font-mono text-sm truncate max-w-full">
                     {renderTopicOption(topic, level)}
                   </span>
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={handleAddTopic} className="w-full">
+          <Button 
+            onClick={handleAddTopic} 
+            className="w-full bg-gradient-to-r from-violet-500 to-blue-500 hover:from-violet-600 hover:to-blue-600 text-white shadow-md"
+          >
+            <Plus className="w-4 h-4 mr-2" />
             Add Topic
           </Button>
         </CardContent>
       </Card>
 
       {/* Move Topic */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Move Topic</CardTitle>
+      <Card className="border border-blue-200/50 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/20 shadow-lg backdrop-blur-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2 text-blue-700 dark:text-blue-300">
+            <Move className="w-4 h-4" />
+            Move Topic
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-4">
           <Select value={moveTopicId} onValueChange={setMoveTopicId}>
-            <SelectTrigger>
+            <SelectTrigger className="border-blue-200/50 focus:border-blue-400">
               <SelectValue placeholder="Select topic to move" />
             </SelectTrigger>
-            <SelectContent className="max-h-60">
+            <SelectContent className="max-h-48">
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
-                  <span className="font-mono text-sm">
+                  <span className="font-mono text-sm truncate max-w-full">
                     {renderTopicOption(topic, level)}
                   </span>
                 </SelectItem>
@@ -136,16 +155,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </Select>
           
           <Select value={moveToParentId} onValueChange={setMoveToParentId}>
-            <SelectTrigger>
+            <SelectTrigger className="border-blue-200/50 focus:border-blue-400">
               <SelectValue placeholder="Select new parent" />
             </SelectTrigger>
-            <SelectContent className="max-h-60">
+            <SelectContent className="max-h-48">
               <SelectItem value="root">🏠 Root Level</SelectItem>
               {flatTopics
                 .filter(({ topic }) => topic.id !== moveTopicId)
                 .map(({ topic, level }) => (
                   <SelectItem key={topic.id} value={topic.id}>
-                    <span className="font-mono text-sm">
+                    <span className="font-mono text-sm truncate max-w-full">
                       {renderTopicOption(topic, level)}
                     </span>
                   </SelectItem>
@@ -155,9 +174,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           
           <Button 
             onClick={handleMoveTopic} 
-            className="w-full"
+            className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-md"
             disabled={!moveTopicId}
           >
+            <Move className="w-4 h-4 mr-2" />
             Move Topic
           </Button>
         </CardContent>

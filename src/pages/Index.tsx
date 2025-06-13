@@ -75,15 +75,6 @@ const Index = () => {
           {/* Sidebar Panel */}
           <ResizablePanel defaultSize={28} minSize={15} maxSize={75}>
             <div className="bg-card/95 backdrop-blur-xl border-r border-border/50 shadow-2xl flex flex-col h-full">
-              <AuthHeader />
-              
-              <DashboardSelector
-                availablePaths={availablePaths}
-                selectedPathUserId={selectedPathUserId}
-                onPathSelect={setSelectedPathUserId}
-                loading={pathsLoading}
-              />
-              
               <SearchHeader 
                 isAdminMode={isAdminMode}
                 onModeToggle={handleModeToggle}
@@ -101,6 +92,9 @@ const Index = () => {
                   searchQuery={searchQuery}
                 />
               </div>
+
+              {/* AuthHeader moved to bottom */}
+              <AuthHeader />
             </div>
           </ResizablePanel>
 
@@ -109,6 +103,14 @@ const Index = () => {
           {/* Main Content Panel */}
           <ResizablePanel defaultSize={canUseAdminMode && isAdminMode ? 50 : 75}>
             <div className="flex flex-col h-full">
+              {/* DashboardSelector moved to top of main panel */}
+              <DashboardSelector
+                availablePaths={availablePaths}
+                selectedPathUserId={selectedPathUserId}
+                onPathSelect={setSelectedPathUserId}
+                loading={pathsLoading}
+              />
+              
               {selectedTopicId ? (
                 <TopicDetail 
                   topicId={selectedTopicId}
@@ -152,7 +154,7 @@ const Index = () => {
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
                 <div className="bg-card/95 backdrop-blur-xl border-l border-border/50 shadow-2xl flex flex-col overflow-auto h-full">
-                  <div className="p-4">
+                  <div className="p-4 flex-1">
                     <AdminPanel 
                       topics={topics}
                       onAddTopic={addTopic}
