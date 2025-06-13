@@ -73,7 +73,7 @@ const Index = () => {
       <div className="flex h-screen">
         <ResizablePanelGroup direction="horizontal" className="h-full">
           {/* Sidebar Panel */}
-          <ResizablePanel defaultSize={25} minSize={15} maxSize={75}>
+          <ResizablePanel defaultSize={28} minSize={15} maxSize={75}>
             <div className="bg-card/95 backdrop-blur-xl border-r border-border/50 shadow-2xl flex flex-col h-full">
               <AuthHeader />
               
