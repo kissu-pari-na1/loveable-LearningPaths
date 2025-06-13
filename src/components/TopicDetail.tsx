@@ -204,7 +204,6 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
                         {link.description && (
                           <p className="text-sm text-muted-foreground mt-1">{link.description}</p>
                         )}
-                        <p className="text-xs text-muted-foreground mt-1 break-all">{link.url}</p>
                       </div>
                       {isAdminMode && (
                         <Button 
