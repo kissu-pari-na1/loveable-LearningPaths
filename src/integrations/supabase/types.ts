@@ -68,6 +68,30 @@ export type Database = {
           },
         ]
       }
+      shared_learning_paths: {
+        Row: {
+          created_at: string
+          id: string
+          owner_id: string
+          permission_level: string
+          shared_with_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          owner_id: string
+          permission_level: string
+          shared_with_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          owner_id?: string
+          permission_level?: string
+          shared_with_id?: string
+        }
+        Relationships: []
+      }
       topics: {
         Row: {
           created_at: string
@@ -132,6 +156,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_learning_path_access: {
+        Args: {
+          _user_id: string
+          _owner_id: string
+          _required_permission: string
+        }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _user_id: string

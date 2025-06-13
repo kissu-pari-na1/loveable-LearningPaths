@@ -5,8 +5,11 @@ import { TopicTree } from '@/components/TopicTree';
 import { TopicDetail } from '@/components/TopicDetail';
 import { AdminPanel } from '@/components/AdminPanel';
 import { AuthHeader } from '@/components/AuthHeader';
-import { useSupabaseTopics } from '@/hooks/useSupabaseTopics';
+import { DashboardSelector } from '@/components/DashboardSelector';
+import { SharingPanel } from '@/components/SharingPanel';
 import { useSemanticSearch } from '@/hooks/useSemanticSearch';
+import { useSharedLearningPaths } from '@/hooks/useSharedLearningPaths';
+import { useMultipleLearningPaths } from '@/hooks/useMultipleLearningPaths';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
@@ -14,16 +17,26 @@ const Index = () => {
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPathUserId, setSelectedPathUserId] = useState<string>('');
   
-  const { topics, loading: topicsLoading, addTopic, moveTopic, updateTopic, deleteTopic } = useSupabaseTopics();
+  const { availablePaths, loading: pathsLoading } = useSharedLearningPaths();
+  const { topics, loading: topicsLoading, userPermission, addTopic, moveTopic, updateTopic, deleteTopic } = useMultipleLearningPaths(selectedPathUserId);
   const { searchResults, search, isSearching } = useSemanticSearch(topics);
 
-  // Only allow admin mode if user is an admin
+  // Set default selected path to current user
   useEffect(() => {
-    if (!isAdmin && isAdminMode) {
+    if (user && !selectedPathUserId && availablePaths.length > 0) {
+      setSelectedPathUserId(user.id);
+    }
+  }, [user, availablePaths, selectedPathUserId]);
+
+  // Only allow admin mode if user has admin permission for selected path
+  useEffect(() => {
+    const canUseAdminMode = (isAdmin && userPermission === 'owner') || userPermission === 'admin';
+    if (!canUseAdminMode && isAdminMode) {
       setIsAdminMode(false);
     }
-  }, [isAdmin, isAdminMode]);
+  }, [isAdmin, userPermission, isAdminMode]);
 
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
@@ -33,14 +46,17 @@ const Index = () => {
   };
 
   const handleModeToggle = () => {
-    if (isAdmin) {
+    const canUseAdminMode = (isAdmin && userPermission === 'owner') || userPermission === 'admin';
+    if (canUseAdminMode) {
       setIsAdminMode(!isAdminMode);
     }
   };
 
   const displayTopics = searchQuery.trim() ? searchResults : topics;
+  const canUseAdminMode = (isAdmin && userPermission === 'owner') || userPermission === 'admin';
+  const isOwner = userPermission === 'owner';
 
-  if (authLoading || topicsLoading) {
+  if (authLoading || pathsLoading || topicsLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 flex items-center justify-center">
         <div className="text-center">
@@ -58,12 +74,19 @@ const Index = () => {
         <div className="w-80 bg-card border-r border-border shadow-lg flex flex-col">
           <AuthHeader />
           
+          <DashboardSelector
+            availablePaths={availablePaths}
+            selectedPathUserId={selectedPathUserId}
+            onPathSelect={setSelectedPathUserId}
+            loading={pathsLoading}
+          />
+          
           <SearchHeader 
             isAdminMode={isAdminMode}
             onModeToggle={handleModeToggle}
             onSearch={handleSearch}
             isSearching={isSearching}
-            showAdminToggle={isAdmin}
+            showAdminToggle={canUseAdminMode}
           />
           
           <div className="flex-1 overflow-auto p-4">
@@ -103,19 +126,34 @@ const Index = () => {
                     <>Sign in to access all features, or browse topics in view mode.</>
                   )}
                 </p>
+                {userPermission && userPermission !== 'owner' && (
+                  <p className="text-sm text-muted-foreground mt-2">
+                    You have {userPermission} access to this learning path.
+                  </p>
+                )}
               </div>
             </div>
           )}
         </div>
 
-        {/* Admin Panel - only show if user is admin and in admin mode */}
-        {isAdmin && isAdminMode && (
-          <AdminPanel 
-            topics={topics}
-            onAddTopic={addTopic}
-            onMoveTopic={moveTopic}
-            selectedTopicId={selectedTopicId}
-          />
+        {/* Admin Panel - show if user has admin permissions and is in admin mode */}
+        {canUseAdminMode && isAdminMode && (
+          <div className="w-80 bg-card border-l border-border shadow-lg flex flex-col overflow-auto">
+            <div className="p-4">
+              <AdminPanel 
+                topics={topics}
+                onAddTopic={addTopic}
+                onMoveTopic={moveTopic}
+                selectedTopicId={selectedTopicId}
+              />
+            </div>
+            
+            {isOwner && (
+              <div className="p-4 border-t border-border">
+                <SharingPanel isOwner={isOwner} />
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
