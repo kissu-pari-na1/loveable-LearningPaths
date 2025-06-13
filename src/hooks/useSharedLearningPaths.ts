@@ -60,9 +60,10 @@ export const useSharedLearningPaths = () => {
 
       const emailMap = new Map(profiles?.map(p => [p.id, p.email]) || []);
 
-      // Add owner emails to shared paths
-      const sharedWithEmails = sharedData?.map(path => ({
+      // Add owner emails to shared paths with proper typing
+      const sharedWithEmails: SharedLearningPath[] = sharedData?.map(path => ({
         ...path,
+        permission_level: path.permission_level as 'viewer' | 'admin',
         owner_email: emailMap.get(path.owner_id)
       })) || [];
 
@@ -84,7 +85,7 @@ export const useSharedLearningPaths = () => {
           paths.push({
             user_id: path.owner_id,
             user_email: emailMap.get(path.owner_id) || 'Unknown',
-            permission_level: path.permission_level,
+            permission_level: path.permission_level as 'viewer' | 'admin',
             is_owner: false
           });
         }
@@ -176,6 +177,10 @@ export const useSharedLearningPaths = () => {
       console.error('Error removing share:', error);
     }
   };
+
+  useEffect(() => {
+    fetchSharedPaths();
+  }, [user]);
 
   return {
     sharedPaths,

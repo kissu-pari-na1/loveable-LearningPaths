@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Topic } from '@/types/Topic';
 import { supabase } from '@/integrations/supabase/client';
@@ -70,7 +69,7 @@ export const useMultipleLearningPaths = (selectedPathUserId: string) => {
         if (shareError || !shareData) {
           setUserPermission('viewer');
         } else {
-          setUserPermission(shareData.permission_level);
+          setUserPermission(shareData.permission_level as 'viewer' | 'admin');
         }
       }
 
