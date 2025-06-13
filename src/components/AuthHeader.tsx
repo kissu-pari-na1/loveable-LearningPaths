@@ -12,7 +12,7 @@ export const AuthHeader: React.FC = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/');
+    navigate('/auth');
   };
 
   const handleSignIn = () => {
