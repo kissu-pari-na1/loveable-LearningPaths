@@ -226,7 +226,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                         href={link.url} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-xl font-bold text-primary hover:text-primary/80 transition-colors break-words group-hover:underline flex-1"
+                        className="text-xl font-bold text-primary hover:text-primary/80 transition-colors break-words group-hover:underline flex-1 cursor-pointer"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {link.title}
                       </a>
@@ -260,10 +261,13 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     <Button 
                       variant="ghost" 
                       size="sm"
-                      onClick={() => onRemoveLink(link.id)}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-10 w-10 rounded-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRemoveLink(link.id);
+                      }}
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-12 w-12 rounded-full p-0"
                     >
-                      <X className="w-5 h-5" />
+                      <X className="w-6 h-6" />
                     </Button>
                   )}
                 </div>
