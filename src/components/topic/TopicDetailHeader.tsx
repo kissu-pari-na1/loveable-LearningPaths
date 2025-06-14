@@ -64,10 +64,14 @@ export const TopicDetailHeader: React.FC<TopicDetailHeaderProps> = ({
             <Button 
               variant="destructive" 
               onClick={onDelete}
-              disabled={topic.childTopics.length > 0}
               className="w-full sm:w-auto"
             >
               Delete
+              {topic.childTopics.length > 0 && (
+                <span className="ml-1 text-xs opacity-75">
+                  (+ {topic.childTopics.length} subtopics)
+                </span>
+              )}
             </Button>
           </div>
         )}

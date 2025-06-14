@@ -192,14 +192,50 @@ export const useMultipleLearningPaths = (selectedPathUserId: string) => {
     }
   };
 
+  const getAllDescendantIds = (topicId: string, allTopics: Topic[]): string[] => {
+    const descendants: string[] = [];
+    
+    const findDescendants = (topics: Topic[]) => {
+      for (const topic of topics) {
+        if (topic.parentId === topicId) {
+          descendants.push(topic.id);
+          // Recursively find descendants of this topic
+          findDescendants(allTopics);
+        }
+        // Also check children of current topic
+        findDescendants(topic.childTopics);
+      }
+    };
+    
+    findDescendants(allTopics);
+    return descendants;
+  };
+
   const deleteTopic = async (topicId: string) => {
     if (!user || userPermission === 'viewer') return;
 
     try {
+      // First, get all topics to find descendants
+      const { data: allTopicsData, error: fetchError } = await supabase
+        .from('topics')
+        .select('*')
+        .eq('user_id', selectedPathUserId);
+
+      if (fetchError) throw fetchError;
+
+      // Find all descendant topic IDs
+      const allTopics = convertSupabaseToTopic(allTopicsData || [], []);
+      const descendantIds = getAllDescendantIds(topicId, allTopics);
+      const allTopicIdsToDelete = [topicId, ...descendantIds];
+
+      console.log('Deleting topics:', allTopicIdsToDelete);
+
+      // Delete all topics (including descendants) in one operation
+      // The foreign key constraints will handle deleting related project_links
       const { error } = await supabase
         .from('topics')
         .delete()
-        .eq('id', topicId);
+        .in('id', allTopicIdsToDelete);
 
       if (error) throw error;
       await fetchTopics();
