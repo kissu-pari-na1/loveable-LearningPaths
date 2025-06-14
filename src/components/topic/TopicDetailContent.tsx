@@ -23,7 +23,7 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({ name: '', description: '' });
-  const [newLink, setNewLink] = useState({ title: '', url: '', description: '' });
+  const [newLink, setNewLink] = useState({ title: '', url: '', description: '', type: undefined as 'Personal' | 'Project' | undefined });
   const [showAddLink, setShowAddLink] = useState(false);
   const [activeTab, setActiveTab] = useState('links');
 
@@ -58,12 +58,13 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
           id: Date.now().toString(),
           title: newLink.title,
           url: newLink.url,
-          description: newLink.description
+          description: newLink.description,
+          type: newLink.type
         }
       ];
       
       onUpdateTopic(topic.id, { projectLinks: updatedLinks });
-      setNewLink({ title: '', url: '', description: '' });
+      setNewLink({ title: '', url: '', description: '', type: undefined });
       setShowAddLink(false);
     }
   };

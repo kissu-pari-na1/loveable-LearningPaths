@@ -48,7 +48,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
       <div className="space-y-4">
         <div className="flex items-center gap-2 text-muted-foreground text-sm">
           <span>🔗</span>
-          <span>Project Links</span>
+          <span>Resources</span>
         </div>
         <ProjectLinksSection
           topic={topic}
@@ -72,7 +72,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
         >
           <span className="hidden sm:inline text-base md:text-lg">🔗</span>
-          <span className="truncate">Project Links</span>
+          <span className="truncate">Resources</span>
           {topic.projectLinks.length > 0 && (
             <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
               {topic.projectLinks.length}
