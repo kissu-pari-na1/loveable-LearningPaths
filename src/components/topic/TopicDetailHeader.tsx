@@ -53,18 +53,18 @@ export const TopicDetailHeader: React.FC<TopicDetailHeaderProps> = ({
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row lg:items-start justify-between mb-4 gap-4">
-        <div className="flex-1">
-          <h1 className="text-2xl lg:text-3xl font-bold text-foreground mb-2 break-words">{topic.name}</h1>
-          <p className="text-base lg:text-lg text-muted-foreground break-words">{topic.description}</p>
+      <div className="flex flex-col xl:flex-row xl:items-start justify-between mb-4 gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-2 break-words">{topic.name}</h1>
+          <p className="text-sm md:text-base lg:text-lg text-muted-foreground break-words">{topic.description}</p>
         </div>
         {isAdminMode && (
-          <div className="flex flex-col sm:flex-row gap-2 lg:ml-4">
-            <Button variant="outline" onClick={onEdit} className="w-full sm:w-auto">Edit</Button>
+          <div className="flex flex-col sm:flex-row gap-2 xl:ml-4 shrink-0">
+            <Button variant="outline" onClick={onEdit} className="w-full sm:w-auto text-sm">Edit</Button>
             <Button 
               variant="destructive" 
               onClick={onDelete}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto text-sm"
             >
               Delete
               {topic.childTopics.length > 0 && (
@@ -77,7 +77,7 @@ export const TopicDetailHeader: React.FC<TopicDetailHeaderProps> = ({
         )}
       </div>
       
-      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+      <div className="flex flex-wrap gap-4 text-xs md:text-sm text-muted-foreground">
         <span>{topic.projectLinks.length} project links</span>
         <span>{topic.childTopics.length} subtopics</span>
       </div>

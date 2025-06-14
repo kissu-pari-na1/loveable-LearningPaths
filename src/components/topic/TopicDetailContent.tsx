@@ -88,8 +88,8 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
   };
 
   return (
-    <div className="p-4 lg:p-6 max-w-4xl mx-auto">
-      <div className="mb-6">
+    <div className="p-3 md:p-4 lg:p-6 max-w-5xl mx-auto">
+      <div className="mb-4 md:mb-6">
         <TopicDetailHeader
           topic={topic}
           isEditing={isEditing}

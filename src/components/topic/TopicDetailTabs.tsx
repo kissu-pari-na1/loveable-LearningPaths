@@ -66,13 +66,13 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
 
   return (
     <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-      <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12">
+      <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14">
         <TabsTrigger 
           value="links" 
-          className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm font-medium flex items-center justify-center gap-2"
+          className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
         >
-          <span className="hidden sm:inline">🔗</span>
-          Project Links
+          <span className="hidden sm:inline text-base md:text-lg">🔗</span>
+          <span className="truncate">Project Links</span>
           {topic.projectLinks.length > 0 && (
             <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
               {topic.projectLinks.length}
@@ -82,10 +82,10 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
         <TabsTrigger 
           value="subtopics" 
           disabled={!hasSubtopics && !isAdminMode}
-          className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed px-2 md:px-4"
         >
-          <span className="hidden sm:inline">📂</span>
-          Subtopics
+          <span className="hidden sm:inline text-base md:text-lg">📂</span>
+          <span className="truncate">Subtopics</span>
           {hasSubtopics && (
             <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
               {topic.childTopics.length}

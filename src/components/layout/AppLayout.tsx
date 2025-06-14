@@ -37,21 +37,35 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           <ResizablePanelGroup direction="horizontal" className="h-full">
             {sidebar && (
               <>
-                <ResizablePanel defaultSize={28} minSize={20} maxSize={75}>
+                <ResizablePanel 
+                  defaultSize={showAdminPanel ? 25 : 30} 
+                  minSize={15} 
+                  maxSize={showAdminPanel ? 35 : 50}
+                  className="md:min-w-[280px] lg:min-w-[320px]"
+                >
                   {sidebar}
                 </ResizablePanel>
                 <ResizableHandle withHandle />
               </>
             )}
 
-            <ResizablePanel defaultSize={showAdminPanel ? 50 : 75}>
+            <ResizablePanel 
+              defaultSize={showAdminPanel ? 50 : 70}
+              minSize={30}
+              className="md:min-w-[400px] lg:min-w-[500px]"
+            >
               {children}
             </ResizablePanel>
 
             {showAdminPanel && adminPanel && (
               <>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+                <ResizablePanel 
+                  defaultSize={25} 
+                  minSize={15} 
+                  maxSize={40}
+                  className="md:min-w-[280px] lg:min-w-[320px]"
+                >
                   {adminPanel}
                 </ResizablePanel>
               </>
