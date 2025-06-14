@@ -58,16 +58,16 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl border border-primary/10">
-            <LinkIcon className="w-6 h-6 text-primary" />
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-primary/10">
+            <LinkIcon className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-foreground mb-1">Resources</h3>
-            <p className="text-muted-foreground">
+            <h3 className="text-lg font-semibold text-foreground mb-1">Resources</h3>
+            <p className="text-sm text-muted-foreground">
               {topic.projectLinks.length} resource{topic.projectLinks.length !== 1 ? 's' : ''} available
             </p>
           </div>
@@ -76,9 +76,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
           <Button 
             onClick={onToggleAddLink}
             className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg hover:shadow-xl transition-all duration-200"
-            size="lg"
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
             Add Resource
           </Button>
         )}
@@ -87,19 +86,19 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
       {/* Add Resource Form */}
       {showAddLink && (
         <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-primary/2 shadow-lg">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-xl flex items-center gap-3 text-primary">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-3 text-primary">
               <div className="p-2 bg-primary/10 rounded-lg">
-                <Plus className="w-5 h-5" />
+                <Plus className="w-4 h-4" />
               </div>
               Add New Resource
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <Globe className="w-4 h-4" />
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  <Globe className="w-3.5 h-3.5" />
                   Title *
                 </label>
                 <Input
@@ -109,9 +108,9 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                   className="bg-background border-2 focus:border-primary/50 transition-colors"
                 />
               </div>
-              <div className="space-y-3">
-                <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4" />
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  <ExternalLink className="w-3.5 h-3.5" />
                   URL *
                 </label>
                 <Input
@@ -123,8 +122,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
               </div>
             </div>
             
-            <div className="space-y-3">
-              <label className="text-sm font-semibold text-foreground">Description</label>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Description</label>
               <Input
                 placeholder="Brief description of the resource (optional)"
                 value={newLink.description}
@@ -133,10 +132,10 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
               />
             </div>
 
-            <div className="space-y-4">
-              <label className="text-sm font-semibold text-foreground">Resource Types</label>
-              <div className="flex gap-8">
-                <div className="flex items-center space-x-3">
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">Resource Types</label>
+              <div className="flex gap-6">
+                <div className="flex items-center space-x-2">
                   <Checkbox
                     id="personal-new"
                     checked={newLink.types?.includes('Personal') || false}
@@ -144,11 +143,11 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     className="border-2"
                   />
                   <label htmlFor="personal-new" className="text-sm font-medium cursor-pointer flex items-center gap-2">
-                    <User className="w-4 h-4 text-blue-600" />
+                    <User className="w-3.5 h-3.5 text-blue-600" />
                     Personal
                   </label>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
                   <Checkbox
                     id="project-new"
                     checked={newLink.types?.includes('Project') || false}
@@ -156,19 +155,18 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     className="border-2"
                   />
                   <label htmlFor="project-new" className="text-sm font-medium cursor-pointer flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-green-600" />
+                    <Briefcase className="w-3.5 h-3.5 text-green-600" />
                     Project
                   </label>
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-3 pt-3">
               <Button 
                 onClick={onAddLink} 
                 className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80"
                 disabled={!newLink.title || !newLink.url}
-                size="lg"
               >
                 <Plus className="w-4 h-4" />
                 Add Resource
@@ -177,7 +175,6 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                 variant="outline" 
                 onClick={onToggleAddLink}
                 className="flex items-center gap-2 border-2"
-                size="lg"
               >
                 <X className="w-4 h-4" />
                 Cancel
@@ -190,12 +187,12 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
       {/* Resources List */}
       {topic.projectLinks.length === 0 ? (
         <Card className="border-dashed border-2 border-muted-foreground/20 bg-gradient-to-br from-muted/20 to-muted/10">
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-muted/50 to-muted/30 rounded-full flex items-center justify-center mb-6 shadow-lg">
-              <LinkIcon className="w-10 h-10 text-muted-foreground" />
+          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-muted/50 to-muted/30 rounded-full flex items-center justify-center mb-4 shadow-lg">
+              <LinkIcon className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-foreground">No resources yet</h3>
-            <p className="text-muted-foreground mb-6 max-w-md leading-relaxed">
+            <h3 className="text-lg font-semibold mb-2 text-foreground">No resources yet</h3>
+            <p className="text-sm text-muted-foreground mb-4 max-w-md leading-relaxed">
               Start building your resource collection by adding links to helpful materials, documentation, or projects.
             </p>
             {isAdminMode && (
@@ -203,53 +200,52 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                 onClick={onToggleAddLink} 
                 variant="outline" 
                 className="flex items-center gap-2 border-2 hover:bg-primary/5"
-                size="lg"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-4 h-4" />
                 Add First Resource
               </Button>
             )}
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-4">
           {topic.projectLinks.map((link) => (
-            <Card key={link.id} className="group hover:shadow-xl transition-all duration-300 hover:border-primary/30 border-2 bg-gradient-to-br from-card to-card/80">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between gap-6">
+            <Card key={link.id} className="group hover:shadow-lg transition-all duration-300 hover:border-primary/30 border bg-gradient-to-br from-card to-card/80">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-4 mb-3">
+                    <div className="flex items-center gap-3 mb-2">
                       <a 
                         href={link.url} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex items-center gap-4 hover:opacity-80 transition-opacity cursor-pointer"
+                        className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
                       >
-                        <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                          <ExternalLink className="w-5 h-5 text-primary" />
+                        <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                          <ExternalLink className="w-4 h-4 text-primary" />
                         </div>
-                        <span className="text-xl font-bold text-primary hover:text-primary/80 transition-colors break-words group-hover:underline">
+                        <span className="text-base font-semibold text-primary hover:text-primary/80 transition-colors break-words group-hover:underline">
                           {link.title}
                         </span>
                       </a>
                     </div>
                     
                     {link.description && (
-                      <p className="text-muted-foreground mb-4 break-words leading-relaxed pl-12">
+                      <p className="text-sm text-muted-foreground mb-3 break-words leading-relaxed pl-7">
                         {link.description}
                       </p>
                     )}
                     
                     {link.types && link.types.length > 0 && (
-                      <div className="flex gap-3 flex-wrap pl-12">
+                      <div className="flex gap-2 flex-wrap pl-7">
                         {link.types.map((type) => {
                           const IconComponent = getTypeIcon(type);
                           return (
                             <Badge 
                               key={type} 
-                              className={`text-sm font-medium px-3 py-1.5 border ${getTypeColor(type)} flex items-center gap-2`}
+                              className={`text-xs font-medium px-2 py-1 border ${getTypeColor(type)} flex items-center gap-1.5`}
                             >
-                              <IconComponent className="w-3.5 h-3.5" />
+                              <IconComponent className="w-3 h-3" />
                               {type}
                             </Badge>
                           );
@@ -266,9 +262,9 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                         e.stopPropagation();
                         onRemoveLink(link.id);
                       }}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-12 w-12 rounded-full p-0"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-8 w-8 rounded-full p-0 min-w-8"
                     >
-                      <X className="w-6 h-6" />
+                      <X className="w-4 h-4" />
                     </Button>
                   )}
                 </div>
