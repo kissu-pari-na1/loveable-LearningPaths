@@ -52,9 +52,9 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           <span>🔗</span>
           <span>Resources</span>
         </div>
-        <div className="h-[calc(100vh-24rem)] overflow-hidden">
-          <ScrollArea className="h-full w-full">
-            <div className="pr-4">
+        <div className="flex-1 min-h-0">
+          <ScrollArea className="h-[calc(100vh-20rem)]">
+            <div className="space-y-4 pb-6">
               <ProjectLinksSection
                 topic={topic}
                 isAdminMode={isAdminMode}
@@ -73,39 +73,39 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   }
 
   return (
-    <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-      <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14">
-        <TabsTrigger 
-          value="links" 
-          className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
-        >
-          <span className="hidden sm:inline text-base md:text-lg">🔗</span>
-          <span className="truncate">Resources</span>
-          {topic.projectLinks.length > 0 && (
-            <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
-              {topic.projectLinks.length}
-            </span>
-          )}
-        </TabsTrigger>
-        <TabsTrigger 
-          value="subtopics" 
-          disabled={!hasSubtopics && !isAdminMode}
-          className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed px-2 md:px-4"
-        >
-          <span className="hidden sm:inline text-base md:text-lg">📂</span>
-          <span className="truncate">Subtopics</span>
-          {hasSubtopics && (
-            <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
-              {topic.childTopics.length}
-            </span>
-          )}
-        </TabsTrigger>
-      </TabsList>
-      
-      <TabsContent value="links" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-        <div className="h-[calc(100vh-24rem)] overflow-hidden">
-          <ScrollArea className="h-full w-full">
-            <div className="pr-4">
+    <div className="flex flex-col h-full">
+      <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col flex-1 min-h-0">
+        <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14 flex-shrink-0">
+          <TabsTrigger 
+            value="links" 
+            className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
+          >
+            <span className="hidden sm:inline text-base md:text-lg">🔗</span>
+            <span className="truncate">Resources</span>
+            {topic.projectLinks.length > 0 && (
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
+                {topic.projectLinks.length}
+              </span>
+            )}
+          </TabsTrigger>
+          <TabsTrigger 
+            value="subtopics" 
+            disabled={!hasSubtopics && !isAdminMode}
+            className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed px-2 md:px-4"
+          >
+            <span className="hidden sm:inline text-base md:text-lg">📂</span>
+            <span className="truncate">Subtopics</span>
+            {hasSubtopics && (
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
+                {topic.childTopics.length}
+              </span>
+            )}
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="links" className="flex-1 min-h-0 mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
+          <ScrollArea className="h-[calc(100vh-20rem)]">
+            <div className="space-y-4 pb-6">
               <ProjectLinksSection
                 topic={topic}
                 isAdminMode={isAdminMode}
@@ -118,13 +118,11 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
               />
             </div>
           </ScrollArea>
-        </div>
-      </TabsContent>
-      
-      <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-        <div className="h-[calc(100vh-24rem)] overflow-hidden">
-          <ScrollArea className="h-full w-full">
-            <div className="pr-4">
+        </TabsContent>
+        
+        <TabsContent value="subtopics" className="flex-1 min-h-0 mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
+          <ScrollArea className="h-[calc(100vh-20rem)]">
+            <div className="space-y-4 pb-6">
               <SubtopicsSection
                 topic={topic}
                 isAdminMode={isAdminMode}
@@ -133,8 +131,8 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
               />
             </div>
           </ScrollArea>
-        </div>
-      </TabsContent>
-    </Tabs>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
