@@ -24,27 +24,32 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   isMobileOrTablet
 }) => {
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
-  const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
 
-  // Update local state when external searchQuery changes
+  // Update local state when external searchQuery changes (but avoid infinite loops)
   useEffect(() => {
-    setLocalSearchQuery(searchQuery);
-    setDebouncedQuery(searchQuery);
+    if (searchQuery !== localSearchQuery) {
+      setLocalSearchQuery(searchQuery);
+    }
   }, [searchQuery]);
 
-  // Debounce the search query
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(localSearchQuery);
-    }, 300); // 300ms delay
+  // Debounce the search with useCallback to prevent recreating the function
+  const debouncedSearch = useCallback(
+    (() => {
+      let timeoutId: NodeJS.Timeout;
+      return (query: string) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          onSearch(query);
+        }, 300);
+      };
+    })(),
+    [onSearch]
+  );
 
-    return () => clearTimeout(timer);
-  }, [localSearchQuery]);
-
-  // Trigger search when debounced query changes
+  // Trigger search when local query changes
   useEffect(() => {
-    onSearch(debouncedQuery);
-  }, [debouncedQuery, onSearch]);
+    debouncedSearch(localSearchQuery);
+  }, [localSearchQuery, debouncedSearch]);
 
   const handleInputChange = (value: string) => {
     setLocalSearchQuery(value);
@@ -52,7 +57,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
 
   const handleClearSearch = () => {
     setLocalSearchQuery('');
-    setDebouncedQuery('');
   };
 
   return (
@@ -80,10 +84,10 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           placeholder="Search topics..."
           value={localSearchQuery}
           onChange={(e) => handleInputChange(e.target.value)}
-          className="pl-10 pr-10"
+          className={`pl-10 ${localSearchQuery ? 'pr-10' : 'pr-3'}`}
         />
         
-        {/* Clear button */}
+        {/* Clear button - only show when there's text to clear */}
         {localSearchQuery && (
           <Button
             variant="ghost"
@@ -95,13 +99,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           </Button>
         )}
       </div>
-
-      {/* Search status */}
-      {localSearchQuery && (
-        <div className="text-xs text-muted-foreground">
-          {debouncedQuery !== localSearchQuery ? 'Typing...' : `Search results for "${debouncedQuery}"`}
-        </div>
-      )}
 
       {/* Admin Mode Toggle */}
       {canUseAdminMode && (

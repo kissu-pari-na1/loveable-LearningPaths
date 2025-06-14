@@ -1,5 +1,5 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { pipeline } from '@huggingface/transformers';
 import { Topic, SearchResult } from '@/types/Topic';
 
@@ -9,10 +9,21 @@ let modelCache: any = null;
 export const useSemanticSearch = (topics: Topic[]) => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const lastQueryRef = useRef<string>('');
 
   const search = useCallback(async (query: string) => {
-    if (!query.trim()) {
+    const trimmedQuery = query.trim();
+    
+    // Avoid duplicate searches for the same query
+    if (lastQueryRef.current === trimmedQuery) {
+      return;
+    }
+    
+    lastQueryRef.current = trimmedQuery;
+
+    if (!trimmedQuery) {
       setSearchResults([]);
+      setIsSearching(false);
       return;
     }
 
@@ -20,7 +31,7 @@ export const useSemanticSearch = (topics: Topic[]) => {
     
     try {
       // First, do a fast text-based search
-      const textResults = performTextSearch(query, topics);
+      const textResults = performTextSearch(trimmedQuery, topics);
       
       // If we have good text matches, use those immediately
       if (textResults.length > 0) {
@@ -30,8 +41,8 @@ export const useSemanticSearch = (topics: Topic[]) => {
       }
 
       // Only use semantic search as fallback for complex queries
-      if (query.length > 3) {
-        const semanticResults = await performSemanticSearch(query, topics);
+      if (trimmedQuery.length > 3) {
+        const semanticResults = await performSemanticSearch(trimmedQuery, topics);
         setSearchResults(semanticResults);
       } else {
         setSearchResults(textResults);
@@ -39,7 +50,7 @@ export const useSemanticSearch = (topics: Topic[]) => {
     } catch (error) {
       console.error('Search error:', error);
       // Fallback to text search if semantic search fails
-      const textResults = performTextSearch(query, topics);
+      const textResults = performTextSearch(trimmedQuery, topics);
       setSearchResults(textResults);
     }
     
