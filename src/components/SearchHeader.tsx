@@ -24,7 +24,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   isMobileOrTablet
 }) => {
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
-  const [hasAttemptedFocus, setHasAttemptedFocus] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Update local state when external searchQuery changes (but avoid infinite loops)
@@ -33,22 +32,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
       setLocalSearchQuery(searchQuery);
     }
   }, [searchQuery]);
-
-  // Handle auto-focus only on desktop with proper safety checks
-  useEffect(() => {
-    // Only attempt focus once and only when we're certain about device type
-    if (!hasAttemptedFocus && isMobileOrTablet === false && inputRef.current) {
-      const timeoutId = setTimeout(() => {
-        // Double-check conditions before focusing
-        if (inputRef.current && isMobileOrTablet === false && document.activeElement !== inputRef.current) {
-          inputRef.current.focus();
-        }
-        setHasAttemptedFocus(true);
-      }, 150);
-      
-      return () => clearTimeout(timeoutId);
-    }
-  }, [isMobileOrTablet, hasAttemptedFocus]);
 
   // Debounce the search with useCallback to prevent recreating the function
   const debouncedSearch = useCallback(
