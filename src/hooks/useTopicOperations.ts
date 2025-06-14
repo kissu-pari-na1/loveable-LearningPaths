@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Topic } from '@/types/Topic';
 import { supabase } from '@/integrations/supabase/client';
 import { getAllDescendantIds } from '@/utils/topicConverters';
+import { toast } from '@/hooks/use-toast';
 
 export const useTopicOperations = (selectedPathUserId: string, userPermission: 'owner' | 'viewer' | 'admin', refetchTopics: () => Promise<void>) => {
   const [loading, setLoading] = useState(false);
@@ -23,8 +24,18 @@ export const useTopicOperations = (selectedPathUserId: string, userPermission: '
 
       if (error) throw error;
       await refetchTopics();
+      
+      toast({
+        title: "Topic created",
+        description: `"${newTopic.name}" has been successfully created.`,
+      });
     } catch (error) {
       console.error('Error adding topic:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create topic. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -78,8 +89,18 @@ export const useTopicOperations = (selectedPathUserId: string, userPermission: '
       }
 
       await refetchTopics();
+      
+      toast({
+        title: "Topic updated",
+        description: "Changes have been saved successfully.",
+      });
     } catch (error) {
       console.error('Error updating topic:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update topic. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -112,8 +133,19 @@ export const useTopicOperations = (selectedPathUserId: string, userPermission: '
 
       if (error) throw error;
       await refetchTopics();
+      
+      const deletedCount = allTopicIdsToDelete.length;
+      toast({
+        title: "Topic deleted",
+        description: `Successfully deleted ${deletedCount} topic${deletedCount > 1 ? 's' : ''}.`,
+      });
     } catch (error) {
       console.error('Error deleting topic:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete topic. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -131,8 +163,18 @@ export const useTopicOperations = (selectedPathUserId: string, userPermission: '
 
       if (error) throw error;
       await refetchTopics();
+      
+      toast({
+        title: "Topic moved",
+        description: "Topic has been moved successfully.",
+      });
     } catch (error) {
       console.error('Error moving topic:', error);
+      toast({
+        title: "Error",
+        description: "Failed to move topic. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

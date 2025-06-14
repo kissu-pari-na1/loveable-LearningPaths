@@ -1,11 +1,20 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Topic, ProjectLink } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { ExternalLink, Plus, X, Link as LinkIcon, Globe, User, Briefcase } from 'lucide-react';
 
 interface NewLinkData {
@@ -36,6 +45,21 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
   onRemoveLink,
   onNewLinkChange
 }) => {
+  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; linkId: string; linkTitle: string }>({
+    isOpen: false,
+    linkId: '',
+    linkTitle: ''
+  });
+
+  const handleDeleteClick = (linkId: string, linkTitle: string) => {
+    setDeleteDialog({ isOpen: true, linkId, linkTitle });
+  };
+
+  const handleDeleteConfirm = () => {
+    onRemoveLink(deleteDialog.linkId);
+    setDeleteDialog({ isOpen: false, linkId: '', linkTitle: '' });
+  };
+
   const handleTypeToggle = (type: 'Personal' | 'Project', checked: boolean) => {
     const currentTypes = newLink.types || [];
     let newTypes: ('Personal' | 'Project')[];
@@ -215,19 +239,17 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2">
-                      <a 
-                        href={link.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
+                      <div 
+                        onClick={() => window.open(link.url, '_blank', 'noopener noreferrer')}
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
                       >
                         <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
                           <ExternalLink className="w-4 h-4 text-primary" />
                         </div>
-                        <span className="text-base font-semibold text-primary hover:text-primary/80 transition-colors break-words group-hover:underline">
+                        <span className="text-sm font-medium text-primary hover:text-primary/80 transition-colors break-words group-hover:underline">
                           {link.title}
                         </span>
-                      </a>
+                      </div>
                     </div>
                     
                     {link.description && (
@@ -243,9 +265,9 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                           return (
                             <Badge 
                               key={type} 
-                              className={`text-xs font-medium px-2 py-1 border ${getTypeColor(type)} flex items-center gap-1.5`}
+                              className={`text-xs font-medium px-2 py-1 border ${getTypeColor(type)} flex items-center gap-1`}
                             >
-                              <IconComponent className="w-3 h-3" />
+                              <IconComponent className="w-2.5 h-2.5" />
                               {type}
                             </Badge>
                           );
@@ -260,11 +282,11 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onRemoveLink(link.id);
+                        handleDeleteClick(link.id, link.title);
                       }}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-8 w-8 rounded-full p-0 min-w-8"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-10 w-10 rounded-full p-0 min-w-10"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-5 h-5" />
                     </Button>
                   )}
                 </div>
@@ -273,6 +295,27 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
           ))}
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialog.isOpen} onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, isOpen: open }))}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this resource?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the resource "{deleteDialog.linkTitle}".
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete Resource
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

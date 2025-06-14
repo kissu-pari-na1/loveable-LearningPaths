@@ -1,9 +1,21 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Topic } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Trash2 } from 'lucide-react';
 
 interface TopicDetailHeaderProps {
   topic: Topic;
@@ -28,6 +40,13 @@ export const TopicDetailHeader: React.FC<TopicDetailHeaderProps> = ({
   onDelete,
   onEditFormChange
 }) => {
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const handleDeleteConfirm = () => {
+    onDelete();
+    setShowDeleteDialog(false);
+  };
+
   if (isEditing) {
     return (
       <div className="space-y-4">
@@ -61,18 +80,42 @@ export const TopicDetailHeader: React.FC<TopicDetailHeaderProps> = ({
         {isAdminMode && (
           <div className="flex flex-col sm:flex-row gap-2 xl:ml-4 shrink-0">
             <Button variant="outline" onClick={onEdit} className="w-full sm:w-auto text-sm">Edit</Button>
-            <Button 
-              variant="destructive" 
-              onClick={onDelete}
-              className="w-full sm:w-auto text-sm"
-            >
-              Delete
-              {topic.childTopics.length > 0 && (
-                <span className="ml-1 text-xs opacity-75">
-                  (+ {topic.childTopics.length} subtopics)
-                </span>
-              )}
-            </Button>
+            
+            <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+              <AlertDialogTrigger asChild>
+                <Button 
+                  variant="destructive" 
+                  className="w-full sm:w-auto text-sm flex items-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete
+                  {topic.childTopics.length > 0 && (
+                    <span className="ml-1 text-xs opacity-75">
+                      (+ {topic.childTopics.length} subtopics)
+                    </span>
+                  )}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure you want to delete this topic?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the topic "{topic.name}"
+                    {topic.childTopics.length > 0 && ` and all ${topic.childTopics.length} subtopic${topic.childTopics.length !== 1 ? 's' : ''}`}
+                    {topic.projectLinks.length > 0 && ` along with ${topic.projectLinks.length} resource${topic.projectLinks.length !== 1 ? 's' : ''}`}.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={handleDeleteConfirm}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Delete Topic
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         )}
       </div>
