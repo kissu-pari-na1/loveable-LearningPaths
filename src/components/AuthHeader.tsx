@@ -21,9 +21,9 @@ export const AuthHeader: React.FC = () => {
   if (loading) {
     return (
       <div className="p-4 lg:p-6 border-t border-gradient-to-r from-violet-200/30 via-purple-200/30 to-blue-200/30">
-        <div className="flex items-center justify-center space-x-3">
-          <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-violet-200/50 to-blue-200/50 animate-pulse rounded-full"></div>
-          <div className="space-y-2 flex-1">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-violet-200/50 to-blue-200/50 animate-pulse rounded-full flex-shrink-0"></div>
+          <div className="space-y-2 flex-1 min-w-0">
             <div className="w-full max-w-32 h-4 bg-gradient-to-r from-violet-200/50 to-blue-200/50 animate-pulse rounded"></div>
             <div className="w-full max-w-20 h-3 bg-gradient-to-r from-violet-200/50 to-blue-200/50 animate-pulse rounded"></div>
           </div>
@@ -42,7 +42,7 @@ export const AuthHeader: React.FC = () => {
         {user ? (
           <div className="space-y-3 sm:space-y-4">
             {/* User info section */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center">
               <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 bg-white/70 dark:bg-black/20 backdrop-blur-xl rounded-2xl p-2 sm:p-3 lg:p-4 border border-white/20 shadow-xl w-full">
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
@@ -63,8 +63,8 @@ export const AuthHeader: React.FC = () => {
                 </div>
                 
                 {/* User details */}
-                <div className="flex-1 min-w-0 text-center">
-                  <div className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-100 truncate w-full mb-1">
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs sm:text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-100 truncate">
                     {user.email}
                   </div>
                 </div>
