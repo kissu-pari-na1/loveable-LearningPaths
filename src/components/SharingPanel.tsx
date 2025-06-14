@@ -5,6 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Trash2, Mail, Share2 } from 'lucide-react';
 import { SharedLearningPath, useSharedLearningPaths } from '@/hooks/useSharedLearningPaths';
 import { useToast } from '@/hooks/use-toast';
@@ -21,6 +32,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPermission, setNewUserPermission] = useState<'viewer' | 'admin'>('viewer');
   const [isSharing, setIsSharing] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null);
 
   if (!isOwner) {
     return null;
@@ -69,6 +81,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
 
   const handleRemoveShare = async (shareId: string) => {
     await removeShare(shareId);
+    setDeleteDialogOpen(null);
     toast({
       title: "Success",
       description: "Share removed successfully",
@@ -142,14 +155,36 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
                         <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRemoveShare(share.id)}
-                      className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
-                    >
-                      <Trash2 className="w-2.5 h-2.5" />
-                    </Button>
+                    
+                    <AlertDialog open={deleteDialogOpen === share.id} onOpenChange={(open) => setDeleteDialogOpen(open ? share.id : null)}>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
+                        >
+                          <Trash2 className="w-2.5 h-2.5" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Remove access for this user?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently revoke access to your learning path for "{share.shared_with_email || 'Unknown User'}". 
+                            They will no longer be able to view or edit your topics and resources.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={() => handleRemoveShare(share.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Remove Access
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               ))}
