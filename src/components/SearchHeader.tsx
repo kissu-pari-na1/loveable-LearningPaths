@@ -61,7 +61,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
 
   return (
     <div className="p-4 border-b border-border space-y-4">
-      {/* Mobile close button */}
+      {/* Mobile close button - only show the title and close button */}
       {isMobileOrTablet && onSidebarClose && (
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold">Learning Paths</h2>

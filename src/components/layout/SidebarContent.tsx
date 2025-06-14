@@ -34,6 +34,14 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({
   onSidebarClose,
   onSignOut
 }) => {
+  const handleTopicSelect = (topicId: string) => {
+    onTopicSelect(topicId);
+    // Auto-close sidebar on mobile/tablet when topic is selected
+    if (isMobileOrTablet && onSidebarClose) {
+      onSidebarClose();
+    }
+  };
+
   return (
     <div className="flex flex-col h-full">
       <SearchHeader
@@ -50,7 +58,7 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({
         <TopicTree
           topics={displayTopics}
           selectedTopicId={selectedTopicId}
-          onTopicSelect={onTopicSelect}
+          onTopicSelect={handleTopicSelect}
           isLoading={isSearching}
         />
       </div>

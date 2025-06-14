@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useRef } from 'react';
 import { pipeline } from '@huggingface/transformers';
 import { Topic, SearchResult } from '@/types/Topic';
@@ -33,9 +32,12 @@ export const useSemanticSearch = (topics: Topic[]) => {
       // First, do a fast text-based search
       const textResults = performTextSearch(trimmedQuery, topics);
       
+      // Filter text results to only show 60%+ similarity
+      const filteredTextResults = textResults.filter(result => (result.similarity || 0) >= 0.6);
+      
       // If we have good text matches, use those immediately
-      if (textResults.length > 0) {
-        setSearchResults(textResults);
+      if (filteredTextResults.length > 0) {
+        setSearchResults(filteredTextResults);
         setIsSearching(false);
         return;
       }
@@ -43,15 +45,18 @@ export const useSemanticSearch = (topics: Topic[]) => {
       // Only use semantic search as fallback for complex queries
       if (trimmedQuery.length > 3) {
         const semanticResults = await performSemanticSearch(trimmedQuery, topics);
-        setSearchResults(semanticResults);
+        // Filter semantic results to only show 60%+ similarity
+        const filteredSemanticResults = semanticResults.filter(result => (result.similarity || 0) >= 0.6);
+        setSearchResults(filteredSemanticResults);
       } else {
-        setSearchResults(textResults);
+        setSearchResults(filteredTextResults);
       }
     } catch (error) {
       console.error('Search error:', error);
       // Fallback to text search if semantic search fails
       const textResults = performTextSearch(trimmedQuery, topics);
-      setSearchResults(textResults);
+      const filteredResults = textResults.filter(result => (result.similarity || 0) >= 0.6);
+      setSearchResults(filteredResults);
     }
     
     setIsSearching(false);
@@ -168,8 +173,8 @@ async function performSemanticSearch(query: string, topics: Topic[]): Promise<Se
         matchedIn = 'projectLinks';
       }
 
-      // Only include results with similarity above threshold
-      if (similarity > 0.3) {
+      // Only include results with similarity above threshold (60%)
+      if (similarity > 0.6) {
         results.push({
           ...topic,
           similarity,
