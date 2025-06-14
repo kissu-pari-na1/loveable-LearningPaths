@@ -52,18 +52,22 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           <span>🔗</span>
           <span>Resources</span>
         </div>
-        <ScrollArea className="h-[calc(100vh-24rem)] w-full">
-          <ProjectLinksSection
-            topic={topic}
-            isAdminMode={isAdminMode}
-            showAddLink={showAddLink}
-            newLink={newLink}
-            onToggleAddLink={onToggleAddLink}
-            onAddLink={onAddLink}
-            onRemoveLink={onRemoveLink}
-            onNewLinkChange={onNewLinkChange}
-          />
-        </ScrollArea>
+        <div className="h-[calc(100vh-24rem)] overflow-hidden">
+          <ScrollArea className="h-full w-full">
+            <div className="pr-4">
+              <ProjectLinksSection
+                topic={topic}
+                isAdminMode={isAdminMode}
+                showAddLink={showAddLink}
+                newLink={newLink}
+                onToggleAddLink={onToggleAddLink}
+                onAddLink={onAddLink}
+                onRemoveLink={onRemoveLink}
+                onNewLinkChange={onNewLinkChange}
+              />
+            </div>
+          </ScrollArea>
+        </div>
       </div>
     );
   }
@@ -99,29 +103,37 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
       </TabsList>
       
       <TabsContent value="links" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-        <ScrollArea className="h-[calc(100vh-24rem)] w-full">
-          <ProjectLinksSection
-            topic={topic}
-            isAdminMode={isAdminMode}
-            showAddLink={showAddLink}
-            newLink={newLink}
-            onToggleAddLink={onToggleAddLink}
-            onAddLink={onAddLink}
-            onRemoveLink={onRemoveLink}
-            onNewLinkChange={onNewLinkChange}
-          />
-        </ScrollArea>
+        <div className="h-[calc(100vh-24rem)] overflow-hidden">
+          <ScrollArea className="h-full w-full">
+            <div className="pr-4">
+              <ProjectLinksSection
+                topic={topic}
+                isAdminMode={isAdminMode}
+                showAddLink={showAddLink}
+                newLink={newLink}
+                onToggleAddLink={onToggleAddLink}
+                onAddLink={onAddLink}
+                onRemoveLink={onRemoveLink}
+                onNewLinkChange={onNewLinkChange}
+              />
+            </div>
+          </ScrollArea>
+        </div>
       </TabsContent>
       
       <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-        <ScrollArea className="h-[calc(100vh-24rem)] w-full">
-          <SubtopicsSection
-            topic={topic}
-            isAdminMode={isAdminMode}
-            onSubtopicClick={onSubtopicClick}
-            onAddSubtopic={onAddSubtopic}
-          />
-        </ScrollArea>
+        <div className="h-[calc(100vh-24rem)] overflow-hidden">
+          <ScrollArea className="h-full w-full">
+            <div className="pr-4">
+              <SubtopicsSection
+                topic={topic}
+                isAdminMode={isAdminMode}
+                onSubtopicClick={onSubtopicClick}
+                onAddSubtopic={onAddSubtopic}
+              />
+            </div>
+          </ScrollArea>
+        </div>
       </TabsContent>
     </Tabs>
   );
