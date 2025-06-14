@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,12 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import { Trash2, Mail, Share2 } from 'lucide-react';
 import { SharedLearningPath, useSharedLearningPaths } from '@/hooks/useSharedLearningPaths';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface SharingPanelProps {
   isOwner: boolean;
 }
 
 export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
+  const { user } = useAuth();
   const { sharedPaths, shareWithUser, updatePermission, removeShare } = useSharedLearningPaths();
   const { toast } = useToast();
   const [newUserEmail, setNewUserEmail] = useState('');
@@ -24,7 +25,8 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
     return null;
   }
 
-  const ownedShares = sharedPaths.filter(share => share.owner_id === share.owner_id);
+  // Filter to show only shares where current user is the owner (shares they created)
+  const ownedShares = sharedPaths.filter(share => share.owner_id === user?.id);
 
   const handleShare = async () => {
     if (!newUserEmail.trim()) {
@@ -119,7 +121,9 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
               {ownedShares.map((share) => (
                 <div key={share.id} className="flex items-center justify-between p-3 border border-emerald-200/50 rounded-lg bg-white/50 dark:bg-black/20 backdrop-blur-sm">
                   <div className="flex flex-col gap-1 min-w-0 flex-1 mr-2">
-                    <span className="text-sm font-medium truncate">{share.owner_email}</span>
+                    <span className="text-sm font-medium truncate">
+                      {share.shared_with_email || 'Unknown User'}
+                    </span>
                     <Badge variant="outline" className="text-xs w-fit border-emerald-300/50 bg-emerald-50/50 text-emerald-600">
                       {share.permission_level}
                     </Badge>

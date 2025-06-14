@@ -9,7 +9,7 @@ export interface SharedLearningPath {
   shared_with_id: string;
   permission_level: 'viewer' | 'admin';
   created_at: string;
-  owner_email?: string;
+  shared_with_email?: string; // Email of the user the dashboard is shared with
 }
 
 export interface LearningPathAccess {
@@ -60,11 +60,11 @@ export const useSharedLearningPaths = () => {
 
       const emailMap = new Map(profiles?.map(p => [p.id, p.email]) || []);
 
-      // Add owner emails to shared paths with proper typing
+      // Add shared_with emails to shared paths
       const sharedWithEmails: SharedLearningPath[] = sharedData?.map(path => ({
         ...path,
         permission_level: path.permission_level as 'viewer' | 'admin',
-        owner_email: emailMap.get(path.owner_id)
+        shared_with_email: emailMap.get(path.shared_with_id) // Email of the user the dashboard is shared with
       })) || [];
 
       setSharedPaths(sharedWithEmails);
