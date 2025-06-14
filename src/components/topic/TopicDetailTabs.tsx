@@ -47,14 +47,14 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
 
   if (!hasSubtopics && !hasLinks) {
     return (
-      <div className="flex flex-col min-h-0 flex-1">
-        <div className="flex items-center gap-2 text-muted-foreground text-sm mb-4">
+      <div className="flex flex-col h-full overflow-hidden">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm mb-4 flex-shrink-0">
           <span>🔗</span>
           <span>Resources</span>
         </div>
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full">
-            <div className="space-y-4 p-1">
+            <div className="space-y-4 p-1 pb-8">
               <ProjectLinksSection
                 topic={topic}
                 isAdminMode={isAdminMode}
@@ -73,9 +73,9 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   }
 
   return (
-    <div className="flex flex-col min-h-0 flex-1">
-      <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col min-h-0 flex-1">
-        <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14">
+    <div className="flex flex-col h-full overflow-hidden">
+      <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full overflow-hidden">
+        <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14 flex-shrink-0">
           <TabsTrigger 
             value="links" 
             className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
@@ -103,9 +103,9 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="links" className="flex-1 min-h-0 mt-0 focus-visible:outline-none">
+        <TabsContent value="links" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
           <ScrollArea className="h-full">
-            <div className="space-y-4 p-1">
+            <div className="space-y-4 p-1 pb-8">
               <ProjectLinksSection
                 topic={topic}
                 isAdminMode={isAdminMode}
@@ -120,9 +120,9 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           </ScrollArea>
         </TabsContent>
         
-        <TabsContent value="subtopics" className="flex-1 min-h-0 mt-0 focus-visible:outline-none">
+        <TabsContent value="subtopics" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
           <ScrollArea className="h-full">
-            <div className="space-y-4 p-1">
+            <div className="space-y-4 p-1 pb-8">
               <SubtopicsSection
                 topic={topic}
                 isAdminMode={isAdminMode}
