@@ -192,22 +192,19 @@ export const useMultipleLearningPaths = (selectedPathUserId: string) => {
     }
   };
 
-  const getAllDescendantIds = (topicId: string, allTopics: Topic[]): string[] => {
+  const getAllDescendantIds = (topicId: string, allTopicsFlat: any[]): string[] => {
     const descendants: string[] = [];
     
-    const findDescendants = (topics: Topic[]) => {
-      for (const topic of topics) {
-        if (topic.parentId === topicId) {
-          descendants.push(topic.id);
-          // Recursively find descendants of this topic
-          findDescendants(allTopics);
-        }
-        // Also check children of current topic
-        findDescendants(topic.childTopics);
+    const findChildren = (parentId: string) => {
+      const children = allTopicsFlat.filter(topic => topic.parent_id === parentId);
+      for (const child of children) {
+        descendants.push(child.id);
+        // Recursively find children of this child
+        findChildren(child.id);
       }
     };
     
-    findDescendants(allTopics);
+    findChildren(topicId);
     return descendants;
   };
 
@@ -223,9 +220,8 @@ export const useMultipleLearningPaths = (selectedPathUserId: string) => {
 
       if (fetchError) throw fetchError;
 
-      // Find all descendant topic IDs
-      const allTopics = convertSupabaseToTopic(allTopicsData || [], []);
-      const descendantIds = getAllDescendantIds(topicId, allTopics);
+      // Find all descendant topic IDs using the flat data structure
+      const descendantIds = getAllDescendantIds(topicId, allTopicsData || []);
       const allTopicIdsToDelete = [topicId, ...descendantIds];
 
       console.log('Deleting topics:', allTopicIdsToDelete);
