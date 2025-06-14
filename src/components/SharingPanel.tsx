@@ -39,6 +39,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
     shareId?: string;
     email?: string;
     permission: 'viewer' | 'admin';
+    currentPermission?: 'viewer' | 'admin';
   } | null>(null);
 
   if (!isOwner) {
@@ -89,8 +90,16 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   };
 
   const handleUpdatePermission = async (shareId: string, permission: 'viewer' | 'admin') => {
+    const currentShare = ownedShares.find(share => share.id === shareId);
+    const currentPermission = currentShare?.permission_level;
+    
     // Show warning for both viewer and admin permission changes
-    setPendingAction({ type: 'update', shareId, permission });
+    setPendingAction({ 
+      type: 'update', 
+      shareId, 
+      permission, 
+      currentPermission 
+    });
     setPermissionWarningOpen(true);
   };
 
@@ -122,12 +131,16 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   const getPermissionWarningContent = () => {
     if (!pendingAction) return { title: '', description: '', buttonText: '', buttonClass: '' };
 
-    if (pendingAction.permission === 'admin') {
+    const isUpdate = pendingAction.type === 'update';
+    const isAdminPermission = pendingAction.permission === 'admin';
+    const isDowngradeFromAdmin = isUpdate && pendingAction.currentPermission === 'admin' && pendingAction.permission === 'viewer';
+
+    if (isAdminPermission) {
       return {
-        title: 'Grant Admin Access?',
+        title: isUpdate ? 'Change to Admin Access?' : 'Grant Admin Access?',
         description: (
           <>
-            You are about to grant admin access to this user. Admin users will be able to:
+            {isUpdate ? 'You are about to change this user\'s access to admin.' : 'You are about to grant admin access to this user.'} Admin users will be able to:
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>Add new topics and subtopics</li>
               <li>Edit existing topics and descriptions</li>
@@ -138,15 +151,34 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
             This gives them full control over your learning path content. Are you sure you want to proceed?
           </>
         ),
-        buttonText: 'Grant Admin Access',
+        buttonText: isUpdate ? 'Change to Admin' : 'Grant Admin Access',
         buttonClass: 'bg-orange-500 text-white hover:bg-orange-600'
+      };
+    } else if (isDowngradeFromAdmin) {
+      return {
+        title: 'Downgrade to Viewer Access?',
+        description: (
+          <>
+            You are about to downgrade this user from admin to viewer access. They will lose the ability to:
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>Add new topics and subtopics</li>
+              <li>Edit existing topics and descriptions</li>
+              <li>Delete topics and all their subtopics</li>
+              <li>Add, edit, and delete resources</li>
+              <li>Move topics within the learning path</li>
+            </ul>
+            They will only have read-only access to your learning path content. Are you sure you want to proceed?
+          </>
+        ),
+        buttonText: 'Downgrade to Viewer',
+        buttonClass: 'bg-yellow-500 text-white hover:bg-yellow-600'
       };
     } else {
       return {
-        title: 'Grant Viewer Access?',
+        title: isUpdate ? 'Confirm Viewer Access' : 'Grant Viewer Access?',
         description: (
           <>
-            You are about to grant viewer access to this user. Viewer users will be able to:
+            {isUpdate ? 'This user will have viewer access.' : 'You are about to grant viewer access to this user.'} Viewer users will be able to:
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>View all topics and subtopics in your learning path</li>
               <li>View topic descriptions and details</li>
@@ -156,7 +188,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
             They will have read-only access to your learning path content. Are you sure you want to proceed?
           </>
         ),
-        buttonText: 'Grant Viewer Access',
+        buttonText: isUpdate ? 'Confirm Viewer Access' : 'Grant Viewer Access',
         buttonClass: 'bg-blue-500 text-white hover:bg-blue-600'
       };
     }
