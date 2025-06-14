@@ -5,15 +5,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+interface NewLinkData {
+  title: string;
+  url: string;
+  description: string;
+}
+
 interface ProjectLinksSectionProps {
   topic: Topic;
   isAdminMode: boolean;
   showAddLink: boolean;
-  newLink: { title: string; url: string; description: string };
+  newLink: NewLinkData;
   onToggleAddLink: () => void;
   onAddLink: () => void;
   onRemoveLink: (linkId: string) => void;
-  onNewLinkChange: (field: keyof typeof newLink, value: string) => void;
+  onNewLinkChange: (field: keyof NewLinkData, value: string) => void;
 }
 
 export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
