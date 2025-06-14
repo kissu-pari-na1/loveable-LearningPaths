@@ -49,7 +49,7 @@ export const useIndexPageHandlers = ({
   const handleSignOut = () => {
     // Clear selected topic when signing out
     setSelectedTopicId(null);
-    navigate('/auth');
+    navigate('/');
   };
 
   const handlePathSelect = (userId: string) => {
