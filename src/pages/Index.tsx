@@ -1,51 +1,62 @@
 
-import React, { useState, useEffect } from 'react';
-import { SearchHeader } from '@/components/SearchHeader';
-import { TopicTree } from '@/components/TopicTree';
-import { TopicDetail } from '@/components/TopicDetail';
-import { AdminPanel } from '@/components/AdminPanel';
-import { AuthHeader } from '@/components/AuthHeader';
-import { DashboardSelector } from '@/components/DashboardSelector';
-import { SharingPanel } from '@/components/SharingPanel';
+import React, { useEffect } from 'react';
+import { MainContent } from '@/components/layout/MainContent';
+import { SidebarContent } from '@/components/layout/SidebarContent';
+import { AdminPanelContent } from '@/components/layout/AdminPanelContent';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { MobileHeader } from '@/components/layout/MobileHeader';
-import { WelcomeScreen } from '@/components/layout/WelcomeScreen';
 import { useSemanticSearch } from '@/hooks/useSemanticSearch';
-import { useSharedLearningPaths } from '@/hooks/useSharedLearningPaths';
 import { useMultipleLearningPaths } from '@/hooks/useMultipleLearningPaths';
-import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
-import { useNavigate } from 'react-router-dom';
+import { useIndexPageState } from '@/hooks/useIndexPageState';
+import { useIndexPageHandlers } from '@/hooks/useIndexPageHandlers';
 
 const Index = () => {
-  const { user, isAdmin, loading: authLoading } = useAuth();
-  const navigate = useNavigate();
-  const [isAdminMode, setIsAdminMode] = useState(false);
-  const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedPathUserId, setSelectedPathUserId] = useState<string>('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
-  
+  const {
+    user,
+    isAdmin,
+    authLoading,
+    isAdminMode,
+    setIsAdminMode,
+    selectedTopicId,
+    setSelectedTopicId,
+    searchQuery,
+    setSearchQuery,
+    selectedPathUserId,
+    setSelectedPathUserId,
+    isSidebarOpen,
+    setIsSidebarOpen,
+    isAdminPanelOpen,
+    setIsAdminPanelOpen,
+    availablePaths,
+    pathsLoading
+  } = useIndexPageState();
+
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const isMobileOrTablet = isMobile || isTablet;
   
-  const { availablePaths, loading: pathsLoading } = useSharedLearningPaths();
   const { topics, loading: topicsLoading, userPermission, addTopic, moveTopic, updateTopic, deleteTopic } = useMultipleLearningPaths(selectedPathUserId);
   const { searchResults, search, isSearching } = useSemanticSearch(topics);
 
-  // Set default selected path to current user
-  useEffect(() => {
-    if (user && !selectedPathUserId && availablePaths.length > 0) {
-      setSelectedPathUserId(user.id);
-    }
-  }, [user, availablePaths, selectedPathUserId]);
-
-  // Reset selected topic when dashboard selection changes
-  useEffect(() => {
-    setSelectedTopicId(null);
-  }, [selectedPathUserId]);
+  const {
+    handleSearch,
+    handleModeToggle,
+    handleSignIn,
+    handlePathSelect,
+    handleDeleteTopic
+  } = useIndexPageHandlers({
+    setSearchQuery,
+    setIsAdminMode,
+    setSelectedPathUserId,
+    setSelectedTopicId,
+    search,
+    deleteTopic,
+    selectedTopicId,
+    isAdmin,
+    userPermission,
+    isAdminMode
+  });
 
   // Only allow admin mode if user has admin permission for selected path
   useEffect(() => {
@@ -53,37 +64,7 @@ const Index = () => {
     if (!canUseAdminMode && isAdminMode) {
       setIsAdminMode(false);
     }
-  }, [isAdmin, userPermission, isAdminMode]);
-
-  const handleSearch = async (query: string) => {
-    setSearchQuery(query);
-    if (query.trim()) {
-      await search(query);
-    }
-  };
-
-  const handleModeToggle = () => {
-    const canUseAdminMode = (isAdmin && userPermission === 'owner') || userPermission === 'admin';
-    if (canUseAdminMode) {
-      setIsAdminMode(!isAdminMode);
-    }
-  };
-
-  const handleSignIn = () => {
-    navigate('/auth');
-  };
-
-  const handlePathSelect = (userId: string) => {
-    setSelectedPathUserId(userId);
-  };
-
-  const handleDeleteTopic = async (topicId: string) => {
-    // Clear selected topic if it's the one being deleted
-    if (selectedTopicId === topicId) {
-      setSelectedTopicId(null);
-    }
-    await deleteTopic(topicId);
-  };
+  }, [isAdmin, userPermission, isAdminMode, setIsAdminMode]);
 
   const displayTopics = searchQuery.trim() ? searchResults : topics;
   const canUseAdminMode = (isAdmin && userPermission === 'owner') || userPermission === 'admin';
@@ -101,134 +82,80 @@ const Index = () => {
   }
 
   const sidebarContent = (
-    <div className="flex flex-col h-full">
-      <div className="p-3 md:p-4 border-b">
-        <h2 className="text-base md:text-lg font-semibold">Learning Paths</h2>
-      </div>
-      
-      <SearchHeader 
-        isAdminMode={isAdminMode}
-        onModeToggle={handleModeToggle}
-        onSearch={handleSearch}
-        isSearching={isSearching}
-        showAdminToggle={canUseAdminMode}
-      />
-      
-      <div className="flex-1 overflow-auto p-3 md:p-4">
-        <TopicTree 
-          topics={displayTopics}
-          selectedTopicId={selectedTopicId}
-          onTopicSelect={(id) => {
-            setSelectedTopicId(id);
-            if (isMobileOrTablet) {
-              setIsSidebarOpen(false);
-            }
-          }}
-          isAdminMode={isAdminMode}
-          searchQuery={searchQuery}
-        />
-      </div>
-
-      <AuthHeader />
-    </div>
+    <SidebarContent
+      isAdminMode={isAdminMode}
+      canUseAdminMode={canUseAdminMode}
+      searchQuery={searchQuery}
+      displayTopics={displayTopics}
+      selectedTopicId={selectedTopicId}
+      isSearching={isSearching}
+      isMobileOrTablet={isMobileOrTablet}
+      onModeToggle={handleModeToggle}
+      onSearch={handleSearch}
+      onTopicSelect={setSelectedTopicId}
+      onSidebarClose={() => setIsSidebarOpen(false)}
+    />
   );
 
   const adminPanelContent = (
-    <div className="flex flex-col h-full">
-      <div className="p-3 md:p-4 border-b">
-        <h2 className="text-base md:text-lg font-semibold">Admin Panel</h2>
-      </div>
-      
-      <div className="p-3 md:p-4 flex-1 overflow-auto">
-        <AdminPanel 
-          topics={topics}
-          onAddTopic={addTopic}
-          onMoveTopic={moveTopic}
-          selectedTopicId={selectedTopicId}
-        />
-      </div>
-      
-      {isOwner && (
-        <div className="p-3 md:p-4 border-t border-border/50">
-          <SharingPanel isOwner={isOwner} />
-        </div>
-      )}
-    </div>
+    <AdminPanelContent
+      topics={topics}
+      selectedTopicId={selectedTopicId}
+      isOwner={isOwner}
+      onAddTopic={addTopic}
+      onMoveTopic={moveTopic}
+    />
   );
 
   const desktopSidebar = user && !isMobileOrTablet && (
     <div className="bg-card/95 backdrop-blur-xl border-r border-border/50 shadow-2xl flex flex-col h-full">
-      <SearchHeader 
+      <SidebarContent
         isAdminMode={isAdminMode}
+        canUseAdminMode={canUseAdminMode}
+        searchQuery={searchQuery}
+        displayTopics={displayTopics}
+        selectedTopicId={selectedTopicId}
+        isSearching={isSearching}
+        isMobileOrTablet={false}
         onModeToggle={handleModeToggle}
         onSearch={handleSearch}
-        isSearching={isSearching}
-        showAdminToggle={canUseAdminMode}
+        onTopicSelect={setSelectedTopicId}
       />
-      
-      <div className="flex-1 overflow-auto p-4">
-        <TopicTree 
-          topics={displayTopics}
-          selectedTopicId={selectedTopicId}
-          onTopicSelect={setSelectedTopicId}
-          isAdminMode={isAdminMode}
-          searchQuery={searchQuery}
-        />
-      </div>
-
-      <AuthHeader />
     </div>
   );
 
   const desktopAdminPanel = canUseAdminMode && isAdminMode && !isMobileOrTablet && (
     <div className="bg-card/95 backdrop-blur-xl border-l border-border/50 shadow-2xl flex flex-col overflow-auto h-full">
       <div className="p-4 flex-1">
-        <AdminPanel 
+        <AdminPanelContent
           topics={topics}
+          selectedTopicId={selectedTopicId}
+          isOwner={isOwner}
           onAddTopic={addTopic}
           onMoveTopic={moveTopic}
-          selectedTopicId={selectedTopicId}
         />
       </div>
-      
-      {isOwner && (
-        <div className="p-4 border-t border-border/50">
-          <SharingPanel isOwner={isOwner} />
-        </div>
-      )}
     </div>
   );
 
   const mainContent = (
-    <div className="flex flex-col h-full">
-      {user && (
-        <DashboardSelector
-          availablePaths={availablePaths}
-          selectedPathUserId={selectedPathUserId}
-          onPathSelect={handlePathSelect}
-          loading={pathsLoading}
-        />
-      )}
-      
-      {selectedTopicId ? (
-        <TopicDetail 
-          topicId={selectedTopicId}
-          topics={topics}
-          isAdminMode={isAdminMode}
-          onUpdateTopic={updateTopic}
-          onDeleteTopic={handleDeleteTopic}
-          onAddSubtopic={addTopic}
-          onTopicSelect={setSelectedTopicId}
-        />
-      ) : (
-        <WelcomeScreen
-          user={user}
-          userPermission={userPermission}
-          onSignIn={handleSignIn}
-          isMobile={isMobile}
-        />
-      )}
-    </div>
+    <MainContent
+      user={user}
+      availablePaths={availablePaths}
+      selectedPathUserId={selectedPathUserId}
+      selectedTopicId={selectedTopicId}
+      topics={topics}
+      isAdminMode={isAdminMode}
+      userPermission={userPermission}
+      pathsLoading={pathsLoading}
+      isMobile={isMobile}
+      onPathSelect={handlePathSelect}
+      onUpdateTopic={updateTopic}
+      onDeleteTopic={handleDeleteTopic}
+      onAddSubtopic={addTopic}
+      onTopicSelect={setSelectedTopicId}
+      onSignIn={handleSignIn}
+    />
   );
 
   return (
