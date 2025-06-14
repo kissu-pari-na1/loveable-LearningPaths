@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ProjectLinksSection } from '@/components/topic/ProjectLinksSection';
 import { SubtopicsSection } from '@/components/topic/SubtopicsSection';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface NewLinkData {
   title: string;
@@ -45,39 +46,19 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   const hasSubtopics = topic.childTopics.length > 0;
   const hasLinks = topic.projectLinks.length > 0 || isAdminMode;
 
-  if (!hasSubtopics && !hasLinks) {
-    return (
-      <div className="flex flex-col h-full overflow-hidden">
-        <div className="flex items-center gap-2 text-muted-foreground text-sm mb-4 flex-shrink-0">
-          <span>🔗</span>
-          <span>Resources</span>
-        </div>
-        <div className="flex-1 overflow-hidden">
-          <ScrollArea className="h-full">
-            <div className="space-y-4 p-1 pb-8">
-              <ProjectLinksSection
-                topic={topic}
-                isAdminMode={isAdminMode}
-                showAddLink={showAddLink}
-                newLink={newLink}
-                onToggleAddLink={onToggleAddLink}
-                onAddLink={onAddLink}
-                onRemoveLink={onRemoveLink}
-                onNewLinkChange={onNewLinkChange}
-              />
-            </div>
-          </ScrollArea>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full overflow-hidden">
-        <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14 flex-shrink-0">
+        <TabsList className="grid w-full grid-cols-3 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14 flex-shrink-0">
           <TabsTrigger 
-            value="links" 
+            value="topic" 
+            className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
+          >
+            <span className="hidden sm:inline text-base md:text-lg">📋</span>
+            <span className="truncate">Topic</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="resources" 
             className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
           >
             <span className="hidden sm:inline text-base md:text-lg">🔗</span>
@@ -103,7 +84,43 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="links" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
+        <TabsContent value="topic" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
+          <ScrollArea className="h-full">
+            <div className="space-y-4 p-1 pb-8">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2 text-foreground">About this topic</h3>
+                      {topic.description ? (
+                        <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                          {topic.description}
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground italic">
+                          No description available for this topic.
+                        </p>
+                      )}
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-primary">{topic.projectLinks.length}</div>
+                        <div className="text-sm text-muted-foreground">Resources</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-primary">{topic.childTopics.length}</div>
+                        <div className="text-sm text-muted-foreground">Subtopics</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </ScrollArea>
+        </TabsContent>
+        
+        <TabsContent value="resources" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
           <ScrollArea className="h-full">
             <div className="space-y-4 p-1 pb-8">
               <ProjectLinksSection

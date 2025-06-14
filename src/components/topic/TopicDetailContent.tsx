@@ -30,11 +30,11 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
     types: [] as ('Personal' | 'Project')[]
   });
   const [showAddLink, setShowAddLink] = useState(false);
-  const [activeTab, setActiveTab] = useState('links');
+  const [activeTab, setActiveTab] = useState('topic');
 
-  // Reset to links tab when topic changes
+  // Reset to topic tab when topic changes
   useEffect(() => {
-    setActiveTab('links');
+    setActiveTab('topic');
   }, [topic.id]);
 
   const handleEdit = () => {
