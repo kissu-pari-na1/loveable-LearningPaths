@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Topic } from '@/types/Topic';
 import { TopicDetailHeader } from '@/components/topic/TopicDetailHeader';
 import { ProjectLinksSection } from '@/components/topic/ProjectLinksSection';
@@ -27,6 +26,12 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   const [editForm, setEditForm] = useState({ name: '', description: '' });
   const [newLink, setNewLink] = useState({ title: '', url: '', description: '' });
   const [showAddLink, setShowAddLink] = useState(false);
+  const [activeTab, setActiveTab] = useState('links');
+
+  // Reset to links tab when topic changes
+  useEffect(() => {
+    setActiveTab('links');
+  }, [topicId]);
 
   const findTopicById = (topics: Topic[], id: string): Topic | null => {
     for (const topic of topics) {
@@ -126,7 +131,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         </div>
 
         {hasSubtopics || hasLinks ? (
-          <Tabs defaultValue="links" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12">
               <TabsTrigger 
                 value="links" 
