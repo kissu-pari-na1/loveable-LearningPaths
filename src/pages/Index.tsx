@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SearchHeader } from '@/components/SearchHeader';
 import { TopicTree } from '@/components/TopicTree';
@@ -92,12 +91,7 @@ const Index = () => {
               <SheetContent side="left" className="w-80 p-0">
                 <div className="flex flex-col h-full">
                   <div className="p-4 border-b">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-lg font-semibold">Learning Paths</h2>
-                      <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)}>
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
+                    <h2 className="text-lg font-semibold">Learning Paths</h2>
                   </div>
                   
                   <SearchHeader 
@@ -138,12 +132,7 @@ const Index = () => {
                 <SheetContent side="right" className="w-80 p-0">
                   <div className="flex flex-col h-full">
                     <div className="p-4 border-b">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-lg font-semibold">Admin Panel</h2>
-                        <Button variant="ghost" size="icon" onClick={() => setIsAdminPanelOpen(false)}>
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
+                      <h2 className="text-lg font-semibold">Admin Panel</h2>
                     </div>
                     
                     <div className="p-4 flex-1 overflow-auto">
