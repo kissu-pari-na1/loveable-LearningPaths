@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic, SearchResult } from '@/types/Topic';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +20,41 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
   searchQuery
 }) => {
   const [expandedTopics, setExpandedTopics] = React.useState<Set<string>>(new Set());
+
+  // Function to find the path to a topic (returns array of parent topic IDs)
+  const findPathToTopic = (topics: Topic[], targetId: string, currentPath: string[] = []): string[] | null => {
+    for (const topic of topics) {
+      const newPath = [...currentPath, topic.id];
+      
+      if (topic.id === targetId) {
+        return newPath;
+      }
+      
+      if (topic.childTopics.length > 0) {
+        const result = findPathToTopic(topic.childTopics, targetId, newPath);
+        if (result) {
+          return result;
+        }
+      }
+    }
+    return null;
+  };
+
+  // Auto-expand parents when a topic is selected
+  React.useEffect(() => {
+    if (selectedTopicId && !searchQuery.trim()) {
+      const path = findPathToTopic(topics as Topic[], selectedTopicId);
+      if (path) {
+        // Expand all parent topics (excluding the selected topic itself)
+        const parentsToExpand = path.slice(0, -1);
+        setExpandedTopics(prev => {
+          const newExpanded = new Set(prev);
+          parentsToExpand.forEach(parentId => newExpanded.add(parentId));
+          return newExpanded;
+        });
+      }
+    }
+  }, [selectedTopicId, topics, searchQuery]);
 
   const toggleExpanded = (topicId: string) => {
     const newExpanded = new Set(expandedTopics);
