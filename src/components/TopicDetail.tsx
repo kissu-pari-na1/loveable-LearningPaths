@@ -9,6 +9,7 @@ interface TopicDetailProps {
   isAdminMode: boolean;
   onUpdateTopic: (topicId: string, updates: Partial<Topic>) => void;
   onDeleteTopic: (topicId: string) => void;
+  onAddSubtopic?: (newSubtopic: Omit<Topic, 'id'>, parentId: string) => void;
   onTopicSelect?: (topicId: string) => void;
 }
 
@@ -18,6 +19,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   isAdminMode,
   onUpdateTopic,
   onDeleteTopic,
+  onAddSubtopic,
   onTopicSelect
 }) => {
   const findTopicById = (topics: Topic[], id: string): Topic | null => {
@@ -49,6 +51,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         isAdminMode={isAdminMode}
         onUpdateTopic={onUpdateTopic}
         onDeleteTopic={onDeleteTopic}
+        onAddSubtopic={onAddSubtopic}
         onTopicSelect={onTopicSelect}
       />
     </div>

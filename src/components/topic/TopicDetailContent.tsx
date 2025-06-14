@@ -9,6 +9,7 @@ interface TopicDetailContentProps {
   isAdminMode: boolean;
   onUpdateTopic: (topicId: string, updates: Partial<Topic>) => void;
   onDeleteTopic: (topicId: string) => void;
+  onAddSubtopic?: (newSubtopic: Omit<Topic, 'id'>, parentId: string) => void;
   onTopicSelect?: (topicId: string) => void;
 }
 
@@ -17,6 +18,7 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
   isAdminMode,
   onUpdateTopic,
   onDeleteTopic,
+  onAddSubtopic,
   onTopicSelect
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -113,6 +115,7 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
         onRemoveLink={handleRemoveLink}
         onNewLinkChange={handleNewLinkChange}
         onSubtopicClick={handleSubtopicClick}
+        onAddSubtopic={onAddSubtopic}
       />
     </div>
   );

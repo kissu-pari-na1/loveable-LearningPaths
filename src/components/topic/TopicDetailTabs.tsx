@@ -23,6 +23,7 @@ interface TopicDetailTabsProps {
   onRemoveLink: (linkId: string) => void;
   onNewLinkChange: (field: keyof NewLinkData, value: string) => void;
   onSubtopicClick: (subtopicId: string) => void;
+  onAddSubtopic?: (newSubtopic: Omit<Topic, 'id'>, parentId: string) => void;
 }
 
 export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
@@ -36,7 +37,8 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   onAddLink,
   onRemoveLink,
   onNewLinkChange,
-  onSubtopicClick
+  onSubtopicClick,
+  onAddSubtopic
 }) => {
   const hasSubtopics = topic.childTopics.length > 0;
   const hasLinks = topic.projectLinks.length > 0 || isAdminMode;
@@ -79,7 +81,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
         </TabsTrigger>
         <TabsTrigger 
           value="subtopics" 
-          disabled={!hasSubtopics}
+          disabled={!hasSubtopics && !isAdminMode}
           className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="hidden sm:inline">📂</span>
@@ -105,14 +107,14 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
         />
       </TabsContent>
       
-      {hasSubtopics && (
-        <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-          <SubtopicsSection
-            topic={topic}
-            onSubtopicClick={onSubtopicClick}
-          />
-        </TabsContent>
-      )}
+      <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
+        <SubtopicsSection
+          topic={topic}
+          isAdminMode={isAdminMode}
+          onSubtopicClick={onSubtopicClick}
+          onAddSubtopic={onAddSubtopic}
+        />
+      </TabsContent>
     </Tabs>
   );
 };

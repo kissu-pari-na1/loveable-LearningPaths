@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SearchHeader } from '@/components/SearchHeader';
 import { TopicTree } from '@/components/TopicTree';
@@ -204,6 +203,7 @@ const Index = () => {
           isAdminMode={isAdminMode}
           onUpdateTopic={updateTopic}
           onDeleteTopic={deleteTopic}
+          onAddSubtopic={addTopic}
           onTopicSelect={setSelectedTopicId}
         />
       ) : (
