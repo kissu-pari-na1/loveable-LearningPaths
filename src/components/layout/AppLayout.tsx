@@ -2,7 +2,7 @@
 import React from 'react';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { useAuth } from '@/contexts/AuthContext';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -19,8 +19,10 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
 }) => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
-  if (isMobile) {
+  // Use mobile-like behavior for both mobile and tablet
+  if (isMobile || isTablet) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-800">
         <div className="flex flex-col h-screen">
@@ -41,7 +43,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
                   defaultSize={showAdminPanel ? 25 : 30} 
                   minSize={15} 
                   maxSize={showAdminPanel ? 35 : 50}
-                  className="md:min-w-[280px] lg:min-w-[320px]"
+                  className="min-w-[280px] lg:min-w-[320px]"
                 >
                   {sidebar}
                 </ResizablePanel>
@@ -52,7 +54,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
             <ResizablePanel 
               defaultSize={showAdminPanel ? 50 : 70}
               minSize={30}
-              className="md:min-w-[400px] lg:min-w-[500px]"
+              className="min-w-[400px] lg:min-w-[500px]"
             >
               {children}
             </ResizablePanel>
@@ -64,7 +66,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
                   defaultSize={25} 
                   minSize={15} 
                   maxSize={40}
-                  className="md:min-w-[280px] lg:min-w-[320px]"
+                  className="min-w-[280px] lg:min-w-[320px]"
                 >
                   {adminPanel}
                 </ResizablePanel>

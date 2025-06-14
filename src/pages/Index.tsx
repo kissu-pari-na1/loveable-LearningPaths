@@ -14,7 +14,7 @@ import { useSemanticSearch } from '@/hooks/useSemanticSearch';
 import { useSharedLearningPaths } from '@/hooks/useSharedLearningPaths';
 import { useMultipleLearningPaths } from '@/hooks/useMultipleLearningPaths';
 import { useAuth } from '@/contexts/AuthContext';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
@@ -28,6 +28,9 @@ const Index = () => {
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+  const isMobileOrTablet = isMobile || isTablet;
+  
   const { availablePaths, loading: pathsLoading } = useSharedLearningPaths();
   const { topics, loading: topicsLoading, userPermission, addTopic, moveTopic, updateTopic, deleteTopic } = useMultipleLearningPaths(selectedPathUserId);
   const { searchResults, search, isSearching } = useSemanticSearch(topics);
@@ -99,8 +102,8 @@ const Index = () => {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">Learning Paths</h2>
+      <div className="p-3 md:p-4 border-b">
+        <h2 className="text-base md:text-lg font-semibold">Learning Paths</h2>
       </div>
       
       <SearchHeader 
@@ -111,13 +114,15 @@ const Index = () => {
         showAdminToggle={canUseAdminMode}
       />
       
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto p-3 md:p-4">
         <TopicTree 
           topics={displayTopics}
           selectedTopicId={selectedTopicId}
           onTopicSelect={(id) => {
             setSelectedTopicId(id);
-            setIsSidebarOpen(false);
+            if (isMobileOrTablet) {
+              setIsSidebarOpen(false);
+            }
           }}
           isAdminMode={isAdminMode}
           searchQuery={searchQuery}
@@ -130,11 +135,11 @@ const Index = () => {
 
   const adminPanelContent = (
     <div className="flex flex-col h-full">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">Admin Panel</h2>
+      <div className="p-3 md:p-4 border-b">
+        <h2 className="text-base md:text-lg font-semibold">Admin Panel</h2>
       </div>
       
-      <div className="p-4 flex-1 overflow-auto">
+      <div className="p-3 md:p-4 flex-1 overflow-auto">
         <AdminPanel 
           topics={topics}
           onAddTopic={addTopic}
@@ -144,14 +149,14 @@ const Index = () => {
       </div>
       
       {isOwner && (
-        <div className="p-4 border-t border-border/50">
+        <div className="p-3 md:p-4 border-t border-border/50">
           <SharingPanel isOwner={isOwner} />
         </div>
       )}
     </div>
   );
 
-  const desktopSidebar = user && (
+  const desktopSidebar = user && !isMobileOrTablet && (
     <div className="bg-card/95 backdrop-blur-xl border-r border-border/50 shadow-2xl flex flex-col h-full">
       <SearchHeader 
         isAdminMode={isAdminMode}
@@ -175,7 +180,7 @@ const Index = () => {
     </div>
   );
 
-  const desktopAdminPanel = canUseAdminMode && isAdminMode && (
+  const desktopAdminPanel = canUseAdminMode && isAdminMode && !isMobileOrTablet && (
     <div className="bg-card/95 backdrop-blur-xl border-l border-border/50 shadow-2xl flex flex-col overflow-auto h-full">
       <div className="p-4 flex-1">
         <AdminPanel 
@@ -232,7 +237,7 @@ const Index = () => {
       adminPanel={desktopAdminPanel}
       showAdminPanel={canUseAdminMode && isAdminMode}
     >
-      {isMobile ? (
+      {isMobileOrTablet ? (
         <>
           {user && (
             <MobileHeader
