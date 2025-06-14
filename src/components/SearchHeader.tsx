@@ -61,6 +61,11 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
 
   return (
     <div className="p-4 border-b border-border space-y-4">
+      {/* Header with title */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold">Learning Paths</h2>
+      </div>
+
       {/* Search Input */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
