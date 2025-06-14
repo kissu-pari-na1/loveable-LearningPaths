@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Topic, SearchResult } from '@/types/Topic';
 import { Badge } from '@/components/ui/badge';
@@ -8,16 +9,14 @@ interface TopicTreeProps {
   topics: Topic[] | SearchResult[];
   selectedTopicId: string | null;
   onTopicSelect: (id: string) => void;
-  isAdminMode: boolean;
-  searchQuery: string;
+  isLoading?: boolean;
 }
 
 export const TopicTree: React.FC<TopicTreeProps> = ({
   topics,
   selectedTopicId,
   onTopicSelect,
-  isAdminMode,
-  searchQuery
+  isLoading = false
 }) => {
   const [expandedTopics, setExpandedTopics] = React.useState<Set<string>>(new Set());
 
@@ -42,7 +41,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
 
   // Auto-expand parents when a topic is selected
   React.useEffect(() => {
-    if (selectedTopicId && !searchQuery.trim()) {
+    if (selectedTopicId) {
       const path = findPathToTopic(topics as Topic[], selectedTopicId);
       if (path) {
         // Expand all parent topics (excluding the selected topic itself)
@@ -54,7 +53,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
         });
       }
     }
-  }, [selectedTopicId, topics, searchQuery]);
+  }, [selectedTopicId, topics]);
 
   const toggleExpanded = (topicId: string) => {
     const newExpanded = new Set(expandedTopics);
@@ -72,7 +71,6 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
 
   const renderTopic = (topic: Topic | SearchResult, level: number = 0, isLast: boolean = false, parentLines: boolean[] = []) => {
     const isSelected = topic.id === selectedTopicId;
-    const isSearch = searchQuery.trim() !== '';
     const hasChildren = topic.childTopics.length > 0;
     const isExpanded = expandedTopics.has(topic.id);
     
@@ -123,7 +121,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 {/* Expand/Collapse button for topics with children */}
-                {hasChildren && !isSearch && (
+                {hasChildren && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -230,7 +228,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
         </div>
         
         {/* Render children */}
-        {!isSearch && hasChildren && isExpanded && (
+        {hasChildren && isExpanded && (
           <div className="ml-3">
             {topic.childTopics.map((child, index) => {
               const isLastChild = index === topic.childTopics.length - 1;
@@ -243,18 +241,23 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
     );
   };
 
+  if (isLoading) {
+    return (
+      <div className="text-center text-muted-foreground py-12">
+        <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+        <p className="text-lg font-medium">Searching...</p>
+      </div>
+    );
+  }
+
   if (topics.length === 0) {
     return (
       <div className="text-center text-muted-foreground py-12">
         <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-violet-100 to-blue-100 flex items-center justify-center">
           <FileText className="w-12 h-12 text-violet-400" />
         </div>
-        <p className="text-lg font-medium mb-2">
-          {searchQuery ? 'No topics found' : 'No topics available'}
-        </p>
-        <p className="text-sm">
-          {searchQuery ? 'Try adjusting your search terms.' : 'Start by creating your first topic.'}
-        </p>
+        <p className="text-lg font-medium mb-2">No topics found</p>
+        <p className="text-sm">Try adjusting your search terms or create your first topic.</p>
       </div>
     );
   }
