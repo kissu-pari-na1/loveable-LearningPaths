@@ -75,21 +75,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           value={localSearchQuery}
           onChange={(e) => handleInputChange(e.target.value)}
           className={`pl-10 ${localSearchQuery ? 'pr-10' : 'pr-3'}`}
-          autoFocus={!isMobileOrTablet}
-          inputMode={isMobileOrTablet ? "none" : "text"}
-          readOnly={isMobileOrTablet ? true : false}
-          onFocus={(e) => {
-            if (isMobileOrTablet) {
-              e.target.blur();
-            }
-          }}
-          onClick={(e) => {
-            if (isMobileOrTablet) {
-              const target = e.target as HTMLInputElement;
-              target.readOnly = false;
-              target.focus();
-            }
-          }}
         />
         
         {/* Clear button - only show when there's text to clear */}
