@@ -75,13 +75,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
     setLocalSearchQuery('');
   };
 
-  // Prevent focus on mobile/tablet when input is clicked
-  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (isMobileOrTablet) {
-      e.target.blur();
-    }
-  };
-
   return (
     <div className="p-4 border-b border-border space-y-4">
       {/* Header with title */}
@@ -98,7 +91,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           placeholder="Search topics..."
           value={localSearchQuery}
           onChange={(e) => handleInputChange(e.target.value)}
-          onFocus={handleInputFocus}
           className={`pl-10 ${localSearchQuery ? 'pr-10' : 'pr-3'}`}
         />
         
