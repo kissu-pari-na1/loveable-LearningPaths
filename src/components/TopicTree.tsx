@@ -10,16 +10,18 @@ interface TopicTreeProps {
   selectedTopicId: string | null;
   onTopicSelect: (id: string) => void;
   isLoading?: boolean;
+  expandedTopics: Set<string>;
+  onToggleExpanded: (topicId: string) => void;
 }
 
 export const TopicTree: React.FC<TopicTreeProps> = ({
   topics,
   selectedTopicId,
   onTopicSelect,
-  isLoading = false
+  isLoading = false,
+  expandedTopics,
+  onToggleExpanded
 }) => {
-  const [expandedTopics, setExpandedTopics] = React.useState<Set<string>>(new Set());
-
   // Function to find the path to a topic (returns array of parent topic IDs)
   const findPathToTopic = (topics: Topic[], targetId: string, currentPath: string[] = []): string[] | null => {
     for (const topic of topics) {
@@ -46,24 +48,14 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
       if (path) {
         // Expand all parent topics (excluding the selected topic itself)
         const parentsToExpand = path.slice(0, -1);
-        setExpandedTopics(prev => {
-          const newExpanded = new Set(prev); // Preserve existing expanded states
-          parentsToExpand.forEach(parentId => newExpanded.add(parentId));
-          return newExpanded;
+        parentsToExpand.forEach(parentId => {
+          if (!expandedTopics.has(parentId)) {
+            onToggleExpanded(parentId);
+          }
         });
       }
     }
-  }, [selectedTopicId, topics]);
-
-  const toggleExpanded = (topicId: string) => {
-    const newExpanded = new Set(expandedTopics);
-    if (newExpanded.has(topicId)) {
-      newExpanded.delete(topicId);
-    } else {
-      newExpanded.add(topicId);
-    }
-    setExpandedTopics(newExpanded);
-  };
+  }, [selectedTopicId, topics, expandedTopics, onToggleExpanded]);
 
   const isSearchResult = (topic: Topic): topic is SearchResult => {
     return 'similarity' in topic;
@@ -125,7 +117,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleExpanded(topic.id);
+                      onToggleExpanded(topic.id);
                     }}
                     className={`flex-shrink-0 p-1 rounded-md transition-all duration-200 ${
                       isSelected ? 'hover:bg-violet-200/50' : 'hover:bg-violet-100/50'
