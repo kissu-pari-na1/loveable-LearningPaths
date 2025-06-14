@@ -9,6 +9,7 @@ interface NewLinkData {
   title: string;
   url: string;
   description: string;
+  types: ('Personal' | 'Project')[];
 }
 
 interface TopicDetailTabsProps {
@@ -21,7 +22,7 @@ interface TopicDetailTabsProps {
   onToggleAddLink: () => void;
   onAddLink: () => void;
   onRemoveLink: (linkId: string) => void;
-  onNewLinkChange: (field: keyof NewLinkData, value: string) => void;
+  onNewLinkChange: (field: keyof NewLinkData, value: string | ('Personal' | 'Project')[]) => void;
   onSubtopicClick: (subtopicId: string) => void;
   onAddSubtopic?: (newSubtopic: Omit<Topic, 'id'>, parentId: string) => void;
 }

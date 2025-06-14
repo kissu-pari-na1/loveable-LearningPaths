@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Topic } from '@/types/Topic';
 import { TopicDetailHeader } from '@/components/topic/TopicDetailHeader';
@@ -23,7 +22,12 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({ name: '', description: '' });
-  const [newLink, setNewLink] = useState({ title: '', url: '', description: '', type: undefined as 'Personal' | 'Project' | undefined });
+  const [newLink, setNewLink] = useState({ 
+    title: '', 
+    url: '', 
+    description: '', 
+    types: [] as ('Personal' | 'Project')[]
+  });
   const [showAddLink, setShowAddLink] = useState(false);
   const [activeTab, setActiveTab] = useState('links');
 
@@ -59,12 +63,12 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
           title: newLink.title,
           url: newLink.url,
           description: newLink.description,
-          type: newLink.type
+          types: newLink.types.length > 0 ? newLink.types : undefined
         }
       ];
       
       onUpdateTopic(topic.id, { projectLinks: updatedLinks });
-      setNewLink({ title: '', url: '', description: '', type: undefined });
+      setNewLink({ title: '', url: '', description: '', types: [] });
       setShowAddLink(false);
     }
   };
@@ -84,7 +88,7 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
     setEditForm(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleNewLinkChange = (field: 'title' | 'url' | 'description', value: string) => {
+  const handleNewLinkChange = (field: string, value: string | ('Personal' | 'Project')[]) => {
     setNewLink(prev => ({ ...prev, [field]: value }));
   };
 

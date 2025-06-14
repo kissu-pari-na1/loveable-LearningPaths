@@ -14,7 +14,7 @@ export interface ProjectLink {
   title: string;
   url: string;
   description?: string;
-  type?: 'Personal' | 'Project';
+  types?: ('Personal' | 'Project')[];
 }
 
 export interface SearchResult extends Topic {

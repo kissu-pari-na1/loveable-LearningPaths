@@ -4,14 +4,14 @@ import { Topic, ProjectLink } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 
 interface NewLinkData {
   title: string;
   url: string;
   description: string;
-  type?: 'Personal' | 'Project';
+  types: ('Personal' | 'Project')[];
 }
 
 interface ProjectLinksSectionProps {
@@ -22,7 +22,7 @@ interface ProjectLinksSectionProps {
   onToggleAddLink: () => void;
   onAddLink: () => void;
   onRemoveLink: (linkId: string) => void;
-  onNewLinkChange: (field: keyof NewLinkData, value: string) => void;
+  onNewLinkChange: (field: keyof NewLinkData, value: string | ('Personal' | 'Project')[]) => void;
 }
 
 export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
@@ -35,6 +35,19 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
   onRemoveLink,
   onNewLinkChange
 }) => {
+  const handleTypeToggle = (type: 'Personal' | 'Project', checked: boolean) => {
+    const currentTypes = newLink.types || [];
+    let newTypes: ('Personal' | 'Project')[];
+    
+    if (checked) {
+      newTypes = [...currentTypes, type];
+    } else {
+      newTypes = currentTypes.filter(t => t !== type);
+    }
+    
+    onNewLinkChange('types', newTypes);
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader>
@@ -71,15 +84,27 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                 value={newLink.description}
                 onChange={(e) => onNewLinkChange('description', e.target.value)}
               />
-              <Select value={newLink.type || ''} onValueChange={(value) => onNewLinkChange('type', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Resource type (optional)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Personal">Personal</SelectItem>
-                  <SelectItem value="Project">Project</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Resource types (optional):</label>
+                <div className="flex gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="personal"
+                      checked={newLink.types?.includes('Personal') || false}
+                      onCheckedChange={(checked) => handleTypeToggle('Personal', checked as boolean)}
+                    />
+                    <label htmlFor="personal" className="text-sm">Personal</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="project"
+                      checked={newLink.types?.includes('Project') || false}
+                      onCheckedChange={(checked) => handleTypeToggle('Project', checked as boolean)}
+                    />
+                    <label htmlFor="project" className="text-sm">Project</label>
+                  </div>
+                </div>
+              </div>
               <div className="flex flex-col sm:flex-row gap-2">
                 <Button onClick={onAddLink} className="w-full sm:w-auto">Add</Button>
                 <Button variant="outline" onClick={onToggleAddLink} className="w-full sm:w-auto">Cancel</Button>
@@ -105,10 +130,14 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                       >
                         {link.title}
                       </a>
-                      {link.type && (
-                        <Badge variant="secondary" className="text-xs">
-                          {link.type}
-                        </Badge>
+                      {link.types && link.types.length > 0 && (
+                        <div className="flex gap-1">
+                          {link.types.map((type) => (
+                            <Badge key={type} variant="secondary" className="text-xs">
+                              {type}
+                            </Badge>
+                          ))}
+                        </div>
                       )}
                     </div>
                     {link.description && (
