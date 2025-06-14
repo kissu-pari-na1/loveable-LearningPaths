@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Topic } from '@/types/Topic';
 import { TopicDetailHeader } from '@/components/topic/TopicDetailHeader';
@@ -56,16 +57,20 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
 
   const handleAddLink = () => {
     if (newLink.title && newLink.url) {
+      console.log('Adding link with types:', newLink.types); // Debug log
+      
       const updatedLinks = [
         ...topic.projectLinks,
         {
           id: Date.now().toString(),
           title: newLink.title,
           url: newLink.url,
-          description: newLink.description,
-          types: newLink.types.length > 0 ? newLink.types : undefined
+          description: newLink.description || undefined,
+          types: newLink.types && newLink.types.length > 0 ? newLink.types : undefined
         }
       ];
+      
+      console.log('Updated links:', updatedLinks); // Debug log
       
       onUpdateTopic(topic.id, { projectLinks: updatedLinks });
       setNewLink({ title: '', url: '', description: '', types: [] });
@@ -89,6 +94,7 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
   };
 
   const handleNewLinkChange = (field: string, value: string | ('Personal' | 'Project')[]) => {
+    console.log('Changing field:', field, 'to value:', value); // Debug log
     setNewLink(prev => ({ ...prev, [field]: value }));
   };
 
