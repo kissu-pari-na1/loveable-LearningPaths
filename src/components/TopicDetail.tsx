@@ -127,14 +127,35 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
 
         {hasSubtopics || hasLinks ? (
           <Tabs defaultValue="links" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="links">Project Links</TabsTrigger>
-              <TabsTrigger value="subtopics" disabled={!hasSubtopics}>
-                Subtopics {hasSubtopics && `(${topic.childTopics.length})`}
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12">
+              <TabsTrigger 
+                value="links" 
+                className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm font-medium flex items-center justify-center gap-2"
+              >
+                <span className="hidden sm:inline">🔗</span>
+                Project Links
+                {topic.projectLinks.length > 0 && (
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
+                    {topic.projectLinks.length}
+                  </span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger 
+                value="subtopics" 
+                disabled={!hasSubtopics}
+                className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="hidden sm:inline">📂</span>
+                Subtopics
+                {hasSubtopics && (
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary/10 text-primary rounded-full">
+                    {topic.childTopics.length}
+                  </span>
+                )}
               </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="links" className="mt-0">
+            <TabsContent value="links" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
               <ProjectLinksSection
                 topic={topic}
                 isAdminMode={isAdminMode}
@@ -148,7 +169,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
             </TabsContent>
             
             {hasSubtopics && (
-              <TabsContent value="subtopics" className="mt-0">
+              <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
                 <SubtopicsSection
                   topic={topic}
                   onSubtopicClick={handleSubtopicClick}
@@ -157,16 +178,22 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
             )}
           </Tabs>
         ) : (
-          <ProjectLinksSection
-            topic={topic}
-            isAdminMode={isAdminMode}
-            showAddLink={showAddLink}
-            newLink={newLink}
-            onToggleAddLink={() => setShowAddLink(!showAddLink)}
-            onAddLink={handleAddLink}
-            onRemoveLink={handleRemoveLink}
-            onNewLinkChange={handleNewLinkChange}
-          />
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm">
+              <span>🔗</span>
+              <span>Project Links</span>
+            </div>
+            <ProjectLinksSection
+              topic={topic}
+              isAdminMode={isAdminMode}
+              showAddLink={showAddLink}
+              newLink={newLink}
+              onToggleAddLink={() => setShowAddLink(!showAddLink)}
+              onAddLink={handleAddLink}
+              onRemoveLink={handleRemoveLink}
+              onNewLinkChange={handleNewLinkChange}
+            />
+          </div>
         )}
       </div>
     </div>
