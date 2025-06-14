@@ -219,17 +219,18 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                 <div className="flex items-start justify-between gap-6">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-4 mb-3">
-                      <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                        <ExternalLink className="w-5 h-5 text-primary" />
-                      </div>
                       <a 
                         href={link.url} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-xl font-bold text-primary hover:text-primary/80 transition-colors break-words group-hover:underline flex-1 cursor-pointer"
-                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-4 hover:opacity-80 transition-opacity cursor-pointer"
                       >
-                        {link.title}
+                        <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                          <ExternalLink className="w-5 h-5 text-primary" />
+                        </div>
+                        <span className="text-xl font-bold text-primary hover:text-primary/80 transition-colors break-words group-hover:underline">
+                          {link.title}
+                        </span>
                       </a>
                     </div>
                     
