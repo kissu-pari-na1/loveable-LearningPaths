@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -76,24 +77,24 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
 
   return (
     <Card className="border border-emerald-200/50 bg-gradient-to-br from-emerald-50/50 to-green-50/50 dark:from-emerald-900/20 dark:to-green-900/20 shadow-lg backdrop-blur-sm">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-          <Share2 className="w-4 h-4" />
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+          <Share2 className="w-3 h-3" />
           Share Learning Path
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {/* Add new share */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Input
             placeholder="Email address"
             value={newUserEmail}
             onChange={(e) => setNewUserEmail(e.target.value)}
             type="email"
-            className="border-emerald-200/50 focus:border-emerald-400 text-sm"
+            className="border-emerald-200/50 focus:border-emerald-400 text-xs h-8"
           />
           <Select value={newUserPermission} onValueChange={(value: 'viewer' | 'admin') => setNewUserPermission(value)}>
-            <SelectTrigger className="border-emerald-200/50 focus:border-emerald-400">
+            <SelectTrigger className="border-emerald-200/50 focus:border-emerald-400 h-8 text-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -103,28 +104,28 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
           </Select>
           <Button 
             onClick={handleShare} 
-            className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white shadow-md"
+            className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white shadow-md h-8 text-xs"
             disabled={isSharing}
           >
-            <Mail className="w-4 h-4 mr-2" />
+            <Mail className="w-3 h-3 mr-1" />
             {isSharing ? 'Sharing...' : 'Share'}
           </Button>
         </div>
 
         {/* Existing shares */}
         {ownedShares.length > 0 && (
-          <div className="space-y-3 pt-2">
-            <h4 className="text-sm font-medium text-emerald-700 dark:text-emerald-300 border-t border-emerald-200/30 pt-3">
+          <div className="space-y-2 pt-1">
+            <h4 className="text-xs font-medium text-emerald-700 dark:text-emerald-300 border-t border-emerald-200/30 pt-2">
               Shared with:
             </h4>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
+            <div className="space-y-1 max-h-24 overflow-y-auto">
               {ownedShares.map((share) => (
-                <div key={share.id} className="flex items-center justify-between p-3 border border-emerald-200/50 rounded-lg bg-white/50 dark:bg-black/20 backdrop-blur-sm">
-                  <div className="flex flex-col gap-1 min-w-0 flex-1 mr-2">
-                    <span className="text-sm font-medium truncate">
+                <div key={share.id} className="flex items-center justify-between p-2 border border-emerald-200/50 rounded-md bg-white/50 dark:bg-black/20 backdrop-blur-sm">
+                  <div className="flex flex-col gap-0.5 min-w-0 flex-1 mr-2">
+                    <span className="text-xs font-medium truncate">
                       {share.shared_with_email || 'Unknown User'}
                     </span>
-                    <Badge variant="outline" className="text-xs w-fit border-emerald-300/50 bg-emerald-50/50 text-emerald-600">
+                    <Badge variant="outline" className="text-xs w-fit border-emerald-300/50 bg-emerald-50/50 text-emerald-600 px-1 py-0">
                       {share.permission_level}
                     </Badge>
                   </div>
@@ -133,7 +134,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
                       value={share.permission_level}
                       onValueChange={(value: 'viewer' | 'admin') => handleUpdatePermission(share.id, value)}
                     >
-                      <SelectTrigger className="w-20 h-8 text-xs">
+                      <SelectTrigger className="w-16 h-6 text-xs">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -145,9 +146,9 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRemoveShare(share.id)}
-                      className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                      className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
                     >
-                      <Trash2 className="w-3 h-3" />
+                      <Trash2 className="w-2.5 h-2.5" />
                     </Button>
                   </div>
                 </div>

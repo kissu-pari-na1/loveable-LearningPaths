@@ -55,7 +55,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
         </SheetTrigger>
         <SheetContent 
           side="left" 
-          className={`p-0 ${isTablet ? 'w-96 max-w-[50vw]' : 'w-80'}`}
+          className={`p-0 ${isTablet ? 'w-[80vw] max-w-[80vw]' : 'w-80'}`}
         >
           {sidebarContent}
         </SheetContent>
@@ -72,7 +72,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
           </SheetTrigger>
           <SheetContent 
             side="right" 
-            className={`p-0 ${isTablet ? 'w-96 max-w-[50vw]' : 'w-80'}`}
+            className={`p-0 ${isTablet ? 'w-[80vw] max-w-[80vw]' : 'w-80'}`}
           >
             {adminPanelContent}
           </SheetContent>
