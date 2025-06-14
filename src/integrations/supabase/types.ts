@@ -40,6 +40,7 @@ export type Database = {
           id: string
           title: string
           topic_id: string
+          types: string[] | null
           url: string
         }
         Insert: {
@@ -48,6 +49,7 @@ export type Database = {
           id?: string
           title: string
           topic_id: string
+          types?: string[] | null
           url: string
         }
         Update: {
@@ -56,6 +58,7 @@ export type Database = {
           id?: string
           title?: string
           topic_id?: string
+          types?: string[] | null
           url?: string
         }
         Relationships: [

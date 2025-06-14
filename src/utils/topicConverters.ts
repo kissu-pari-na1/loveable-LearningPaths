@@ -15,7 +15,8 @@ export const convertSupabaseToTopic = (supabaseTopics: any[], projectLinks: any[
         id: link.id,
         title: link.title,
         url: link.url,
-        description: link.description
+        description: link.description,
+        types: link.types // Now properly mapping the types from database
       })),
       childTopics: [],
       parentId: topic.parent_id

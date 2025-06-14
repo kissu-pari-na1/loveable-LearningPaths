@@ -71,7 +71,8 @@ export const useTopicOperations = (selectedPathUserId: string, userPermission: '
               topic_id: topicId,
               title: link.title,
               url: link.url,
-              description: link.description
+              description: link.description,
+              types: link.types // Now properly saving types to database
             })));
         }
       }
