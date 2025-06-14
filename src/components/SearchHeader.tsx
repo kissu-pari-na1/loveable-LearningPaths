@@ -33,12 +33,20 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
     }
   }, [searchQuery]);
 
-  // Handle auto-focus only on desktop
+  // Handle auto-focus only on desktop - run only once after component mounts
   useEffect(() => {
-    if (!isMobileOrTablet && inputRef.current) {
-      inputRef.current.focus();
+    // Only focus on desktop and only if the input is not already focused
+    if (!isMobileOrTablet && inputRef.current && document.activeElement !== inputRef.current) {
+      // Add a small delay to ensure the component is fully rendered
+      const timeoutId = setTimeout(() => {
+        if (inputRef.current && !isMobileOrTablet) {
+          inputRef.current.focus();
+        }
+      }, 100);
+      
+      return () => clearTimeout(timeoutId);
     }
-  }, [isMobileOrTablet]);
+  }, []); // Empty dependency array - run only once
 
   // Debounce the search with useCallback to prevent recreating the function
   const debouncedSearch = useCallback(
@@ -67,6 +75,13 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
     setLocalSearchQuery('');
   };
 
+  // Prevent focus on mobile/tablet when input is clicked
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (isMobileOrTablet) {
+      e.target.blur();
+    }
+  };
+
   return (
     <div className="p-4 border-b border-border space-y-4">
       {/* Header with title */}
@@ -83,6 +98,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           placeholder="Search topics..."
           value={localSearchQuery}
           onChange={(e) => handleInputChange(e.target.value)}
+          onFocus={handleInputFocus}
           className={`pl-10 ${localSearchQuery ? 'pr-10' : 'pr-3'}`}
         />
         
