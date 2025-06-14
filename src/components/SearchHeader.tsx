@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Search, Settings, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +24,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   isMobileOrTablet
 }) => {
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Update local state when external searchQuery changes (but avoid infinite loops)
   useEffect(() => {
@@ -31,6 +32,13 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
       setLocalSearchQuery(searchQuery);
     }
   }, [searchQuery]);
+
+  // Handle auto-focus only on desktop
+  useEffect(() => {
+    if (!isMobileOrTablet && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isMobileOrTablet]);
 
   // Debounce the search with useCallback to prevent recreating the function
   const debouncedSearch = useCallback(
@@ -70,12 +78,12 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input
+          ref={inputRef}
           type="text"
           placeholder="Search topics..."
           value={localSearchQuery}
           onChange={(e) => handleInputChange(e.target.value)}
           className={`pl-10 ${localSearchQuery ? 'pr-10' : 'pr-3'}`}
-          autoFocus={!isMobileOrTablet}
         />
         
         {/* Clear button - only show when there's text to clear */}
