@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -32,11 +33,12 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   const [newUserPermission, setNewUserPermission] = useState<'viewer' | 'admin'>('viewer');
   const [isSharing, setIsSharing] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null);
-  const [adminWarningOpen, setAdminWarningOpen] = useState(false);
-  const [pendingAdminAction, setPendingAdminAction] = useState<{
+  const [permissionWarningOpen, setPermissionWarningOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<{
     type: 'share' | 'update';
     shareId?: string;
     email?: string;
+    permission: 'viewer' | 'admin';
   } | null>(null);
 
   if (!isOwner) {
@@ -56,13 +58,13 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
       return;
     }
 
-    if (newUserPermission === 'admin') {
-      setPendingAdminAction({ type: 'share', email: newUserEmail.trim() });
-      setAdminWarningOpen(true);
-      return;
-    }
-
-    await executeShare(newUserEmail.trim(), newUserPermission);
+    // Show warning for both viewer and admin permissions
+    setPendingAction({ 
+      type: 'share', 
+      email: newUserEmail.trim(), 
+      permission: newUserPermission 
+    });
+    setPermissionWarningOpen(true);
   };
 
   const executeShare = async (email: string, permission: 'viewer' | 'admin') => {
@@ -87,33 +89,25 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   };
 
   const handleUpdatePermission = async (shareId: string, permission: 'viewer' | 'admin') => {
-    if (permission === 'admin') {
-      setPendingAdminAction({ type: 'update', shareId });
-      setAdminWarningOpen(true);
-      return;
-    }
-
-    await updatePermission(shareId, permission);
-    toast({
-      title: "Success",
-      description: "Permission updated successfully",
-    });
+    // Show warning for both viewer and admin permission changes
+    setPendingAction({ type: 'update', shareId, permission });
+    setPermissionWarningOpen(true);
   };
 
-  const handleAdminConfirm = async () => {
-    if (pendingAdminAction) {
-      if (pendingAdminAction.type === 'share' && pendingAdminAction.email) {
-        await executeShare(pendingAdminAction.email, 'admin');
-      } else if (pendingAdminAction.type === 'update' && pendingAdminAction.shareId) {
-        await updatePermission(pendingAdminAction.shareId, 'admin');
+  const handlePermissionConfirm = async () => {
+    if (pendingAction) {
+      if (pendingAction.type === 'share' && pendingAction.email) {
+        await executeShare(pendingAction.email, pendingAction.permission);
+      } else if (pendingAction.type === 'update' && pendingAction.shareId) {
+        await updatePermission(pendingAction.shareId, pendingAction.permission);
         toast({
           title: "Success",
           description: "Permission updated successfully",
         });
       }
     }
-    setAdminWarningOpen(false);
-    setPendingAdminAction(null);
+    setPermissionWarningOpen(false);
+    setPendingAction(null);
   };
 
   const handleRemoveShare = async (shareId: string) => {
@@ -124,6 +118,51 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
       description: "Share removed successfully",
     });
   };
+
+  const getPermissionWarningContent = () => {
+    if (!pendingAction) return { title: '', description: '', buttonText: '', buttonClass: '' };
+
+    if (pendingAction.permission === 'admin') {
+      return {
+        title: 'Grant Admin Access?',
+        description: (
+          <>
+            You are about to grant admin access to this user. Admin users will be able to:
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>Add new topics and subtopics</li>
+              <li>Edit existing topics and descriptions</li>
+              <li>Delete topics and all their subtopics</li>
+              <li>Add, edit, and delete resources</li>
+              <li>Move topics within the learning path</li>
+            </ul>
+            This gives them full control over your learning path content. Are you sure you want to proceed?
+          </>
+        ),
+        buttonText: 'Grant Admin Access',
+        buttonClass: 'bg-orange-500 text-white hover:bg-orange-600'
+      };
+    } else {
+      return {
+        title: 'Grant Viewer Access?',
+        description: (
+          <>
+            You are about to grant viewer access to this user. Viewer users will be able to:
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>View all topics and subtopics in your learning path</li>
+              <li>View topic descriptions and details</li>
+              <li>View all resources and project links</li>
+              <li>Browse through your learning path structure</li>
+            </ul>
+            They will have read-only access to your learning path content. Are you sure you want to proceed?
+          </>
+        ),
+        buttonText: 'Grant Viewer Access',
+        buttonClass: 'bg-blue-500 text-white hover:bg-blue-600'
+      };
+    }
+  };
+
+  const warningContent = getPermissionWarningContent();
 
   return (
     <>
@@ -232,30 +271,22 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
         </CardContent>
       </Card>
 
-      {/* Admin Access Warning Dialog */}
-      <AlertDialog open={adminWarningOpen} onOpenChange={setAdminWarningOpen}>
+      {/* Permission Warning Dialog */}
+      <AlertDialog open={permissionWarningOpen} onOpenChange={setPermissionWarningOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Grant Admin Access?</AlertDialogTitle>
+            <AlertDialogTitle>{warningContent.title}</AlertDialogTitle>
             <AlertDialogDescription>
-              You are about to grant admin access to this user. Admin users will be able to:
-              <ul className="list-disc list-inside mt-2 space-y-1">
-                <li>Add new topics and subtopics</li>
-                <li>Edit existing topics and descriptions</li>
-                <li>Delete topics and all their subtopics</li>
-                <li>Add, edit, and delete resources</li>
-                <li>Move topics within the learning path</li>
-              </ul>
-              This gives them full control over your learning path content. Are you sure you want to proceed?
+              {warningContent.description}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setPendingAdminAction(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={() => setPendingAction(null)}>Cancel</AlertDialogCancel>
             <AlertDialogAction 
-              onClick={handleAdminConfirm}
-              className="bg-orange-500 text-white hover:bg-orange-600"
+              onClick={handlePermissionConfirm}
+              className={warningContent.buttonClass}
             >
-              Grant Admin Access
+              {warningContent.buttonText}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
