@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MainContent } from '@/components/layout/MainContent';
 import { SidebarContent } from '@/components/layout/SidebarContent';
 import { AdminPanelContent } from '@/components/layout/AdminPanelContent';
@@ -30,6 +30,9 @@ const Index = () => {
     availablePaths,
     pathsLoading
   } = useIndexPageState();
+
+  // Manage expanded topics state at the top level to persist across all views
+  const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set());
 
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -66,6 +69,18 @@ const Index = () => {
     }
   }, [isAdmin, userPermission, isAdminMode, setIsAdminMode]);
 
+  const handleToggleExpanded = (topicId: string) => {
+    setExpandedTopics(prev => {
+      const newExpanded = new Set(prev);
+      if (newExpanded.has(topicId)) {
+        newExpanded.delete(topicId);
+      } else {
+        newExpanded.add(topicId);
+      }
+      return newExpanded;
+    });
+  };
+
   const displayTopics = searchQuery.trim() ? searchResults : topics;
   const canUseAdminMode = (isAdmin && userPermission === 'owner') || userPermission === 'admin';
   const isOwner = userPermission === 'owner';
@@ -90,6 +105,8 @@ const Index = () => {
       selectedTopicId={selectedTopicId}
       isSearching={isSearching}
       isMobileOrTablet={isMobileOrTablet}
+      expandedTopics={expandedTopics}
+      onToggleExpanded={handleToggleExpanded}
       onModeToggle={handleModeToggle}
       onSearch={handleSearch}
       onTopicSelect={setSelectedTopicId}
@@ -118,6 +135,8 @@ const Index = () => {
         selectedTopicId={selectedTopicId}
         isSearching={isSearching}
         isMobileOrTablet={false}
+        expandedTopics={expandedTopics}
+        onToggleExpanded={handleToggleExpanded}
         onModeToggle={handleModeToggle}
         onSearch={handleSearch}
         onTopicSelect={setSelectedTopicId}

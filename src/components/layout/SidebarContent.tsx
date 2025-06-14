@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { SearchHeader } from '@/components/SearchHeader';
 import { TopicTree } from '@/components/TopicTree';
 import { AuthHeader } from '@/components/AuthHeader';
@@ -13,6 +13,8 @@ interface SidebarContentProps {
   selectedTopicId: string | null;
   isSearching: boolean;
   isMobileOrTablet: boolean;
+  expandedTopics: Set<string>;
+  onToggleExpanded: (topicId: string) => void;
   onModeToggle: () => void;
   onSearch: (query: string) => void;
   onTopicSelect: (topicId: string) => void;
@@ -28,33 +30,20 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({
   selectedTopicId,
   isSearching,
   isMobileOrTablet,
+  expandedTopics,
+  onToggleExpanded,
   onModeToggle,
   onSearch,
   onTopicSelect,
   onSidebarClose,
   onSignOut
 }) => {
-  // Manage expanded topics state at this level to persist across sidebar close/open
-  const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set());
-
   const handleTopicSelect = (topicId: string) => {
     onTopicSelect(topicId);
     // Auto-close sidebar on mobile/tablet when topic is selected
     if (isMobileOrTablet && onSidebarClose) {
       onSidebarClose();
     }
-  };
-
-  const handleToggleExpanded = (topicId: string) => {
-    setExpandedTopics(prev => {
-      const newExpanded = new Set(prev);
-      if (newExpanded.has(topicId)) {
-        newExpanded.delete(topicId);
-      } else {
-        newExpanded.add(topicId);
-      }
-      return newExpanded;
-    });
   };
 
   return (
@@ -76,7 +65,7 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({
           onTopicSelect={handleTopicSelect}
           isLoading={isSearching}
           expandedTopics={expandedTopics}
-          onToggleExpanded={handleToggleExpanded}
+          onToggleExpanded={onToggleExpanded}
         />
       </div>
       
