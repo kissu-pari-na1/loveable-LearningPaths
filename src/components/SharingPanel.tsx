@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,6 +32,12 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   const [newUserPermission, setNewUserPermission] = useState<'viewer' | 'admin'>('viewer');
   const [isSharing, setIsSharing] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null);
+  const [adminWarningOpen, setAdminWarningOpen] = useState(false);
+  const [pendingAdminAction, setPendingAdminAction] = useState<{
+    type: 'share' | 'update';
+    shareId?: string;
+    email?: string;
+  } | null>(null);
 
   if (!isOwner) {
     return null;
@@ -51,8 +56,18 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
       return;
     }
 
+    if (newUserPermission === 'admin') {
+      setPendingAdminAction({ type: 'share', email: newUserEmail.trim() });
+      setAdminWarningOpen(true);
+      return;
+    }
+
+    await executeShare(newUserEmail.trim(), newUserPermission);
+  };
+
+  const executeShare = async (email: string, permission: 'viewer' | 'admin') => {
     setIsSharing(true);
-    const { error } = await shareWithUser(newUserEmail.trim(), newUserPermission);
+    const { error } = await shareWithUser(email, permission);
     
     if (error) {
       toast({
@@ -72,11 +87,33 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   };
 
   const handleUpdatePermission = async (shareId: string, permission: 'viewer' | 'admin') => {
+    if (permission === 'admin') {
+      setPendingAdminAction({ type: 'update', shareId });
+      setAdminWarningOpen(true);
+      return;
+    }
+
     await updatePermission(shareId, permission);
     toast({
       title: "Success",
       description: "Permission updated successfully",
     });
+  };
+
+  const handleAdminConfirm = async () => {
+    if (pendingAdminAction) {
+      if (pendingAdminAction.type === 'share' && pendingAdminAction.email) {
+        await executeShare(pendingAdminAction.email, 'admin');
+      } else if (pendingAdminAction.type === 'update' && pendingAdminAction.shareId) {
+        await updatePermission(pendingAdminAction.shareId, 'admin');
+        toast({
+          title: "Success",
+          description: "Permission updated successfully",
+        });
+      }
+    }
+    setAdminWarningOpen(false);
+    setPendingAdminAction(null);
   };
 
   const handleRemoveShare = async (shareId: string) => {
@@ -89,109 +126,140 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
   };
 
   return (
-    <Card className="border border-emerald-200/50 bg-gradient-to-br from-emerald-50/50 to-green-50/50 dark:from-emerald-900/20 dark:to-green-900/20 shadow-lg backdrop-blur-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-          <Share2 className="w-3 h-3" />
-          Share Learning Path
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {/* Add new share */}
-        <div className="space-y-2">
-          <Input
-            placeholder="Email address"
-            value={newUserEmail}
-            onChange={(e) => setNewUserEmail(e.target.value)}
-            type="email"
-            className="border-emerald-200/50 focus:border-emerald-400 text-xs h-8"
-          />
-          <Select value={newUserPermission} onValueChange={(value: 'viewer' | 'admin') => setNewUserPermission(value)}>
-            <SelectTrigger className="border-emerald-200/50 focus:border-emerald-400 h-8 text-xs">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="viewer">Viewer (View only)</SelectItem>
-              <SelectItem value="admin">Admin (View & Edit)</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button 
-            onClick={handleShare} 
-            className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white shadow-md h-8 text-xs"
-            disabled={isSharing}
-          >
-            <Mail className="w-3 h-3 mr-1" />
-            {isSharing ? 'Sharing...' : 'Share'}
-          </Button>
-        </div>
-
-        {/* Existing shares */}
-        {ownedShares.length > 0 && (
-          <div className="space-y-2 pt-1">
-            <h4 className="text-xs font-medium text-emerald-700 dark:text-emerald-300 border-t border-emerald-200/30 pt-2">
-              Shared with:
-            </h4>
-            <div className="space-y-1 max-h-24 overflow-y-auto">
-              {ownedShares.map((share) => (
-                <div key={share.id} className="flex items-center justify-between p-2 border border-emerald-200/50 rounded-md bg-white/50 dark:bg-black/20 backdrop-blur-sm">
-                  <div className="flex flex-col gap-0.5 min-w-0 flex-1 mr-2">
-                    <span className="text-xs font-medium truncate">
-                      {share.shared_with_email || 'Unknown User'}
-                    </span>
-                    <Badge variant="outline" className="text-xs w-fit border-emerald-300/50 bg-emerald-50/50 text-emerald-600 px-1 py-0">
-                      {share.permission_level}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-1 flex-shrink-0">
-                    <Select
-                      value={share.permission_level}
-                      onValueChange={(value: 'viewer' | 'admin') => handleUpdatePermission(share.id, value)}
-                    >
-                      <SelectTrigger className="w-16 h-6 text-xs">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="viewer">Viewer</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    
-                    <AlertDialog open={deleteDialogOpen === share.id} onOpenChange={(open) => setDeleteDialogOpen(open ? share.id : null)}>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
-                        >
-                          <Trash2 className="w-2.5 h-2.5" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Remove access for this user?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This will permanently revoke access to your learning path for "{share.shared_with_email || 'Unknown User'}". 
-                            They will no longer be able to view or edit your topics and resources.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction 
-                            onClick={() => handleRemoveShare(share.id)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
-                            Remove Access
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </div>
-              ))}
-            </div>
+    <>
+      <Card className="border border-emerald-200/50 bg-gradient-to-br from-emerald-50/50 to-green-50/50 dark:from-emerald-900/20 dark:to-green-900/20 shadow-lg backdrop-blur-sm">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+            <Share2 className="w-3 h-3" />
+            Share Learning Path
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {/* Add new share */}
+          <div className="space-y-2">
+            <Input
+              placeholder="Email address"
+              value={newUserEmail}
+              onChange={(e) => setNewUserEmail(e.target.value)}
+              type="email"
+              className="border-emerald-200/50 focus:border-emerald-400 text-xs h-8"
+            />
+            <Select value={newUserPermission} onValueChange={(value: 'viewer' | 'admin') => setNewUserPermission(value)}>
+              <SelectTrigger className="border-emerald-200/50 focus:border-emerald-400 h-8 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="viewer">Viewer (View only)</SelectItem>
+                <SelectItem value="admin">Admin (View & Edit)</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button 
+              onClick={handleShare} 
+              className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white shadow-md h-8 text-xs"
+              disabled={isSharing}
+            >
+              <Mail className="w-3 h-3 mr-1" />
+              {isSharing ? 'Sharing...' : 'Share'}
+            </Button>
           </div>
-        )}
-      </CardContent>
-    </Card>
+
+          {/* Existing shares */}
+          {ownedShares.length > 0 && (
+            <div className="space-y-2 pt-1">
+              <h4 className="text-xs font-medium text-emerald-700 dark:text-emerald-300 border-t border-emerald-200/30 pt-2">
+                Shared with:
+              </h4>
+              <div className="space-y-1 max-h-24 overflow-y-auto">
+                {ownedShares.map((share) => (
+                  <div key={share.id} className="flex items-center justify-between p-2 border border-emerald-200/50 rounded-md bg-white/50 dark:bg-black/20 backdrop-blur-sm">
+                    <div className="flex flex-col gap-0.5 min-w-0 flex-1 mr-2">
+                      <span className="text-xs font-medium truncate">
+                        {share.shared_with_email || 'Unknown User'}
+                      </span>
+                      <Badge variant="outline" className="text-xs w-fit border-emerald-300/50 bg-emerald-50/50 text-emerald-600 px-1 py-0">
+                        {share.permission_level}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <Select
+                        value={share.permission_level}
+                        onValueChange={(value: 'viewer' | 'admin') => handleUpdatePermission(share.id, value)}
+                      >
+                        <SelectTrigger className="w-16 h-6 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="viewer">Viewer</SelectItem>
+                          <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      
+                      <AlertDialog open={deleteDialogOpen === share.id} onOpenChange={(open) => setDeleteDialogOpen(open ? share.id : null)}>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
+                          >
+                            <Trash2 className="w-2.5 h-2.5" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Remove access for this user?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This will permanently revoke access to your learning path for "{share.shared_with_email || 'Unknown User'}". 
+                              They will no longer be able to view or edit your topics and resources.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={() => handleRemoveShare(share.id)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Remove Access
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Admin Access Warning Dialog */}
+      <AlertDialog open={adminWarningOpen} onOpenChange={setAdminWarningOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Grant Admin Access?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You are about to grant admin access to this user. Admin users will be able to:
+              <ul className="list-disc list-inside mt-2 space-y-1">
+                <li>Add new topics and subtopics</li>
+                <li>Edit existing topics and descriptions</li>
+                <li>Delete topics and all their subtopics</li>
+                <li>Add, edit, and delete resources</li>
+                <li>Move topics within the learning path</li>
+              </ul>
+              This gives them full control over your learning path content. Are you sure you want to proceed?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setPendingAdminAction(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleAdminConfirm}
+              className="bg-orange-500 text-white hover:bg-orange-600"
+            >
+              Grant Admin Access
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
