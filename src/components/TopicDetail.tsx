@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Topic, ProjectLink } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ interface TopicDetailProps {
   isAdminMode: boolean;
   onUpdateTopic: (topicId: string, updates: Partial<Topic>) => void;
   onDeleteTopic: (topicId: string) => void;
+  onTopicSelect?: (topicId: string) => void;
 }
 
 export const TopicDetail: React.FC<TopicDetailProps> = ({
@@ -20,7 +20,8 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   topics,
   isAdminMode,
   onUpdateTopic,
-  onDeleteTopic
+  onDeleteTopic,
+  onTopicSelect
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({ name: '', description: '' });
@@ -88,6 +89,12 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   const handleRemoveLink = (linkId: string) => {
     const updatedLinks = topic.projectLinks.filter(link => link.id !== linkId);
     onUpdateTopic(topic.id, { projectLinks: updatedLinks });
+  };
+
+  const handleSubtopicClick = (subtopicId: string) => {
+    if (onTopicSelect) {
+      onTopicSelect(subtopicId);
+    }
   };
 
   return (
@@ -234,8 +241,12 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
             <CardContent>
               <div className="grid gap-3 sm:grid-cols-2">
                 {topic.childTopics.map((child) => (
-                  <div key={child.id} className="p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors">
-                    <h3 className="font-medium mb-1 break-words">{child.name}</h3>
+                  <div 
+                    key={child.id} 
+                    className="p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors cursor-pointer group"
+                    onClick={() => handleSubtopicClick(child.id)}
+                  >
+                    <h3 className="font-medium mb-1 break-words group-hover:text-primary transition-colors">{child.name}</h3>
                     <p className="text-sm text-muted-foreground line-clamp-2 break-words">{child.description}</p>
                     <div className="flex flex-wrap gap-2 mt-2">
                       <Badge variant="outline" className="text-xs">

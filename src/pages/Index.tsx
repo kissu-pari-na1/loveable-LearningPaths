@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SearchHeader } from '@/components/SearchHeader';
 import { TopicTree } from '@/components/TopicTree';
@@ -194,6 +193,7 @@ const Index = () => {
                 isAdminMode={isAdminMode}
                 onUpdateTopic={updateTopic}
                 onDeleteTopic={deleteTopic}
+                onTopicSelect={setSelectedTopicId}
               />
             ) : (
               <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-background/50 to-muted/30 backdrop-blur-sm p-6">
@@ -288,6 +288,7 @@ const Index = () => {
                     isAdminMode={isAdminMode}
                     onUpdateTopic={updateTopic}
                     onDeleteTopic={deleteTopic}
+                    onTopicSelect={setSelectedTopicId}
                   />
                 ) : (
                   <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-background/50 to-muted/30 backdrop-blur-sm">
