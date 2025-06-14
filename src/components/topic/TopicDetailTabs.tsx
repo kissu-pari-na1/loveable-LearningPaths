@@ -52,30 +52,26 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           <span>🔗</span>
           <span>Resources</span>
         </div>
-        <div className="flex-1 min-h-0">
-          <ScrollArea className="h-[calc(100vh-20rem)]">
-            <div className="space-y-4 pb-6">
-              <ProjectLinksSection
-                topic={topic}
-                isAdminMode={isAdminMode}
-                showAddLink={showAddLink}
-                newLink={newLink}
-                onToggleAddLink={onToggleAddLink}
-                onAddLink={onAddLink}
-                onRemoveLink={onRemoveLink}
-                onNewLinkChange={onNewLinkChange}
-              />
-            </div>
-          </ScrollArea>
+        <div className="space-y-4">
+          <ProjectLinksSection
+            topic={topic}
+            isAdminMode={isAdminMode}
+            showAddLink={showAddLink}
+            newLink={newLink}
+            onToggleAddLink={onToggleAddLink}
+            onAddLink={onAddLink}
+            onRemoveLink={onRemoveLink}
+            onNewLinkChange={onNewLinkChange}
+          />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col flex-1 min-h-0">
-        <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14 flex-shrink-0">
+    <div className="space-y-4">
+      <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14">
           <TabsTrigger 
             value="links" 
             className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
@@ -103,34 +99,30 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="links" className="flex-1 min-h-0 mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-          <ScrollArea className="h-[calc(100vh-20rem)]">
-            <div className="space-y-4 pb-6">
-              <ProjectLinksSection
-                topic={topic}
-                isAdminMode={isAdminMode}
-                showAddLink={showAddLink}
-                newLink={newLink}
-                onToggleAddLink={onToggleAddLink}
-                onAddLink={onAddLink}
-                onRemoveLink={onRemoveLink}
-                onNewLinkChange={onNewLinkChange}
-              />
-            </div>
-          </ScrollArea>
+        <TabsContent value="links" className="mt-0 focus-visible:outline-none">
+          <div className="space-y-4">
+            <ProjectLinksSection
+              topic={topic}
+              isAdminMode={isAdminMode}
+              showAddLink={showAddLink}
+              newLink={newLink}
+              onToggleAddLink={onToggleAddLink}
+              onAddLink={onAddLink}
+              onRemoveLink={onRemoveLink}
+              onNewLinkChange={onNewLinkChange}
+            />
+          </div>
         </TabsContent>
         
-        <TabsContent value="subtopics" className="flex-1 min-h-0 mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-          <ScrollArea className="h-[calc(100vh-20rem)]">
-            <div className="space-y-4 pb-6">
-              <SubtopicsSection
-                topic={topic}
-                isAdminMode={isAdminMode}
-                onSubtopicClick={onSubtopicClick}
-                onAddSubtopic={onAddSubtopic}
-              />
-            </div>
-          </ScrollArea>
+        <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none">
+          <div className="space-y-4">
+            <SubtopicsSection
+              topic={topic}
+              isAdminMode={isAdminMode}
+              onSubtopicClick={onSubtopicClick}
+              onAddSubtopic={onAddSubtopic}
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </div>
