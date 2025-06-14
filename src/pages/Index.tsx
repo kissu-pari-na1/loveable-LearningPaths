@@ -40,6 +40,11 @@ const Index = () => {
     }
   }, [user, availablePaths, selectedPathUserId]);
 
+  // Reset selected topic when dashboard selection changes
+  useEffect(() => {
+    setSelectedTopicId(null);
+  }, [selectedPathUserId]);
+
   // Only allow admin mode if user has admin permission for selected path
   useEffect(() => {
     const canUseAdminMode = (isAdmin && userPermission === 'owner') || userPermission === 'admin';
@@ -64,6 +69,11 @@ const Index = () => {
 
   const handleSignIn = () => {
     navigate('/auth');
+  };
+
+  const handlePathSelect = (userId: string) => {
+    setSelectedPathUserId(userId);
+    // selectedTopicId will be reset by the useEffect above
   };
 
   const displayTopics = searchQuery.trim() ? searchResults : topics;
@@ -172,7 +182,7 @@ const Index = () => {
               <DashboardSelector
                 availablePaths={availablePaths}
                 selectedPathUserId={selectedPathUserId}
-                onPathSelect={setSelectedPathUserId}
+                onPathSelect={handlePathSelect}
                 loading={pathsLoading}
               />
             )}
@@ -267,7 +277,7 @@ const Index = () => {
                 <DashboardSelector
                   availablePaths={availablePaths}
                   selectedPathUserId={selectedPathUserId}
-                  onPathSelect={setSelectedPathUserId}
+                  onPathSelect={handlePathSelect}
                   loading={pathsLoading}
                 />
                 
