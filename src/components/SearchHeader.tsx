@@ -61,21 +61,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
 
   return (
     <div className="p-4 border-b border-border space-y-4">
-      {/* Mobile close button - only show the title and close button */}
-      {isMobileOrTablet && onSidebarClose && (
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Learning Paths</h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onSidebarClose}
-            className="h-8 w-8 p-0"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-
       {/* Search Input */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
