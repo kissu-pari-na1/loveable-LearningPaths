@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SearchHeader } from '@/components/SearchHeader';
 import { TopicTree } from '@/components/TopicTree';
@@ -71,6 +72,14 @@ const Index = () => {
 
   const handlePathSelect = (userId: string) => {
     setSelectedPathUserId(userId);
+  };
+
+  const handleDeleteTopic = async (topicId: string) => {
+    // Clear selected topic if it's the one being deleted
+    if (selectedTopicId === topicId) {
+      setSelectedTopicId(null);
+    }
+    await deleteTopic(topicId);
   };
 
   const displayTopics = searchQuery.trim() ? searchResults : topics;
@@ -202,7 +211,7 @@ const Index = () => {
           topics={topics}
           isAdminMode={isAdminMode}
           onUpdateTopic={updateTopic}
-          onDeleteTopic={deleteTopic}
+          onDeleteTopic={handleDeleteTopic}
           onAddSubtopic={addTopic}
           onTopicSelect={setSelectedTopicId}
         />
