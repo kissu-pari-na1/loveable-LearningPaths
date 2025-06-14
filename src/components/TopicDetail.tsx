@@ -40,7 +40,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
 
   if (!topic) {
     return (
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center p-4">
         <div className="text-center">
           <h2 className="text-xl font-semibold mb-2">Topic not found</h2>
           <p className="text-muted-foreground">The selected topic could not be found.</p>
@@ -92,7 +92,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
 
   return (
     <div className="flex-1 overflow-auto">
-      <div className="p-6 max-w-4xl mx-auto">
+      <div className="p-4 lg:p-6 max-w-4xl mx-auto">
         <div className="mb-6">
           {isEditing ? (
             <div className="space-y-4">
@@ -100,7 +100,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
                 value={editForm.name}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                 placeholder="Topic name"
-                className="text-2xl font-bold"
+                className="text-xl lg:text-2xl font-bold"
               />
               <Textarea
                 value={editForm.description}
@@ -108,25 +108,26 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
                 placeholder="Topic description"
                 rows={3}
               />
-              <div className="flex gap-2">
-                <Button onClick={handleSave}>Save</Button>
-                <Button variant="outline" onClick={handleCancel}>Cancel</Button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button onClick={handleSave} className="w-full sm:w-auto">Save</Button>
+                <Button variant="outline" onClick={handleCancel} className="w-full sm:w-auto">Cancel</Button>
               </div>
             </div>
           ) : (
             <div>
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex flex-col lg:flex-row lg:items-start justify-between mb-4 gap-4">
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-foreground mb-2">{topic.name}</h1>
-                  <p className="text-lg text-muted-foreground">{topic.description}</p>
+                  <h1 className="text-2xl lg:text-3xl font-bold text-foreground mb-2 break-words">{topic.name}</h1>
+                  <p className="text-base lg:text-lg text-muted-foreground break-words">{topic.description}</p>
                 </div>
                 {isAdminMode && (
-                  <div className="flex gap-2 ml-4">
-                    <Button variant="outline" onClick={handleEdit}>Edit</Button>
+                  <div className="flex flex-col sm:flex-row gap-2 lg:ml-4">
+                    <Button variant="outline" onClick={handleEdit} className="w-full sm:w-auto">Edit</Button>
                     <Button 
                       variant="destructive" 
                       onClick={() => onDeleteTopic(topic.id)}
                       disabled={topic.childTopics.length > 0}
+                      className="w-full sm:w-auto"
                     >
                       Delete
                     </Button>
@@ -134,7 +135,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
                 )}
               </div>
               
-              <div className="flex gap-4 text-sm text-muted-foreground">
+              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <span>{topic.projectLinks.length} project links</span>
                 <span>{topic.childTopics.length} subtopics</span>
               </div>
@@ -145,13 +146,14 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         {/* Project Links */}
         <Card className="mb-6">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Project Links</CardTitle>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <CardTitle className="text-lg lg:text-xl">Project Links</CardTitle>
               {isAdminMode && (
                 <Button 
                   variant="outline" 
                   size="sm"
                   onClick={() => setShowAddLink(!showAddLink)}
+                  className="w-full sm:w-auto"
                 >
                   Add Link
                 </Button>
@@ -177,9 +179,9 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
                     value={newLink.description}
                     onChange={(e) => setNewLink({ ...newLink, description: e.target.value })}
                   />
-                  <div className="flex gap-2">
-                    <Button onClick={handleAddLink}>Add</Button>
-                    <Button variant="outline" onClick={() => setShowAddLink(false)}>Cancel</Button>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button onClick={handleAddLink} className="w-full sm:w-auto">Add</Button>
+                    <Button variant="outline" onClick={() => setShowAddLink(false)} className="w-full sm:w-auto">Cancel</Button>
                   </div>
                 </div>
               </div>
@@ -191,18 +193,18 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
               <div className="space-y-3">
                 {topic.projectLinks.map((link) => (
                   <div key={link.id} className="p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
                         <a 
                           href={link.url} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="text-primary hover:underline font-medium"
+                          className="text-primary hover:underline font-medium break-words"
                         >
                           {link.title}
                         </a>
                         {link.description && (
-                          <p className="text-sm text-muted-foreground mt-1">{link.description}</p>
+                          <p className="text-sm text-muted-foreground mt-1 break-words">{link.description}</p>
                         )}
                       </div>
                       {isAdminMode && (
@@ -210,7 +212,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
                           variant="ghost" 
                           size="sm"
                           onClick={() => handleRemoveLink(link.id)}
-                          className="text-destructive hover:text-destructive"
+                          className="text-destructive hover:text-destructive w-full sm:w-auto mt-2 sm:mt-0"
                         >
                           Remove
                         </Button>
@@ -227,15 +229,15 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         {topic.childTopics.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Subtopics</CardTitle>
+              <CardTitle className="text-lg lg:text-xl">Subtopics</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-3 md:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {topic.childTopics.map((child) => (
                   <div key={child.id} className="p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors">
-                    <h3 className="font-medium mb-1">{child.name}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{child.description}</p>
-                    <div className="flex gap-2 mt-2">
+                    <h3 className="font-medium mb-1 break-words">{child.name}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 break-words">{child.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-2">
                       <Badge variant="outline" className="text-xs">
                         {child.projectLinks.length} links
                       </Badge>

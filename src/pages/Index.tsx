@@ -8,10 +8,14 @@ import { AuthHeader } from '@/components/AuthHeader';
 import { DashboardSelector } from '@/components/DashboardSelector';
 import { SharingPanel } from '@/components/SharingPanel';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
 import { useSemanticSearch } from '@/hooks/useSemanticSearch';
 import { useSharedLearningPaths } from '@/hooks/useSharedLearningPaths';
 import { useMultipleLearningPaths } from '@/hooks/useMultipleLearningPaths';
 import { useAuth } from '@/contexts/AuthContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
   const { user, isAdmin, loading: authLoading } = useAuth();
@@ -19,7 +23,10 @@ const Index = () => {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPathUserId, setSelectedPathUserId] = useState<string>('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   
+  const isMobile = useIsMobile();
   const { availablePaths, loading: pathsLoading } = useSharedLearningPaths();
   const { topics, loading: topicsLoading, userPermission, addTopic, moveTopic, updateTopic, deleteTopic } = useMultipleLearningPaths(selectedPathUserId);
   const { searchResults, search, isSearching } = useSemanticSearch(topics);
@@ -68,12 +75,153 @@ const Index = () => {
     );
   }
 
+  // Mobile Layout
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-800">
+        <div className="flex flex-col h-screen">
+          {/* Mobile Header */}
+          <div className="bg-card/95 backdrop-blur-xl border-b border-border/50 shadow-lg p-4 flex items-center justify-between">
+            <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Toggle sidebar</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80 p-0">
+                <div className="flex flex-col h-full">
+                  <div className="p-4 border-b">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-lg font-semibold">Learning Paths</h2>
+                      <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <SearchHeader 
+                    isAdminMode={isAdminMode}
+                    onModeToggle={handleModeToggle}
+                    onSearch={handleSearch}
+                    isSearching={isSearching}
+                    showAdminToggle={canUseAdminMode}
+                  />
+                  
+                  <div className="flex-1 overflow-auto p-4">
+                    <TopicTree 
+                      topics={displayTopics}
+                      selectedTopicId={selectedTopicId}
+                      onTopicSelect={(id) => {
+                        setSelectedTopicId(id);
+                        setIsSidebarOpen(false);
+                      }}
+                      isAdminMode={isAdminMode}
+                      searchQuery={searchQuery}
+                    />
+                  </div>
+
+                  <AuthHeader />
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            <h1 className="text-lg font-semibold">Learning Paths</h1>
+
+            {canUseAdminMode && isAdminMode && (
+              <Sheet open={isAdminPanelOpen} onOpenChange={setIsAdminPanelOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    Admin
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-80 p-0">
+                  <div className="flex flex-col h-full">
+                    <div className="p-4 border-b">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-lg font-semibold">Admin Panel</h2>
+                        <Button variant="ghost" size="icon" onClick={() => setIsAdminPanelOpen(false)}>
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 flex-1 overflow-auto">
+                      <AdminPanel 
+                        topics={topics}
+                        onAddTopic={addTopic}
+                        onMoveTopic={moveTopic}
+                        selectedTopicId={selectedTopicId}
+                      />
+                    </div>
+                    
+                    {isOwner && (
+                      <div className="p-4 border-t border-border/50">
+                        <SharingPanel isOwner={isOwner} />
+                      </div>
+                    )}
+                  </div>
+                </SheetContent>
+              </Sheet>
+            )}
+          </div>
+
+          {/* Mobile Main Content */}
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <DashboardSelector
+              availablePaths={availablePaths}
+              selectedPathUserId={selectedPathUserId}
+              onPathSelect={setSelectedPathUserId}
+              loading={pathsLoading}
+            />
+            
+            {selectedTopicId ? (
+              <TopicDetail 
+                topicId={selectedTopicId}
+                topics={topics}
+                isAdminMode={isAdminMode}
+                onUpdateTopic={updateTopic}
+                onDeleteTopic={deleteTopic}
+              />
+            ) : (
+              <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-background/50 to-muted/30 backdrop-blur-sm p-6">
+                <div className="text-center max-w-md mx-auto">
+                  <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-violet-400 to-blue-500 rounded-full flex items-center justify-center shadow-2xl">
+                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  </div>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-4">
+                    Welcome to Learning Paths
+                  </h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {user ? (
+                      <>Tap the menu to explore topics and begin your learning journey.</>
+                    ) : (
+                      <>Join our community of learners. Sign in to unlock personalized learning paths.</>
+                    )}
+                  </p>
+                  {userPermission && userPermission !== 'owner' && (
+                    <p className="text-sm text-violet-600 dark:text-violet-400 mt-4 px-4 py-2 bg-violet-50 dark:bg-violet-900/30 rounded-full">
+                      You have {userPermission} access
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop/Tablet Layout
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-800">
       <div className="flex h-screen">
         <ResizablePanelGroup direction="horizontal" className="h-full">
           {/* Sidebar Panel */}
-          <ResizablePanel defaultSize={28} minSize={15} maxSize={75}>
+          <ResizablePanel defaultSize={28} minSize={20} maxSize={75}>
             <div className="bg-card/95 backdrop-blur-xl border-r border-border/50 shadow-2xl flex flex-col h-full">
               <SearchHeader 
                 isAdminMode={isAdminMode}
@@ -93,7 +241,6 @@ const Index = () => {
                 />
               </div>
 
-              {/* AuthHeader moved to bottom */}
               <AuthHeader />
             </div>
           </ResizablePanel>
@@ -103,7 +250,6 @@ const Index = () => {
           {/* Main Content Panel */}
           <ResizablePanel defaultSize={canUseAdminMode && isAdminMode ? 50 : 75}>
             <div className="flex flex-col h-full">
-              {/* DashboardSelector moved to top of main panel */}
               <DashboardSelector
                 availablePaths={availablePaths}
                 selectedPathUserId={selectedPathUserId}
