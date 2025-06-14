@@ -4,6 +4,7 @@ import { Topic } from '@/types/Topic';
 import { TopicDetailHeader } from '@/components/topic/TopicDetailHeader';
 import { ProjectLinksSection } from '@/components/topic/ProjectLinksSection';
 import { SubtopicsSection } from '@/components/topic/SubtopicsSection';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface TopicDetailProps {
   topicId: string;
@@ -104,6 +105,9 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
     setNewLink(prev => ({ ...prev, [field]: value }));
   };
 
+  const hasSubtopics = topic.childTopics.length > 0;
+  const hasLinks = topic.projectLinks.length > 0 || isAdminMode;
+
   return (
     <div className="flex-1 overflow-auto">
       <div className="p-4 lg:p-6 max-w-4xl mx-auto">
@@ -121,21 +125,49 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
           />
         </div>
 
-        <ProjectLinksSection
-          topic={topic}
-          isAdminMode={isAdminMode}
-          showAddLink={showAddLink}
-          newLink={newLink}
-          onToggleAddLink={() => setShowAddLink(!showAddLink)}
-          onAddLink={handleAddLink}
-          onRemoveLink={handleRemoveLink}
-          onNewLinkChange={handleNewLinkChange}
-        />
-
-        <SubtopicsSection
-          topic={topic}
-          onSubtopicClick={handleSubtopicClick}
-        />
+        {hasSubtopics || hasLinks ? (
+          <Tabs defaultValue="links" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="links">Project Links</TabsTrigger>
+              <TabsTrigger value="subtopics" disabled={!hasSubtopics}>
+                Subtopics {hasSubtopics && `(${topic.childTopics.length})`}
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="links" className="mt-0">
+              <ProjectLinksSection
+                topic={topic}
+                isAdminMode={isAdminMode}
+                showAddLink={showAddLink}
+                newLink={newLink}
+                onToggleAddLink={() => setShowAddLink(!showAddLink)}
+                onAddLink={handleAddLink}
+                onRemoveLink={handleRemoveLink}
+                onNewLinkChange={handleNewLinkChange}
+              />
+            </TabsContent>
+            
+            {hasSubtopics && (
+              <TabsContent value="subtopics" className="mt-0">
+                <SubtopicsSection
+                  topic={topic}
+                  onSubtopicClick={handleSubtopicClick}
+                />
+              </TabsContent>
+            )}
+          </Tabs>
+        ) : (
+          <ProjectLinksSection
+            topic={topic}
+            isAdminMode={isAdminMode}
+            showAddLink={showAddLink}
+            newLink={newLink}
+            onToggleAddLink={() => setShowAddLink(!showAddLink)}
+            onAddLink={handleAddLink}
+            onRemoveLink={handleRemoveLink}
+            onNewLinkChange={handleNewLinkChange}
+          />
+        )}
       </div>
     </div>
   );
