@@ -2,6 +2,7 @@
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ProjectLinksSection } from '@/components/topic/ProjectLinksSection';
 import { SubtopicsSection } from '@/components/topic/SubtopicsSection';
 
@@ -51,16 +52,18 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           <span>🔗</span>
           <span>Resources</span>
         </div>
-        <ProjectLinksSection
-          topic={topic}
-          isAdminMode={isAdminMode}
-          showAddLink={showAddLink}
-          newLink={newLink}
-          onToggleAddLink={onToggleAddLink}
-          onAddLink={onAddLink}
-          onRemoveLink={onRemoveLink}
-          onNewLinkChange={onNewLinkChange}
-        />
+        <ScrollArea className="h-[calc(100vh-24rem)] w-full">
+          <ProjectLinksSection
+            topic={topic}
+            isAdminMode={isAdminMode}
+            showAddLink={showAddLink}
+            newLink={newLink}
+            onToggleAddLink={onToggleAddLink}
+            onAddLink={onAddLink}
+            onRemoveLink={onRemoveLink}
+            onNewLinkChange={onNewLinkChange}
+          />
+        </ScrollArea>
       </div>
     );
   }
@@ -96,25 +99,29 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
       </TabsList>
       
       <TabsContent value="links" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-        <ProjectLinksSection
-          topic={topic}
-          isAdminMode={isAdminMode}
-          showAddLink={showAddLink}
-          newLink={newLink}
-          onToggleAddLink={onToggleAddLink}
-          onAddLink={onAddLink}
-          onRemoveLink={onRemoveLink}
-          onNewLinkChange={onNewLinkChange}
-        />
+        <ScrollArea className="h-[calc(100vh-24rem)] w-full">
+          <ProjectLinksSection
+            topic={topic}
+            isAdminMode={isAdminMode}
+            showAddLink={showAddLink}
+            newLink={newLink}
+            onToggleAddLink={onToggleAddLink}
+            onAddLink={onAddLink}
+            onRemoveLink={onRemoveLink}
+            onNewLinkChange={onNewLinkChange}
+          />
+        </ScrollArea>
       </TabsContent>
       
       <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
-        <SubtopicsSection
-          topic={topic}
-          isAdminMode={isAdminMode}
-          onSubtopicClick={onSubtopicClick}
-          onAddSubtopic={onAddSubtopic}
-        />
+        <ScrollArea className="h-[calc(100vh-24rem)] w-full">
+          <SubtopicsSection
+            topic={topic}
+            isAdminMode={isAdminMode}
+            onSubtopicClick={onSubtopicClick}
+            onAddSubtopic={onAddSubtopic}
+          />
+        </ScrollArea>
       </TabsContent>
     </Tabs>
   );
