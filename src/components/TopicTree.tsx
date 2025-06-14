@@ -39,7 +39,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
     return null;
   };
 
-  // Auto-expand parents when a topic is selected
+  // Auto-expand parents when a topic is selected (preserve existing expanded states)
   React.useEffect(() => {
     if (selectedTopicId) {
       const path = findPathToTopic(topics as Topic[], selectedTopicId);
@@ -47,7 +47,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
         // Expand all parent topics (excluding the selected topic itself)
         const parentsToExpand = path.slice(0, -1);
         setExpandedTopics(prev => {
-          const newExpanded = new Set(prev);
+          const newExpanded = new Set(prev); // Preserve existing expanded states
           parentsToExpand.forEach(parentId => newExpanded.add(parentId));
           return newExpanded;
         });
