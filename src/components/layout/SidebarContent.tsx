@@ -15,8 +15,9 @@ interface SidebarContentProps {
   isMobileOrTablet: boolean;
   onModeToggle: () => void;
   onSearch: (query: string) => void;
-  onTopicSelect: (id: string) => void;
+  onTopicSelect: (topicId: string) => void;
   onSidebarClose?: () => void;
+  onSignOut?: () => void;
 }
 
 export const SidebarContent: React.FC<SidebarContentProps> = ({
@@ -30,40 +31,31 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({
   onModeToggle,
   onSearch,
   onTopicSelect,
-  onSidebarClose
+  onSidebarClose,
+  onSignOut
 }) => {
-  const handleTopicSelect = (id: string) => {
-    onTopicSelect(id);
-    if (isMobileOrTablet && onSidebarClose) {
-      onSidebarClose();
-    }
-  };
-
   return (
     <div className="flex flex-col h-full">
-      <div className="p-3 md:p-4 border-b">
-        <h2 className="text-base md:text-lg font-semibold">Learning Paths</h2>
-      </div>
-      
-      <SearchHeader 
-        isAdminMode={isAdminMode}
-        onModeToggle={onModeToggle}
+      <SearchHeader
+        searchQuery={searchQuery}
         onSearch={onSearch}
-        isSearching={isSearching}
-        showAdminToggle={canUseAdminMode}
+        isAdminMode={isAdminMode}
+        canUseAdminMode={canUseAdminMode}
+        onModeToggle={onModeToggle}
+        onSidebarClose={onSidebarClose}
+        isMobileOrTablet={isMobileOrTablet}
       />
       
-      <div className="flex-1 overflow-auto p-3 md:p-4">
-        <TopicTree 
+      <div className="flex-1 overflow-auto">
+        <TopicTree
           topics={displayTopics}
           selectedTopicId={selectedTopicId}
-          onTopicSelect={handleTopicSelect}
-          isAdminMode={isAdminMode}
-          searchQuery={searchQuery}
+          onTopicSelect={onTopicSelect}
+          isLoading={isSearching}
         />
       </div>
-
-      <AuthHeader />
+      
+      <AuthHeader onSignOut={onSignOut} />
     </div>
   );
 };

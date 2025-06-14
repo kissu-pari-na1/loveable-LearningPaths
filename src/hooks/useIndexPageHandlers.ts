@@ -46,6 +46,12 @@ export const useIndexPageHandlers = ({
     navigate('/auth');
   };
 
+  const handleSignOut = () => {
+    // Clear selected topic when signing out
+    setSelectedTopicId(null);
+    navigate('/auth');
+  };
+
   const handlePathSelect = (userId: string) => {
     setSelectedPathUserId(userId);
   };
@@ -62,6 +68,7 @@ export const useIndexPageHandlers = ({
     handleSearch,
     handleModeToggle,
     handleSignIn,
+    handleSignOut,
     handlePathSelect,
     handleDeleteTopic
   };

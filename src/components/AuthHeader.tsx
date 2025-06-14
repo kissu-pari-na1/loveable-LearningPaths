@@ -4,17 +4,25 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { User, LogOut, LogIn, Crown, Shield } from 'lucide-react';
 
-export const AuthHeader: React.FC = () => {
+interface AuthHeaderProps {
+  onSignOut?: () => void;
+}
+
+export const AuthHeader: React.FC<AuthHeaderProps> = ({ onSignOut }) => {
   const { user, userRole, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/');
+    if (onSignOut) {
+      onSignOut();
+    }
   };
 
   const handleSignIn = () => {
-    navigate('/auth');
+    if (onSignOut) {
+      onSignOut(); // This will navigate to /auth
+    }
   };
 
   if (loading) {

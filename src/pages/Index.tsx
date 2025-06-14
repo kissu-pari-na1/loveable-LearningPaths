@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { MainContent } from '@/components/layout/MainContent';
 import { SidebarContent } from '@/components/layout/SidebarContent';
@@ -43,6 +42,7 @@ const Index = () => {
     handleSearch,
     handleModeToggle,
     handleSignIn,
+    handleSignOut,
     handlePathSelect,
     handleDeleteTopic
   } = useIndexPageHandlers({
@@ -94,6 +94,7 @@ const Index = () => {
       onSearch={handleSearch}
       onTopicSelect={setSelectedTopicId}
       onSidebarClose={() => setIsSidebarOpen(false)}
+      onSignOut={handleSignOut}
     />
   );
 
@@ -120,6 +121,7 @@ const Index = () => {
         onModeToggle={handleModeToggle}
         onSearch={handleSearch}
         onTopicSelect={setSelectedTopicId}
+        onSignOut={handleSignOut}
       />
     </div>
   );
