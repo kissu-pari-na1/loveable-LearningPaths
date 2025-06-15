@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Topic, SearchResult } from '@/types/Topic';
 import { Badge } from '@/components/ui/badge';
@@ -91,18 +92,22 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
           className={`mb-1 ${level > 0 ? 'ml-6' : ''}`}
           style={{ paddingLeft: level > 0 ? `${level * 24}px` : '0' }}
         >
-          <div className={`relative group rounded-xl ${
+          <div className={`relative group rounded-xl transition-all duration-300 ${
             isSelected 
-              ? 'bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-blue-500/20 shadow-lg border border-violet-300/30 border-l-4 border-l-violet-500' 
-              : 'hover:border-l-4 hover:border-l-primary border border-transparent'
+              ? 'bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-blue-500/20 shadow-lg border border-violet-300/30' 
+              : 'hover:bg-gradient-to-r hover:from-violet-50/50 hover:via-purple-50/50 hover:to-blue-50/50 hover:shadow-md border border-transparent hover:border-violet-200/50'
           }`}>
+            {/* Glowing background effect */}
+            <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-violet-400/10 via-purple-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+              isSelected ? 'opacity-100' : ''
+            }`} />
             
             <Button
               variant="ghost"
-              className={`w-full justify-start text-left h-auto p-4 relative z-10 border-none hover:bg-transparent ${
+              className={`w-full justify-start text-left h-auto p-4 transition-all duration-300 relative z-10 border-none hover:bg-transparent ${
                 isSelected 
-                  ? 'text-violet-700 dark:text-violet-300 font-medium' 
-                  : 'hover:text-foreground'
+                  ? 'text-violet-700 dark:text-violet-300 font-semibold' 
+                  : 'hover:text-violet-600 dark:hover:text-violet-400'
               }`}
               onClick={() => onTopicSelect(topic.id)}
             >
@@ -114,8 +119,8 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                       e.stopPropagation();
                       onToggleExpanded(topic.id);
                     }}
-                    className={`flex-shrink-0 p-1 rounded-md ${
-                      isSelected ? 'hover:bg-violet-200/50' : 'hover:bg-muted'
+                    className={`flex-shrink-0 p-1 rounded-md transition-all duration-200 ${
+                      isSelected ? 'hover:bg-violet-200/50' : 'hover:bg-violet-100/50'
                     }`}
                   >
                     {isExpanded ? (
@@ -127,19 +132,19 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                 )}
                 
                 {/* Topic icon */}
-                <div className={`flex-shrink-0 p-2 rounded-lg ${
+                <div className={`flex-shrink-0 p-2 rounded-lg transition-all duration-200 ${
                   isSelected 
                     ? 'bg-gradient-to-br from-violet-400/20 to-blue-400/20' 
-                    : 'bg-muted/50 group-hover:bg-muted'
+                    : 'bg-gradient-to-br from-violet-100/50 to-blue-100/50 group-hover:from-violet-200/50 group-hover:to-blue-200/50'
                 }`}>
                   {hasChildren ? (
                     isExpanded ? (
-                      <FolderOpen className="w-5 h-5 text-primary" />
+                      <FolderOpen className="w-5 h-5 text-violet-600" />
                     ) : (
-                      <Folder className="w-5 h-5 text-primary" />
+                      <Folder className="w-5 h-5 text-violet-600" />
                     )
                   ) : (
-                    <FileText className="w-5 h-5 text-primary" />
+                    <FileText className="w-5 h-5 text-blue-600" />
                   )}
                 </div>
                 
@@ -154,8 +159,8 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                     {isSearchResult(topic) && topic.similarity && (
                       <Badge 
                         variant="outline" 
-                        className={`text-xs shrink-0 ${
-                          isSelected ? 'border-violet-300/50 bg-violet-100/50 text-violet-700' : 'border-primary/30 bg-primary/10 text-primary'
+                        className={`text-xs shrink-0 border-violet-300/50 ${
+                          isSelected ? 'bg-violet-100/50 text-violet-700' : 'bg-violet-50/50 text-violet-600'
                         }`}
                       >
                         {Math.round(topic.similarity * 100)}%
@@ -164,8 +169,8 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                     {topic.childTopics.length > 0 && (
                       <Badge 
                         variant="outline" 
-                        className={`text-xs shrink-0 ${
-                          isSelected ? 'border-blue-300/50 bg-blue-100/50 text-blue-700' : 'border-primary/30 bg-primary/10 text-primary'
+                        className={`text-xs shrink-0 border-blue-300/50 ${
+                          isSelected ? 'bg-blue-100/50 text-blue-700' : 'bg-blue-50/50 text-blue-600'
                         }`}
                       >
                         {topic.childTopics.length}
@@ -201,8 +206,8 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                   {isSearchResult(topic) && topic.matchedIn && (
                     <Badge 
                       variant="outline" 
-                      className={`text-xs mt-1 ${
-                        isSelected ? 'border-purple-300/50 bg-purple-100/50 text-purple-700' : 'border-primary/30 bg-primary/10 text-primary'
+                      className={`text-xs mt-1 border-purple-300/50 ${
+                        isSelected ? 'bg-purple-100/50 text-purple-700' : 'bg-purple-50/50 text-purple-600'
                       }`}
                     >
                       Matched in {topic.matchedIn}
