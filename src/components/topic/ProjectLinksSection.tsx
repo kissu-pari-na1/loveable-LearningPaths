@@ -80,8 +80,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
 
   const getTypeColor = (type: 'Personal' | 'Project') => {
     return type === 'Personal' 
-      ? 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-700' 
-      : 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700';
+      ? 'bg-blue-500 text-white border-blue-600 hover:bg-blue-600' 
+      : 'bg-green-500 text-white border-green-600 hover:bg-green-600';
   };
 
   return (
@@ -266,7 +266,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                           return (
                             <Badge 
                               key={type} 
-                              className={`text-xs font-medium px-2 py-1 border ${getTypeColor(type)} flex items-center gap-1`}
+                              variant="outline"
+                              className={`text-xs font-medium px-2 py-1 border flex items-center gap-1 ${getTypeColor(type)}`}
                             >
                               <IconComponent className="w-2.5 h-2.5" />
                               {type}
