@@ -63,13 +63,20 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full overflow-hidden">
-        <TabsList className="grid w-full grid-cols-3 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14 flex-shrink-0">
+        <TabsList className="grid w-full grid-cols-4 mb-6 bg-muted/50 p-1 rounded-lg h-12 md:h-14 flex-shrink-0">
           <TabsTrigger 
-            value="topic" 
+            value="overview" 
             className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
           >
             <span className="hidden sm:inline text-base md:text-lg">📋</span>
-            <span className="truncate">Topic</span>
+            <span className="truncate">Overview</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="description" 
+            className="relative data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200 rounded-md text-sm md:text-base font-medium flex items-center justify-center gap-2 px-2 md:px-4"
+          >
+            <span className="hidden sm:inline text-base md:text-lg">📝</span>
+            <span className="truncate">Description</span>
           </TabsTrigger>
           <TabsTrigger 
             value="resources" 
@@ -98,7 +105,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="topic" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
+        <TabsContent value="overview" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
           <ScrollArea className="h-full">
             <div className="space-y-6 p-1 pb-8">
               <TopicDetailHeader
@@ -117,7 +124,33 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div>
-                      <h3 className="text-lg font-semibold mb-2 text-foreground">About this topic</h3>
+                      <h3 className="text-lg font-semibold mb-2 text-foreground">Quick Stats</h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">{topic.projectLinks.length}</div>
+                          <div className="text-sm text-muted-foreground">Resources</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">{topic.childTopics.length}</div>
+                          <div className="text-sm text-muted-foreground">Subtopics</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </ScrollArea>
+        </TabsContent>
+
+        <TabsContent value="description" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
+          <ScrollArea className="h-full">
+            <div className="space-y-4 p-1 pb-8">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 text-foreground">About {topic.name}</h3>
                       {topic.description ? (
                         <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
                           {topic.description}
@@ -127,17 +160,6 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
                           No description available for this topic.
                         </p>
                       )}
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-primary">{topic.projectLinks.length}</div>
-                        <div className="text-sm text-muted-foreground">Resources</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-primary">{topic.childTopics.length}</div>
-                        <div className="text-sm text-muted-foreground">Subtopics</div>
-                      </div>
                     </div>
                   </div>
                 </CardContent>
