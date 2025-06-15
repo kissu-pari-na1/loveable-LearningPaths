@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -71,24 +70,24 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full">
         {/* Simple Clean Tab Header */}
         <div className="flex-shrink-0 sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 px-6 py-4">
-          <TabsList className="h-11 bg-gray-50 dark:bg-slate-800 p-1 rounded-lg w-full lg:w-auto">
+          <TabsList className="h-11 bg-gray-50 dark:bg-slate-800 p-1 rounded-lg w-full lg:w-auto gap-2">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
+              className="flex items-center gap-3 px-5 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
             >
               <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">Overview</span>
             </TabsTrigger>
             <TabsTrigger 
               value="description" 
-              className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
+              className="flex items-center gap-3 px-5 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Description</span>
             </TabsTrigger>
             <TabsTrigger 
               value="resources" 
-              className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
+              className="flex items-center gap-3 px-5 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
             >
               <Link className="w-4 h-4" />
               <span className="hidden sm:inline">Resources</span>
@@ -101,7 +100,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             {(hasSubtopics || isAdminMode) && (
               <TabsTrigger 
                 value="subtopics" 
-                className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
+                className="flex items-center gap-3 px-5 py-2 rounded-md font-medium text-sm transition-all duration-200 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700 dark:data-[state=active]:text-white text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-700/50"
               >
                 <Folder className="w-4 h-4" />
                 <span className="hidden sm:inline">Subtopics</span>
