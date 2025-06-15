@@ -66,10 +66,10 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col h-full">
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full">
-        {/* Sticky Tab Header */}
-        <div className="flex-shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 px-4 py-3">
+        {/* Fixed Tab Header */}
+        <div className="flex-shrink-0 sticky top-0 z-20 bg-background border-b border-border px-4 py-3 shadow-sm">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-none lg:inline-flex">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <span className="text-sm">📋</span>
@@ -103,57 +103,55 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
         </div>
 
         {/* Scrollable Tab Content */}
-        <div className="flex-1 overflow-hidden">
-          <ScrollArea className="h-full w-full">
-            <div className="p-4 pb-6">
-              <TabsContent value="overview" className="mt-0">
-                {isEditing ? (
-                  <OverviewEditingView
-                    editForm={editForm}
-                    onSave={onSave}
-                    onCancel={onCancel}
-                    onEditFormChange={onEditFormChange}
-                  />
-                ) : (
-                  <OverviewDisplayView
-                    topic={topic}
-                    isAdminMode={isAdminMode}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    onReadMoreClick={handleReadMoreClick}
-                  />
-                )}
-              </TabsContent>
-
-              <TabsContent value="description" className="mt-0">
-                <DescriptionTabContent topic={topic} />
-              </TabsContent>
-
-              <TabsContent value="resources" className="mt-0">
-                <ProjectLinksSection
+        <div className="flex-1 overflow-auto">
+          <div className="p-4 pb-6">
+            <TabsContent value="overview" className="mt-0">
+              {isEditing ? (
+                <OverviewEditingView
+                  editForm={editForm}
+                  onSave={onSave}
+                  onCancel={onCancel}
+                  onEditFormChange={onEditFormChange}
+                />
+              ) : (
+                <OverviewDisplayView
                   topic={topic}
                   isAdminMode={isAdminMode}
-                  showAddLink={showAddLink}
-                  newLink={newLink}
-                  onToggleAddLink={onToggleAddLink}
-                  onAddLink={onAddLink}
-                  onRemoveLink={onRemoveLink}
-                  onNewLinkChange={onNewLinkChange}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onReadMoreClick={handleReadMoreClick}
+                />
+              )}
+            </TabsContent>
+
+            <TabsContent value="description" className="mt-0">
+              <DescriptionTabContent topic={topic} />
+            </TabsContent>
+
+            <TabsContent value="resources" className="mt-0">
+              <ProjectLinksSection
+                topic={topic}
+                isAdminMode={isAdminMode}
+                showAddLink={showAddLink}
+                newLink={newLink}
+                onToggleAddLink={onToggleAddLink}
+                onAddLink={onAddLink}
+                onRemoveLink={onRemoveLink}
+                onNewLinkChange={onNewLinkChange}
+              />
+            </TabsContent>
+
+            {(hasSubtopics || isAdminMode) && (
+              <TabsContent value="subtopics" className="mt-0">
+                <SubtopicsSection
+                  topic={topic}
+                  isAdminMode={isAdminMode}
+                  onSubtopicClick={onSubtopicClick}
+                  onAddSubtopic={onAddSubtopic}
                 />
               </TabsContent>
-
-              {(hasSubtopics || isAdminMode) && (
-                <TabsContent value="subtopics" className="mt-0">
-                  <SubtopicsSection
-                    topic={topic}
-                    isAdminMode={isAdminMode}
-                    onSubtopicClick={onSubtopicClick}
-                    onAddSubtopic={onAddSubtopic}
-                  />
-                </TabsContent>
-              )}
-            </div>
-          </ScrollArea>
+            )}
+          </div>
         </div>
       </Tabs>
     </div>
