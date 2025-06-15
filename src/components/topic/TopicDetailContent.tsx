@@ -10,6 +10,7 @@ interface TopicDetailContentProps {
   onDeleteTopic: (topicId: string) => void;
   onAddSubtopic?: (newSubtopic: Omit<Topic, 'id'>, parentId: string) => void;
   onTopicSelect?: (topicId: string) => void;
+  allTopics: Topic[];
 }
 
 export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
@@ -18,7 +19,8 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
   onUpdateTopic,
   onDeleteTopic,
   onAddSubtopic,
-  onTopicSelect
+  onTopicSelect,
+  allTopics
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({ name: '', description: '' });
@@ -97,6 +99,12 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
     setNewLink(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleParentTopicClick = (parentId: string) => {
+    if (onTopicSelect) {
+      onTopicSelect(parentId);
+    }
+  };
+
   return (
     <div className="h-full w-full max-w-5xl mx-auto p-3 md:p-4 lg:p-6">
       <TopicDetailTabs
@@ -119,6 +127,8 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
         onCancel={handleCancel}
         onDelete={() => onDeleteTopic(topic.id)}
         onEditFormChange={handleEditFormChange}
+        onParentTopicClick={handleParentTopicClick}
+        allTopics={allTopics}
       />
     </div>
   );

@@ -53,6 +53,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         onDeleteTopic={onDeleteTopic}
         onAddSubtopic={onAddSubtopic}
         onTopicSelect={onTopicSelect}
+        allTopics={topics}
       />
     </div>
   );
