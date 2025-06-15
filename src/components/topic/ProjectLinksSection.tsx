@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Topic, ProjectLink } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
@@ -78,7 +79,9 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
   };
 
   const getTypeColor = (type: 'Personal' | 'Project') => {
-    return type === 'Personal' ? 'bg-blue-100 text-blue-800 border-blue-200' : 'bg-green-100 text-green-800 border-green-200';
+    return type === 'Personal' 
+      ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700' 
+      : 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700';
   };
 
   return (
@@ -86,7 +89,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-primary/10">
+          <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
             <LinkIcon className="w-5 h-5 text-primary" />
           </div>
           <div>
@@ -99,7 +102,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
         {isAdminMode && (
           <Button 
             onClick={onToggleAddLink}
-            className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg hover:shadow-xl transition-all duration-200"
+            className="flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             Add Resource
@@ -109,11 +112,11 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
 
       {/* Add Resource Form */}
       {showAddLink && (
-        <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-primary/2 shadow-lg">
+        <Card className="border-2 border-dashed border-primary/30 bg-primary/5">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-3 text-primary">
+            <CardTitle className="text-lg flex items-center gap-3 text-foreground">
               <div className="p-2 bg-primary/10 rounded-lg">
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4 text-primary" />
               </div>
               Add New Resource
             </CardTitle>
@@ -129,7 +132,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                   placeholder="Enter resource title"
                   value={newLink.title}
                   onChange={(e) => onNewLinkChange('title', e.target.value)}
-                  className="bg-background border-2 focus:border-primary/50 transition-colors"
+                  className="bg-background"
                 />
               </div>
               <div className="space-y-2">
@@ -141,7 +144,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                   placeholder="https://example.com"
                   value={newLink.url}
                   onChange={(e) => onNewLinkChange('url', e.target.value)}
-                  className="bg-background border-2 focus:border-primary/50 transition-colors"
+                  className="bg-background"
                 />
               </div>
             </div>
@@ -152,7 +155,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                 placeholder="Brief description of the resource (optional)"
                 value={newLink.description}
                 onChange={(e) => onNewLinkChange('description', e.target.value)}
-                className="bg-background border-2 focus:border-primary/50 transition-colors"
+                className="bg-background"
               />
             </div>
 
@@ -164,9 +167,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     id="personal-new"
                     checked={newLink.types?.includes('Personal') || false}
                     onCheckedChange={(checked) => handleTypeToggle('Personal', checked as boolean)}
-                    className="border-2"
                   />
-                  <label htmlFor="personal-new" className="text-sm font-medium cursor-pointer flex items-center gap-2">
+                  <label htmlFor="personal-new" className="text-sm font-medium cursor-pointer flex items-center gap-2 text-foreground">
                     <User className="w-3.5 h-3.5 text-blue-600" />
                     Personal
                   </label>
@@ -176,9 +178,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     id="project-new"
                     checked={newLink.types?.includes('Project') || false}
                     onCheckedChange={(checked) => handleTypeToggle('Project', checked as boolean)}
-                    className="border-2"
                   />
-                  <label htmlFor="project-new" className="text-sm font-medium cursor-pointer flex items-center gap-2">
+                  <label htmlFor="project-new" className="text-sm font-medium cursor-pointer flex items-center gap-2 text-foreground">
                     <Briefcase className="w-3.5 h-3.5 text-green-600" />
                     Project
                   </label>
@@ -189,7 +190,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
             <div className="flex gap-3 pt-3">
               <Button 
                 onClick={onAddLink} 
-                className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80"
+                className="flex items-center gap-2"
                 disabled={!newLink.title || !newLink.url}
               >
                 <Plus className="w-4 h-4" />
@@ -198,7 +199,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
               <Button 
                 variant="outline" 
                 onClick={onToggleAddLink}
-                className="flex items-center gap-2 border-2"
+                className="flex items-center gap-2"
               >
                 <X className="w-4 h-4" />
                 Cancel
@@ -210,9 +211,9 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
       
       {/* Resources List */}
       {topic.projectLinks.length === 0 ? (
-        <Card className="border-dashed border-2 border-muted-foreground/20 bg-gradient-to-br from-muted/20 to-muted/10">
+        <Card className="border-dashed border-2 border-muted-foreground/20">
           <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-muted/50 to-muted/30 rounded-full flex items-center justify-center mb-4 shadow-lg">
+            <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mb-4">
               <LinkIcon className="w-8 h-8 text-muted-foreground" />
             </div>
             <h3 className="text-lg font-semibold mb-2 text-foreground">No resources yet</h3>
@@ -223,7 +224,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
               <Button 
                 onClick={onToggleAddLink} 
                 variant="outline" 
-                className="flex items-center gap-2 border-2 hover:bg-primary/5"
+                className="flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 Add First Resource
@@ -234,7 +235,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
       ) : (
         <div className="grid gap-4">
           {topic.projectLinks.map((link) => (
-            <Card key={link.id} className="group hover:shadow-lg transition-all duration-300 hover:border-primary/30 border bg-gradient-to-br from-card to-card/80">
+            <Card key={link.id} className="group hover:shadow-md transition-all duration-300 hover:border-primary/30">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
@@ -243,7 +244,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                         onClick={() => window.open(link.url, '_blank', 'noopener noreferrer')}
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
                       >
-                        <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                        <div className="p-1.5 bg-primary/10 rounded-lg">
                           <ExternalLink className="w-4 h-4 text-primary" />
                         </div>
                         <span className="text-sm font-medium text-primary hover:text-primary/80 transition-colors break-words group-hover:underline">
@@ -253,7 +254,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     </div>
                     
                     {link.description && (
-                      <p className="text-sm text-muted-foreground mb-3 break-words leading-relaxed pl-7">
+                      <p className="text-sm text-foreground/70 mb-3 break-words leading-relaxed pl-7">
                         {link.description}
                       </p>
                     )}
@@ -284,9 +285,9 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                         e.stopPropagation();
                         handleDeleteClick(link.id, link.title);
                       }}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-10 w-10 rounded-full p-0 min-w-10"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 h-8 w-8 rounded-full p-0"
                     >
-                      <X className="w-5 h-5" />
+                      <X className="w-4 h-4" />
                     </Button>
                   )}
                 </div>
