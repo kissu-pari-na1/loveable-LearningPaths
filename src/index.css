@@ -103,6 +103,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
     font-weight: 600;
+    @apply text-foreground;
   }
 
   /* Ensure consistent button font weights and family */
@@ -115,17 +116,34 @@
   label {
     font-family: inherit;
     font-weight: 500;
+    @apply text-foreground;
   }
 
   /* Standard text input font weight and family */
   input, textarea, select {
     font-family: inherit;
     font-weight: 400;
+    @apply text-foreground;
   }
 
-  /* Ensure all text elements use consistent font */
+  /* Ensure all text elements use consistent font and proper contrast */
   p, span, div {
     font-family: inherit;
+  }
+
+  /* Fix any potential contrast issues */
+  .text-current {
+    @apply text-foreground;
+  }
+
+  /* Ensure proper contrast for placeholder text */
+  ::placeholder {
+    @apply text-muted-foreground;
+  }
+
+  /* Fix any invisible text issues */
+  [class*="text-"] {
+    color: inherit;
   }
 }
 
@@ -150,6 +168,16 @@
   /* Standard tree view hover styles */
   .tree-item-hover {
     @apply hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/10 hover:text-primary transition-all duration-200 hover:shadow-sm;
+  }
+
+  /* Ensure proper text visibility in all components */
+  .ensure-visibility {
+    @apply bg-background text-foreground border-border;
+  }
+
+  /* Fix invisible text in cards and similar components */
+  .card-content {
+    @apply bg-card text-card-foreground;
   }
   
   @keyframes shimmer {

@@ -80,8 +80,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
 
   const getTypeColor = (type: 'Personal' | 'Project') => {
     return type === 'Personal' 
-      ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700' 
-      : 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700';
+      ? 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-700' 
+      : 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700';
   };
 
   return (
@@ -132,7 +132,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                   placeholder="Enter resource title"
                   value={newLink.title}
                   onChange={(e) => onNewLinkChange('title', e.target.value)}
-                  className="bg-background"
+                  className="bg-background border-input text-foreground placeholder:text-muted-foreground"
                 />
               </div>
               <div className="space-y-2">
@@ -144,7 +144,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                   placeholder="https://example.com"
                   value={newLink.url}
                   onChange={(e) => onNewLinkChange('url', e.target.value)}
-                  className="bg-background"
+                  className="bg-background border-input text-foreground placeholder:text-muted-foreground"
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                 placeholder="Brief description of the resource (optional)"
                 value={newLink.description}
                 onChange={(e) => onNewLinkChange('description', e.target.value)}
-                className="bg-background"
+                className="bg-background border-input text-foreground placeholder:text-muted-foreground"
               />
             </div>
 
@@ -169,7 +169,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     onCheckedChange={(checked) => handleTypeToggle('Personal', checked as boolean)}
                   />
                   <label htmlFor="personal-new" className="text-sm font-medium cursor-pointer flex items-center gap-2 text-foreground">
-                    <User className="w-3.5 h-3.5 text-blue-600" />
+                    <User className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     Personal
                   </label>
                 </div>
@@ -180,7 +180,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     onCheckedChange={(checked) => handleTypeToggle('Project', checked as boolean)}
                   />
                   <label htmlFor="project-new" className="text-sm font-medium cursor-pointer flex items-center gap-2 text-foreground">
-                    <Briefcase className="w-3.5 h-3.5 text-green-600" />
+                    <Briefcase className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
                     Project
                   </label>
                 </div>
@@ -235,7 +235,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
       ) : (
         <div className="grid gap-4">
           {topic.projectLinks.map((link) => (
-            <Card key={link.id} className="group hover:shadow-md transition-all duration-300 hover:border-primary/30">
+            <Card key={link.id} className="group hover:shadow-md transition-all duration-300 hover:border-primary/30 bg-card border-border">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
@@ -244,7 +244,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                         onClick={() => window.open(link.url, '_blank', 'noopener noreferrer')}
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
                       >
-                        <div className="p-1.5 bg-primary/10 rounded-lg">
+                        <div className="p-1.5 bg-primary/10 rounded-lg border border-primary/20">
                           <ExternalLink className="w-4 h-4 text-primary" />
                         </div>
                         <span className="text-sm font-medium text-primary hover:text-primary/80 transition-colors break-words group-hover:underline">
@@ -254,7 +254,7 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                     </div>
                     
                     {link.description && (
-                      <p className="text-sm text-foreground/70 mb-3 break-words leading-relaxed pl-7">
+                      <p className="text-sm text-muted-foreground mb-3 break-words leading-relaxed pl-7">
                         {link.description}
                       </p>
                     )}
@@ -299,15 +299,15 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialog.isOpen} onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, isOpen: open }))}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-background border-border">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this resource?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-foreground">Are you sure you want to delete this resource?</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
               This action cannot be undone. This will permanently delete the resource "{deleteDialog.linkTitle}".
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="bg-background text-foreground border-border hover:bg-muted">Cancel</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleDeleteConfirm}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
