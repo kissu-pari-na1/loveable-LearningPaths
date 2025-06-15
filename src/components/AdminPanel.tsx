@@ -131,16 +131,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       </Card>
 
       {/* Move Topic */}
-      <Card className="border-2 border-blue-200/50 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/20 dark:to-indigo-950/20 shadow-lg backdrop-blur-sm">
+      <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/3 to-purple-50/30 dark:from-primary/5 dark:to-purple-950/20 shadow-lg backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2 text-blue-700 dark:text-blue-300 font-medium">
+          <CardTitle className="text-sm flex items-center gap-2 text-primary font-medium">
             <Move className="w-3 h-3" />
             Move Topic
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <Select value={moveTopicId} onValueChange={setMoveTopicId}>
-            <SelectTrigger className="border-blue-200/50 focus:border-blue-400 h-8 text-xs">
+            <SelectTrigger className="border-primary/30 focus:border-primary h-8 text-xs">
               <SelectValue placeholder="Select topic to move" />
             </SelectTrigger>
             <SelectContent className="max-h-32">
@@ -155,7 +155,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </Select>
           
           <Select value={moveToParentId} onValueChange={setMoveToParentId}>
-            <SelectTrigger className="border-blue-200/50 focus:border-blue-400 h-8 text-xs">
+            <SelectTrigger className="border-primary/30 focus:border-primary h-8 text-xs">
               <SelectValue placeholder="Select new parent" />
             </SelectTrigger>
             <SelectContent className="max-h-32">
@@ -174,7 +174,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           
           <Button 
             onClick={handleMoveTopic} 
-            className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-md h-8 text-xs font-medium"
+            className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white shadow-md h-8 text-xs font-medium"
             disabled={!moveTopicId}
           >
             <Move className="w-3 h-3 mr-1" />
