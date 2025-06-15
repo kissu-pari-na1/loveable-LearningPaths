@@ -69,7 +69,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
 
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 z-10" />
         <Input
           ref={inputRef}
           type="text"
@@ -84,7 +84,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           <Button
             variant="ghost"
             size="sm"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted z-10"
             onClick={handleClearSearch}
           >
             <X className="h-3 w-3" />
