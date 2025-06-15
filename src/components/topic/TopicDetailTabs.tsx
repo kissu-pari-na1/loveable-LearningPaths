@@ -263,7 +263,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           </TabsTrigger>
           <TabsTrigger 
             value="description" 
-            className="relative data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-green-50/50 dark:data-[state=active]:from-slate-800 dark:data-[state=active]:to-green-950/30 data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all duration-300 rounded-lg text-xs md:text-sm font-medium flex items-center justify-center gap-1 px-2 md:px-3 hover:bg-white/50 dark:hover:bg-slate-800/50"
+            className="relative data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-purple-50/50 dark:data-[state=active]:from-slate-800 dark:data-[state=active]:to-purple-950/30 data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all duration-300 rounded-lg text-xs md:text-sm font-medium flex items-center justify-center gap-1 px-2 md:px-3 hover:bg-white/50 dark:hover:bg-slate-800/50"
           >
             <span className="hidden sm:inline text-sm">📝</span>
             <span className="truncate">Description</span>
