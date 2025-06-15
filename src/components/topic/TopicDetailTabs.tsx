@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -74,23 +73,23 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           <TabsList className="h-12 bg-gradient-to-r from-muted/40 via-muted/50 to-muted/40 backdrop-blur-sm border border-border/40 p-1 rounded-xl shadow-md w-full lg:w-auto">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40"
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
             >
-              <FileText className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
+              <FileText className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
               <span className="hidden sm:inline text-sm">Overview</span>
             </TabsTrigger>
             <TabsTrigger 
               value="description" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40"
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
             >
-              <BookOpen className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
+              <BookOpen className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
               <span className="hidden sm:inline text-sm">Description</span>
             </TabsTrigger>
             <TabsTrigger 
               value="resources" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40"
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
             >
-              <Link className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
+              <Link className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
               <span className="hidden sm:inline text-sm">Resources</span>
               {topic.projectLinks.length > 0 && (
                 <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-primary/20 to-primary/15 text-primary border border-primary/30 rounded-full font-medium shadow-sm">
@@ -101,9 +100,9 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             {(hasSubtopics || isAdminMode) && (
               <TabsTrigger 
                 value="subtopics" 
-                className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40"
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
               >
-                <Folder className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
+                <Folder className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
                 <span className="hidden sm:inline text-sm">Subtopics</span>
                 {hasSubtopics && (
                   <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-primary/20 to-primary/15 text-primary border border-primary/30 rounded-full font-medium shadow-sm">
