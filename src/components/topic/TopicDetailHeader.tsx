@@ -85,7 +85,7 @@ export const TopicDetailHeader: React.FC<TopicDetailHeaderProps> = ({
               <AlertDialogTrigger asChild>
                 <Button 
                   variant="destructive" 
-                  className="w-full sm:w-auto text-sm flex items-center gap-2 bg-gradient-to-r from-red-500 via-red-600 to-red-700/80 hover:from-red-600 hover:via-red-700 hover:to-red-800 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+                  className="w-full sm:w-auto text-sm flex items-center gap-2 bg-gradient-to-r from-primary via-purple-600 to-red-500 hover:from-primary/90 hover:via-purple-700 hover:to-red-600 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
                 >
                   <Trash2 className="w-4 h-4" />
                   Delete
@@ -109,7 +109,7 @@ export const TopicDetailHeader: React.FC<TopicDetailHeaderProps> = ({
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction 
                     onClick={handleDeleteConfirm}
-                    className="bg-gradient-to-r from-red-500 via-red-600 to-red-700/80 hover:from-red-600 hover:via-red-700 hover:to-red-800 text-white"
+                    className="bg-gradient-to-r from-primary via-purple-600 to-red-500 hover:from-primary/90 hover:via-purple-700 hover:to-red-600 text-white"
                   >
                     Delete Topic
                   </AlertDialogAction>

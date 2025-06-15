@@ -56,7 +56,7 @@ export const AdminActionsCard: React.FC<AdminActionsCardProps> = ({
               <Button 
                 variant="destructive" 
                 size="sm"
-                className="w-full sm:w-auto text-sm bg-gradient-to-r from-red-500 via-red-600 to-red-700/80 hover:from-red-600 hover:via-red-700 hover:to-red-800 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+                className="w-full sm:w-auto text-sm bg-gradient-to-r from-primary via-purple-600 to-red-500 hover:from-primary/90 hover:via-purple-700 hover:to-red-600 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
               >
                 <Trash2 className="w-3 h-3 mr-1" />
                 Delete Topic
@@ -80,7 +80,7 @@ export const AdminActionsCard: React.FC<AdminActionsCardProps> = ({
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction 
                   onClick={handleDeleteConfirm}
-                  className="bg-gradient-to-r from-red-500 via-red-600 to-red-700/80 hover:from-red-600 hover:via-red-700 hover:to-red-800 text-white"
+                  className="bg-gradient-to-r from-primary via-purple-600 to-red-500 hover:from-primary/90 hover:via-purple-700 hover:to-red-600 text-white"
                 >
                   Delete Topic
                 </AlertDialogAction>
