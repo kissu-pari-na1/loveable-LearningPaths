@@ -35,7 +35,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
 
   if (!topic) {
     return (
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-8 h-full min-h-[400px]">
         <div className="text-center">
           <h2 className="text-xl font-semibold mb-2">Topic not found</h2>
           <p className="text-muted-foreground">The selected topic could not be found.</p>
@@ -45,7 +45,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   }
 
   return (
-    <div className="flex-1 overflow-auto">
+    <div className="h-full">
       <TopicDetailContent
         topic={topic}
         isAdminMode={isAdminMode}

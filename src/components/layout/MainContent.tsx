@@ -5,6 +5,7 @@ import { TopicDetail } from '@/components/TopicDetail';
 import { WelcomeScreen } from '@/components/layout/WelcomeScreen';
 import { Topic } from '@/types/Topic';
 import { LearningPathAccess } from '@/hooks/useSharedLearningPaths';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface MainContentProps {
   user: any;
@@ -42,34 +43,40 @@ export const MainContent: React.FC<MainContentProps> = ({
   onSignIn
 }) => {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-hidden">
       {user && (
-        <DashboardSelector
-          availablePaths={availablePaths}
-          selectedPathUserId={selectedPathUserId}
-          onPathSelect={onPathSelect}
-          loading={pathsLoading}
-        />
+        <div className="flex-shrink-0 border-b border-border/50 bg-card/50 backdrop-blur-sm">
+          <DashboardSelector
+            availablePaths={availablePaths}
+            selectedPathUserId={selectedPathUserId}
+            onPathSelect={onPathSelect}
+            loading={pathsLoading}
+          />
+        </div>
       )}
       
-      {selectedTopicId ? (
-        <TopicDetail 
-          topicId={selectedTopicId}
-          topics={topics}
-          isAdminMode={isAdminMode}
-          onUpdateTopic={onUpdateTopic}
-          onDeleteTopic={onDeleteTopic}
-          onAddSubtopic={onAddSubtopic}
-          onTopicSelect={onTopicSelect}
-        />
-      ) : (
-        <WelcomeScreen
-          user={user}
-          userPermission={userPermission}
-          onSignIn={onSignIn}
-          isMobile={isMobile}
-        />
-      )}
+      <div className="flex-1 overflow-hidden">
+        <ScrollArea className="h-full w-full">
+          {selectedTopicId ? (
+            <TopicDetail 
+              topicId={selectedTopicId}
+              topics={topics}
+              isAdminMode={isAdminMode}
+              onUpdateTopic={onUpdateTopic}
+              onDeleteTopic={onDeleteTopic}
+              onAddSubtopic={onAddSubtopic}
+              onTopicSelect={onTopicSelect}
+            />
+          ) : (
+            <WelcomeScreen
+              user={user}
+              userPermission={userPermission}
+              onSignIn={onSignIn}
+              isMobile={isMobile}
+            />
+          )}
+        </ScrollArea>
+      </div>
     </div>
   );
 };

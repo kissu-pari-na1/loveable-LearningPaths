@@ -98,7 +98,7 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden p-3 md:p-4 lg:p-6 max-w-5xl mx-auto w-full">
+    <div className="h-full w-full max-w-5xl mx-auto p-3 md:p-4 lg:p-6">
       <TopicDetailTabs
         topic={topic}
         isAdminMode={isAdminMode}
