@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -71,19 +70,32 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
     onTabChange('description');
   };
 
-  // Find parent topic
+  // Find parent topic with proper error handling
   const findParentTopic = (topics: Topic[], targetTopic: Topic): Topic | null => {
-    for (const t of topics) {
-      if (t.childTopics.some(child => child.id === targetTopic.id)) {
-        return t;
-      }
-      const found = findParentTopic(t.childTopics, targetTopic);
-      if (found) return found;
+    // Add defensive checks
+    if (!topics || !Array.isArray(topics) || !targetTopic) {
+      return null;
     }
+    
+    try {
+      for (const t of topics) {
+        if (t.childTopics && Array.isArray(t.childTopics) && t.childTopics.some(child => child.id === targetTopic.id)) {
+          return t;
+        }
+        if (t.childTopics && Array.isArray(t.childTopics)) {
+          const found = findParentTopic(t.childTopics, targetTopic);
+          if (found) return found;
+        }
+      }
+    } catch (error) {
+      console.error('Error finding parent topic:', error);
+      return null;
+    }
+    
     return null;
   };
 
-  const parentTopic = findParentTopic(allTopics, topic);
+  const parentTopic = findParentTopic(allTopics || [], topic);
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
@@ -134,17 +146,19 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
               )}
             </TabsList>
             
-            {/* Parent Topic Button */}
+            {/* Parent Topic Button with improved responsive design */}
             {parentTopic && onParentTopicClick && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onParentTopicClick(parentTopic.id)}
-                className="flex items-center gap-2 h-11 px-4 bg-white/80 dark:bg-slate-800/80 border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-200"
-              >
-                <ArrowUp className="w-4 h-4" />
-                <span className="hidden sm:inline font-medium">Parent</span>
-              </Button>
+              <div className="flex-shrink-0">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onParentTopicClick(parentTopic.id)}
+                  className="flex items-center gap-2 h-11 px-4 bg-white/80 dark:bg-slate-800/80 border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-200 min-w-[44px]"
+                >
+                  <ArrowUp className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden md:inline font-medium whitespace-nowrap">Parent</span>
+                </Button>
+              </div>
             )}
           </div>
         </div>
