@@ -93,28 +93,39 @@
   }
 
   body {
-    @apply bg-background text-foreground font-medium;
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-weight: 400;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Standardize font weights across the application */
+  /* Standardize font weights and family across the application */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-medium;
+    font-family: inherit;
+    font-weight: 600;
   }
 
-  /* Ensure consistent button font weights */
+  /* Ensure consistent button font weights and family */
   button {
-    @apply font-medium;
+    font-family: inherit;
+    font-weight: 500;
   }
 
-  /* Standard label font weight */
+  /* Standard label font weight and family */
   label {
-    @apply font-medium;
+    font-family: inherit;
+    font-weight: 500;
   }
 
-  /* Standard text input font weight */
+  /* Standard text input font weight and family */
   input, textarea, select {
-    @apply font-normal;
+    font-family: inherit;
+    font-weight: 400;
+  }
+
+  /* Ensure all text elements use consistent font */
+  p, span, div {
+    font-family: inherit;
   }
 }
 

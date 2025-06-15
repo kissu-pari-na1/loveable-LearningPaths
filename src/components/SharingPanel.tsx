@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -202,7 +201,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
         <CardHeader className="pb-2">
           <CardTitle className="text-sm flex items-center gap-2 text-primary">
             <Share2 className="w-3 h-3" />
-            Share Learning Path
+            <span className="font-medium">Share Learning Path</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -220,17 +219,17 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="viewer">Viewer (View only)</SelectItem>
-                <SelectItem value="admin">Admin (View & Edit)</SelectItem>
+                <SelectItem value="viewer"><span className="text-xs">Viewer (View only)</span></SelectItem>
+                <SelectItem value="admin"><span className="text-xs">Admin (View & Edit)</span></SelectItem>
               </SelectContent>
             </Select>
             <Button 
               onClick={handleShare} 
-              className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white shadow-md h-8 text-xs"
+              className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white shadow-md h-8 text-xs font-medium"
               disabled={isSharing}
             >
               <Mail className="w-3 h-3 mr-1" />
-              {isSharing ? 'Sharing...' : 'Share'}
+              <span className="font-medium">{isSharing ? 'Sharing...' : 'Share'}</span>
             </Button>
           </div>
 
@@ -247,7 +246,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
                       <span className="text-xs font-medium truncate">
                         {share.shared_with_email || 'Unknown User'}
                       </span>
-                      <Badge variant="outline" className="text-xs w-fit border-primary/30 bg-primary/5 text-primary px-1 py-0">
+                      <Badge variant="outline" className="text-xs w-fit border-primary/30 bg-primary/5 text-primary px-1 py-0 font-medium">
                         {share.permission_level}
                       </Badge>
                     </div>
@@ -260,8 +259,8 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="viewer">Viewer</SelectItem>
-                          <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="viewer"><span className="text-xs">Viewer</span></SelectItem>
+                          <SelectItem value="admin"><span className="text-xs">Admin</span></SelectItem>
                         </SelectContent>
                       </Select>
                       

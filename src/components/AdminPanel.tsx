@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Topic } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
@@ -78,7 +77,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
         <Settings className="w-4 h-4 text-primary" />
-        <h2 className="text-lg font-medium bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+        <h2 className="text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
           Admin Panel
         </h2>
       </div>
@@ -86,9 +85,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* Add Topic */}
       <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-white to-primary/5 dark:from-primary/10 dark:via-slate-800 dark:to-primary/10 shadow-lg backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2 text-primary font-medium">
+          <CardTitle className="text-sm flex items-center gap-2 text-primary font-semibold">
             <Plus className="w-3 h-3" />
-            Add New Topic
+            <span>Add New Topic</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -110,10 +109,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <SelectValue placeholder="Select parent (optional)" />
             </SelectTrigger>
             <SelectContent className="max-h-32">
-              <SelectItem value="root">🏠 Root Level</SelectItem>
+              <SelectItem value="root"><span className="text-xs">🏠 Root Level</span></SelectItem>
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
-                  <span className="font-mono text-xs truncate max-w-full">
+                  <span className="text-xs truncate max-w-full">
                     {renderTopicOption(topic, level)}
                   </span>
                 </SelectItem>
@@ -125,7 +124,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white shadow-md h-8 text-xs font-medium"
           >
             <Plus className="w-3 h-3 mr-1" />
-            Add Topic
+            <span>Add Topic</span>
           </Button>
         </CardContent>
       </Card>
@@ -133,9 +132,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* Move Topic */}
       <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/3 to-purple-50/30 dark:from-primary/5 dark:to-purple-950/20 shadow-lg backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2 text-primary font-medium">
+          <CardTitle className="text-sm flex items-center gap-2 text-primary font-semibold">
             <Move className="w-3 h-3" />
-            Move Topic
+            <span>Move Topic</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -146,7 +145,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <SelectContent className="max-h-32">
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
-                  <span className="font-mono text-xs truncate max-w-full">
+                  <span className="text-xs truncate max-w-full">
                     {renderTopicOption(topic, level)}
                   </span>
                 </SelectItem>
@@ -159,12 +158,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <SelectValue placeholder="Select new parent" />
             </SelectTrigger>
             <SelectContent className="max-h-32">
-              <SelectItem value="root">🏠 Root Level</SelectItem>
+              <SelectItem value="root"><span className="text-xs">🏠 Root Level</span></SelectItem>
               {flatTopics
                 .filter(({ topic }) => topic.id !== moveTopicId)
                 .map(({ topic, level }) => (
                   <SelectItem key={topic.id} value={topic.id}>
-                    <span className="font-mono text-xs truncate max-w-full">
+                    <span className="text-xs truncate max-w-full">
                       {renderTopicOption(topic, level)}
                     </span>
                   </SelectItem>
@@ -178,7 +177,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             disabled={!moveTopicId}
           >
             <Move className="w-3 h-3 mr-1" />
-            Move Topic
+            <span>Move Topic</span>
           </Button>
         </CardContent>
       </Card>
