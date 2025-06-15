@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Topic } from '@/types/Topic';
-import { TopicDetailHeader } from '@/components/topic/TopicDetailHeader';
 import { TopicDetailTabs } from '@/components/topic/TopicDetailTabs';
 
 interface TopicDetailContentProps {
@@ -99,37 +98,28 @@ export const TopicDetailContent: React.FC<TopicDetailContentProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
-      <div className="flex-shrink-0 p-3 md:p-4 lg:p-6 max-w-5xl mx-auto w-full">
-        <TopicDetailHeader
-          topic={topic}
-          isEditing={isEditing}
-          editForm={editForm}
-          isAdminMode={isAdminMode}
-          onEdit={handleEdit}
-          onSave={handleSave}
-          onCancel={handleCancel}
-          onDelete={() => onDeleteTopic(topic.id)}
-          onEditFormChange={handleEditFormChange}
-        />
-      </div>
-
-      <div className="flex-1 overflow-hidden px-3 md:px-4 lg:px-6 max-w-5xl mx-auto w-full">
-        <TopicDetailTabs
-          topic={topic}
-          isAdminMode={isAdminMode}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          showAddLink={showAddLink}
-          newLink={newLink}
-          onToggleAddLink={() => setShowAddLink(!showAddLink)}
-          onAddLink={handleAddLink}
-          onRemoveLink={handleRemoveLink}
-          onNewLinkChange={handleNewLinkChange}
-          onSubtopicClick={handleSubtopicClick}
-          onAddSubtopic={onAddSubtopic}
-        />
-      </div>
+    <div className="flex flex-col h-full overflow-hidden p-3 md:p-4 lg:p-6 max-w-5xl mx-auto w-full">
+      <TopicDetailTabs
+        topic={topic}
+        isAdminMode={isAdminMode}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        showAddLink={showAddLink}
+        newLink={newLink}
+        onToggleAddLink={() => setShowAddLink(!showAddLink)}
+        onAddLink={handleAddLink}
+        onRemoveLink={handleRemoveLink}
+        onNewLinkChange={handleNewLinkChange}
+        onSubtopicClick={handleSubtopicClick}
+        onAddSubtopic={onAddSubtopic}
+        isEditing={isEditing}
+        editForm={editForm}
+        onEdit={handleEdit}
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onDelete={() => onDeleteTopic(topic.id)}
+        onEditFormChange={handleEditFormChange}
+      />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { ProjectLinksSection } from '@/components/topic/ProjectLinksSection';
 import { SubtopicsSection } from '@/components/topic/SubtopicsSection';
 import { Card, CardContent } from '@/components/ui/card';
+import { TopicDetailHeader } from '@/components/topic/TopicDetailHeader';
 
 interface NewLinkData {
   title: string;
@@ -27,6 +28,13 @@ interface TopicDetailTabsProps {
   onNewLinkChange: (field: keyof NewLinkData, value: string | ('Personal' | 'Project')[]) => void;
   onSubtopicClick: (subtopicId: string) => void;
   onAddSubtopic?: (newSubtopic: Omit<Topic, 'id'>, parentId: string) => void;
+  isEditing: boolean;
+  editForm: { name: string; description: string };
+  onEdit: () => void;
+  onSave: () => void;
+  onCancel: () => void;
+  onDelete: () => void;
+  onEditFormChange: (field: 'name' | 'description', value: string) => void;
 }
 
 export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
@@ -41,10 +49,16 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   onRemoveLink,
   onNewLinkChange,
   onSubtopicClick,
-  onAddSubtopic
+  onAddSubtopic,
+  isEditing,
+  editForm,
+  onEdit,
+  onSave,
+  onCancel,
+  onDelete,
+  onEditFormChange
 }) => {
   const hasSubtopics = topic.childTopics.length > 0;
-  const hasLinks = topic.projectLinks.length > 0 || isAdminMode;
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
@@ -86,7 +100,19 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
         
         <TabsContent value="topic" className="flex-1 mt-0 focus-visible:outline-none overflow-hidden">
           <ScrollArea className="h-full">
-            <div className="space-y-4 p-1 pb-8">
+            <div className="space-y-6 p-1 pb-8">
+              <TopicDetailHeader
+                topic={topic}
+                isEditing={isEditing}
+                editForm={editForm}
+                isAdminMode={isAdminMode}
+                onEdit={onEdit}
+                onSave={onSave}
+                onCancel={onCancel}
+                onDelete={onDelete}
+                onEditFormChange={onEditFormChange}
+              />
+              
               <Card>
                 <CardContent className="p-6">
                   <div className="space-y-4">
