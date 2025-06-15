@@ -42,7 +42,7 @@ export const OverviewEditingView: React.FC<OverviewEditingViewProps> = ({
               className="border-2 border-primary/30 focus:border-primary focus:ring-primary/20 text-sm bg-white/80 dark:bg-slate-800/80 shadow-sm"
             />
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <Button onClick={onSave} className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+              <Button onClick={onSave} className="w-full sm:w-auto bg-gradient-to-r from-primary to-green-500 hover:from-primary/90 hover:to-green-600 text-white text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
                 Save Changes
               </Button>
               <Button variant="outline" onClick={onCancel} className="w-full sm:w-auto text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200">
