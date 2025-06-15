@@ -151,7 +151,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
           </>
         ),
         buttonText: isUpdate ? 'Change to Admin' : 'Grant Admin Access',
-        buttonClass: 'bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700'
+        buttonClass: 'bg-gradient-to-r from-primary via-purple-600 to-orange-500 hover:from-primary/90 hover:via-purple-700 hover:to-orange-600 text-white'
       };
     } else if (isDowngradeFromAdmin) {
       return {
@@ -170,7 +170,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
           </>
         ),
         buttonText: 'Downgrade to Viewer',
-        buttonClass: 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-600 hover:to-yellow-700'
+        buttonClass: 'bg-gradient-to-r from-primary via-purple-600 to-yellow-500 hover:from-primary/90 hover:via-purple-700 hover:to-yellow-600 text-white'
       };
     } else {
       return {
@@ -188,7 +188,7 @@ export const SharingPanel: React.FC<SharingPanelProps> = ({ isOwner }) => {
           </>
         ),
         buttonText: isUpdate ? 'Confirm Viewer Access' : 'Grant Viewer Access',
-        buttonClass: 'bg-gradient-to-r from-primary to-purple-600 text-white hover:from-primary/90 hover:to-purple-700'
+        buttonClass: 'bg-gradient-to-r from-primary via-purple-600 to-blue-500 hover:from-primary/90 hover:via-purple-700 hover:to-blue-600 text-white'
       };
     }
   };
