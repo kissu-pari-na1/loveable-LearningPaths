@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Topic } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
@@ -108,7 +109,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <SelectTrigger className="border-primary/30 focus:border-primary h-8 text-xs">
               <SelectValue placeholder="Select parent (optional)" />
             </SelectTrigger>
-            <SelectContent className="max-h-32">
+            <SelectContent className="max-h-32 z-50 overflow-hidden rounded-lg border border-violet-200/50 bg-gradient-to-br from-white via-violet-50/50 to-purple-50/30 shadow-xl shadow-violet-500/10 dark:border-violet-800/50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-violet-950/80 dark:to-purple-950/50 dark:shadow-violet-900/20">
               <SelectItem value="root"><span className="text-xs">🏠 Root Level</span></SelectItem>
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
@@ -142,7 +143,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <SelectTrigger className="border-primary/30 focus:border-primary h-8 text-xs">
               <SelectValue placeholder="Select topic to move" />
             </SelectTrigger>
-            <SelectContent className="max-h-32">
+            <SelectContent className="max-h-32 z-50 overflow-hidden rounded-lg border border-violet-200/50 bg-gradient-to-br from-white via-violet-50/50 to-purple-50/30 shadow-xl shadow-violet-500/10 dark:border-violet-800/50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-violet-950/80 dark:to-purple-950/50 dark:shadow-violet-900/20">
               {flatTopics.map(({ topic, level }) => (
                 <SelectItem key={topic.id} value={topic.id}>
                   <span className="text-xs truncate max-w-full">
@@ -157,7 +158,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <SelectTrigger className="border-primary/30 focus:border-primary h-8 text-xs">
               <SelectValue placeholder="Select new parent" />
             </SelectTrigger>
-            <SelectContent className="max-h-32">
+            <SelectContent className="max-h-32 z-50 overflow-hidden rounded-lg border border-violet-200/50 bg-gradient-to-br from-white via-violet-50/50 to-purple-50/30 shadow-xl shadow-violet-500/10 dark:border-violet-800/50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-violet-950/80 dark:to-purple-950/50 dark:shadow-violet-900/20">
               <SelectItem value="root"><span className="text-xs">🏠 Root Level</span></SelectItem>
               {flatTopics
                 .filter(({ topic }) => topic.id !== moveTopicId)
