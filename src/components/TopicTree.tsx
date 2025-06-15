@@ -95,11 +95,11 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
           <div className={`relative group rounded-xl transition-all duration-300 ${
             isSelected 
               ? 'bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 shadow-lg border border-primary/20' 
-              : 'hover:bg-gradient-to-r hover:from-muted/50 hover:via-muted/30 hover:to-muted/50 hover:shadow-md border border-transparent hover:border-border/50'
+              : 'hover:bg-gradient-to-r hover:from-violet-50 hover:via-blue-50 hover:to-indigo-50 hover:shadow-md hover:border-violet-200 border border-transparent dark:hover:from-violet-900/20 dark:hover:via-blue-900/20 dark:hover:to-indigo-900/20 dark:hover:border-violet-700/30'
           }`}>
             {/* Glowing background effect */}
-            <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 via-primary/3 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-              isSelected ? 'opacity-100' : ''
+            <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-violet-100/50 via-blue-100/30 to-indigo-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 dark:from-violet-800/20 dark:via-blue-800/20 dark:to-indigo-800/20 ${
+              isSelected ? 'opacity-100 from-primary/5 via-primary/3 to-primary/5' : ''
             }`} />
             
             <Button
@@ -107,7 +107,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
               className={`w-full justify-start text-left h-auto p-4 transition-all duration-300 relative z-10 border-none hover:bg-transparent ${
                 isSelected 
                   ? 'text-primary font-semibold' 
-                  : 'hover:text-foreground'
+                  : 'hover:text-violet-700 dark:hover:text-violet-300'
               }`}
               onClick={() => onTopicSelect(topic.id)}
             >
@@ -120,7 +120,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                       onToggleExpanded(topic.id);
                     }}
                     className={`flex-shrink-0 p-1 rounded-md transition-all duration-200 ${
-                      isSelected ? 'hover:bg-primary/10' : 'hover:bg-muted/50'
+                      isSelected ? 'hover:bg-primary/10' : 'hover:bg-violet-100 dark:hover:bg-violet-800/30'
                     }`}
                   >
                     {isExpanded ? (
@@ -135,16 +135,16 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                 <div className={`flex-shrink-0 p-2 rounded-lg transition-all duration-200 ${
                   isSelected 
                     ? 'bg-primary/10' 
-                    : 'bg-muted/50 group-hover:bg-muted/70'
+                    : 'bg-muted/50 group-hover:bg-violet-100 dark:group-hover:bg-violet-800/30'
                 }`}>
                   {hasChildren ? (
                     isExpanded ? (
-                      <FolderOpen className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <FolderOpen className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground group-hover:text-violet-600 dark:group-hover:text-violet-400'}`} />
                     ) : (
-                      <Folder className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <Folder className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground group-hover:text-violet-600 dark:group-hover:text-violet-400'}`} />
                     )
                   ) : (
-                    <FileText className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                    <FileText className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground group-hover:text-violet-600 dark:group-hover:text-violet-400'}`} />
                   )}
                 </div>
                 
@@ -152,7 +152,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className={`font-medium truncate ${
-                      isSelected ? 'text-primary' : ''
+                      isSelected ? 'text-primary' : 'group-hover:text-violet-700 dark:group-hover:text-violet-300'
                     }`}>
                       {topic.name}
                     </span>
@@ -179,7 +179,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                   </div>
                   {topic.description && (
                     <p className={`text-sm line-clamp-2 mb-1 ${
-                      isSelected ? 'text-primary/80' : 'text-muted-foreground'
+                      isSelected ? 'text-primary/80' : 'text-muted-foreground group-hover:text-violet-600/80 dark:group-hover:text-violet-400/80'
                     }`}>
                       {topic.description}
                     </p>
@@ -188,7 +188,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                     <div className="flex items-center gap-1 mt-1">
                       <svg 
                         className={`w-3 h-3 shrink-0 ${
-                          isSelected ? 'text-primary/60' : 'text-muted-foreground'
+                          isSelected ? 'text-primary/60' : 'text-muted-foreground group-hover:text-violet-500 dark:group-hover:text-violet-400'
                         }`} 
                         fill="none" 
                         stroke="currentColor" 
@@ -197,7 +197,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                       </svg>
                       <span className={`text-xs ${
-                        isSelected ? 'text-primary/80' : 'text-muted-foreground'
+                        isSelected ? 'text-primary/80' : 'text-muted-foreground group-hover:text-violet-500 dark:group-hover:text-violet-400'
                       }`}>
                         {topic.projectLinks.length} link{topic.projectLinks.length !== 1 ? 's' : ''}
                       </span>
