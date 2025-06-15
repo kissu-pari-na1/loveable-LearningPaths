@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -276,7 +275,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             <span className="hidden sm:inline text-sm">🔗</span>
             <span className="truncate">Resources</span>
             {topic.projectLinks.length > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-gray-500 dark:bg-gray-400 text-white rounded-full shadow-sm">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-gradient-to-r from-primary to-purple-600 text-primary-foreground rounded-full shadow-sm">
                 {topic.projectLinks.length}
               </span>
             )}
@@ -289,7 +288,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             <span className="hidden sm:inline text-sm">📂</span>
             <span className="truncate">Subtopics</span>
             {hasSubtopics && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-gray-500 dark:bg-gray-400 text-white rounded-full shadow-sm">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-gradient-to-r from-primary to-purple-600 text-primary-foreground rounded-full shadow-sm">
                 {topic.childTopics.length}
               </span>
             )}
