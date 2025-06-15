@@ -100,7 +100,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   return (
     <div className="flex flex-col h-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full">
-        {/* Tab Header - Simplified Layout */}
+        {/* Tab Header */}
         <div className="flex-shrink-0 sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 px-6 py-4">
           <TabsList className="h-11 bg-gray-50 dark:bg-slate-800 p-1 rounded-lg w-full gap-1 sm:gap-2">
             <TabsTrigger 
@@ -166,6 +166,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
                   onReadMoreClick={handleReadMoreClick}
                   parentTopic={parentTopic}
                   onParentTopicClick={onParentTopicClick}
+                  onTabChange={onTabChange}
                 />
               )}
             </TabsContent>

@@ -15,6 +15,7 @@ interface OverviewDisplayViewProps {
   onReadMoreClick: () => void;
   parentTopic?: Topic | null;
   onParentTopicClick?: (parentId: string) => void;
+  onTabChange?: (tab: string) => void;
 }
 
 export const OverviewDisplayView: React.FC<OverviewDisplayViewProps> = ({
@@ -24,7 +25,8 @@ export const OverviewDisplayView: React.FC<OverviewDisplayViewProps> = ({
   onDelete,
   onReadMoreClick,
   parentTopic,
-  onParentTopicClick
+  onParentTopicClick,
+  onTabChange
 }) => {
   return (
     <div className="space-y-5">
@@ -59,7 +61,7 @@ export const OverviewDisplayView: React.FC<OverviewDisplayViewProps> = ({
       />
 
       {/* Quick Stats Card */}
-      <QuickStatsCard topic={topic} />
+      <QuickStatsCard topic={topic} onTabChange={onTabChange} />
     </div>
   );
 };
