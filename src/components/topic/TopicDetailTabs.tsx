@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -68,32 +69,44 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   return (
     <div className="flex flex-col h-full">
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full">
-        {/* Fixed Tab Header */}
-        <div className="flex-shrink-0 sticky top-0 z-20 bg-background border-b border-border px-4 py-3 shadow-sm">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-none lg:inline-flex">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              <span className="hidden sm:inline">Overview</span>
+        {/* Enhanced Fixed Tab Header */}
+        <div className="flex-shrink-0 sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border/60 px-6 py-4">
+          <TabsList className="h-12 bg-muted/30 backdrop-blur-sm border border-border/40 p-1 rounded-xl shadow-sm w-full lg:w-auto">
+            <TabsTrigger 
+              value="overview" 
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+            >
+              <FileText className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+              <span className="hidden sm:inline text-sm">Overview</span>
             </TabsTrigger>
-            <TabsTrigger value="description" className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              <span className="hidden sm:inline">Description</span>
+            <TabsTrigger 
+              value="description" 
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+            >
+              <BookOpen className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+              <span className="hidden sm:inline text-sm">Description</span>
             </TabsTrigger>
-            <TabsTrigger value="resources" className="flex items-center gap-2">
-              <Link className="w-4 h-4" />
-              <span className="hidden sm:inline">Resources</span>
+            <TabsTrigger 
+              value="resources" 
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+            >
+              <Link className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+              <span className="hidden sm:inline text-sm">Resources</span>
               {topic.projectLinks.length > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+                <span className="ml-2 px-2 py-0.5 text-xs bg-primary/10 text-primary border border-primary/20 rounded-full font-medium">
                   {topic.projectLinks.length}
                 </span>
               )}
             </TabsTrigger>
             {(hasSubtopics || isAdminMode) && (
-              <TabsTrigger value="subtopics" className="flex items-center gap-2">
-                <Folder className="w-4 h-4" />
-                <span className="hidden sm:inline">Subtopics</span>
+              <TabsTrigger 
+                value="subtopics" 
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+              >
+                <Folder className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+                <span className="hidden sm:inline text-sm">Subtopics</span>
                 {hasSubtopics && (
-                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+                  <span className="ml-2 px-2 py-0.5 text-xs bg-primary/10 text-primary border border-primary/20 rounded-full font-medium">
                     {topic.childTopics.length}
                   </span>
                 )}
@@ -104,8 +117,8 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
 
         {/* Scrollable Tab Content */}
         <div className="flex-1 overflow-auto">
-          <div className="p-4 pb-6">
-            <TabsContent value="overview" className="mt-0">
+          <div className="p-6 pb-8">
+            <TabsContent value="overview" className="mt-0 focus-visible:outline-none">
               {isEditing ? (
                 <OverviewEditingView
                   editForm={editForm}
@@ -124,11 +137,11 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
               )}
             </TabsContent>
 
-            <TabsContent value="description" className="mt-0">
+            <TabsContent value="description" className="mt-0 focus-visible:outline-none">
               <DescriptionTabContent topic={topic} />
             </TabsContent>
 
-            <TabsContent value="resources" className="mt-0">
+            <TabsContent value="resources" className="mt-0 focus-visible:outline-none">
               <ProjectLinksSection
                 topic={topic}
                 isAdminMode={isAdminMode}
@@ -142,7 +155,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             </TabsContent>
 
             {(hasSubtopics || isAdminMode) && (
-              <TabsContent value="subtopics" className="mt-0">
+              <TabsContent value="subtopics" className="mt-0 focus-visible:outline-none">
                 <SubtopicsSection
                   topic={topic}
                   isAdminMode={isAdminMode}
