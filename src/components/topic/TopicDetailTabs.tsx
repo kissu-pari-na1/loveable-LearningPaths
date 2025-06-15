@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -284,12 +283,12 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           <TabsTrigger 
             value="subtopics" 
             disabled={!hasSubtopics && !isAdminMode}
-            className="relative data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-orange-50/50 dark:data-[state=active]:from-slate-800 dark:data-[state=active]:to-orange-950/30 data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all duration-300 rounded-lg text-xs md:text-sm font-semibold flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed px-2 md:px-3 hover:bg-white/50 dark:hover:bg-slate-800/50"
+            className="relative data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-slate-50/50 dark:data-[state=active]:from-slate-800 dark:data-[state=active]:to-slate-950/30 data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all duration-300 rounded-lg text-xs md:text-sm font-semibold flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed px-2 md:px-3 hover:bg-white/50 dark:hover:bg-slate-800/50"
           >
             <span className="hidden sm:inline text-sm">📂</span>
             <span className="truncate">Subtopics</span>
             {hasSubtopics && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full shadow-sm">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-gradient-to-r from-slate-500 to-slate-600 dark:from-slate-400 dark:to-slate-500 text-white rounded-full shadow-sm">
                 {topic.childTopics.length}
               </span>
             )}
