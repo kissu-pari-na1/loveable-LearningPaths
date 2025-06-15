@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -70,24 +71,24 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full">
         {/* Enhanced Fixed Tab Header with Better Background */}
         <div className="flex-shrink-0 sticky top-0 z-30 bg-gradient-to-r from-card/80 via-card/90 to-card/80 backdrop-blur-lg border-b border-border/30 px-6 py-4">
-          <TabsList className="h-12 bg-gradient-to-r from-muted/40 via-muted/50 to-muted/40 backdrop-blur-sm border border-border/40 p-1 rounded-xl shadow-md w-full lg:w-auto">
+          <TabsList className="h-12 bg-gradient-to-r from-muted/40 via-muted/50 to-muted/40 backdrop-blur-sm border border-border/40 p-1 rounded-xl shadow-md w-full lg:w-auto gap-1">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
+              className="flex items-center gap-3 px-5 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
             >
               <FileText className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
               <span className="hidden sm:inline text-sm">Overview</span>
             </TabsTrigger>
             <TabsTrigger 
               value="description" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
+              className="flex items-center gap-3 px-5 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
             >
               <BookOpen className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
               <span className="hidden sm:inline text-sm">Description</span>
             </TabsTrigger>
             <TabsTrigger 
               value="resources" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
+              className="flex items-center gap-3 px-5 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
             >
               <Link className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
               <span className="hidden sm:inline text-sm">Resources</span>
@@ -100,7 +101,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             {(hasSubtopics || isAdminMode) && (
               <TabsTrigger 
                 value="subtopics" 
-                className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
+                className="flex items-center gap-3 px-5 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/15 data-[state=active]:to-primary/10 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/25 data-[state=active]:text-primary hover:bg-gradient-to-r hover:from-muted/60 hover:to-muted/40 hover:scale-105 hover:shadow-sm transform"
               >
                 <Folder className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary hover:text-foreground" />
                 <span className="hidden sm:inline text-sm">Subtopics</span>
