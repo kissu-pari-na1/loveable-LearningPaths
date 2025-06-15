@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Topic, SearchResult } from '@/types/Topic';
 import { Badge } from '@/components/ui/badge';
@@ -94,7 +95,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
           <div className={`relative group rounded-xl transition-all duration-300 ${
             isSelected 
               ? 'bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-blue-500/20 shadow-lg border border-violet-300/30 border-l-4 border-l-violet-500' 
-              : 'hover:bg-muted/50 hover:border-l-4 hover:border-l-primary border border-transparent'
+              : 'hover:border-l-4 hover:border-l-primary border border-transparent'
           }`}>
             
             <Button
