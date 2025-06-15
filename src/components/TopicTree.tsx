@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Topic, SearchResult } from '@/types/Topic';
 import { Badge } from '@/components/ui/badge';
@@ -91,15 +92,15 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
           className={`mb-1 ${level > 0 ? 'ml-6' : ''}`}
           style={{ paddingLeft: level > 0 ? `${level * 24}px` : '0' }}
         >
-          <div className={`relative group rounded-xl transition-all duration-300 ${
+          <div className={`relative group rounded-xl ${
             isSelected 
               ? 'bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-blue-500/20 shadow-lg border border-violet-300/30 border-l-4 border-l-violet-500' 
-              : 'hover:bg-muted/50 hover:border-l-4 hover:border-l-primary border border-transparent'
+              : 'hover:border-l-4 hover:border-l-primary border border-transparent'
           }`}>
             
             <Button
               variant="ghost"
-              className={`w-full justify-start text-left h-auto p-4 transition-all duration-300 relative z-10 border-none hover:bg-transparent ${
+              className={`w-full justify-start text-left h-auto p-4 relative z-10 border-none hover:bg-transparent ${
                 isSelected 
                   ? 'text-violet-700 dark:text-violet-300 font-medium' 
                   : 'hover:text-foreground'
