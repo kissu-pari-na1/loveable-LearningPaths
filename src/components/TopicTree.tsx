@@ -74,15 +74,15 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
             {parentLines.map((hasLine, index) => (
               <div key={index} className="w-6 flex justify-center">
                 {hasLine && (
-                  <div className="w-px bg-gradient-to-b from-violet-300/40 to-blue-300/40 h-full" />
+                  <div className="w-px bg-border/40 h-full" />
                 )}
               </div>
             ))}
             <div className="w-6 flex justify-center relative">
-              <div className="w-px bg-gradient-to-b from-violet-300/40 to-blue-300/40 h-6" />
-              <div className="absolute top-6 left-3 w-3 h-px bg-gradient-to-r from-violet-300/40 to-blue-300/40" />
+              <div className="w-px bg-border/40 h-6" />
+              <div className="absolute top-6 left-3 w-3 h-px bg-border/40" />
               {!isLast && (
-                <div className="w-px bg-gradient-to-b from-violet-300/40 to-blue-300/40 h-full top-6 absolute" />
+                <div className="w-px bg-border/40 h-full top-6 absolute" />
               )}
             </div>
           </div>
@@ -94,11 +94,11 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
         >
           <div className={`relative group rounded-xl transition-all duration-300 ${
             isSelected 
-              ? 'bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-blue-500/20 shadow-lg border border-violet-300/30' 
-              : 'hover:bg-gradient-to-r hover:from-violet-50/50 hover:via-purple-50/50 hover:to-blue-50/50 hover:shadow-md border border-transparent hover:border-violet-200/50'
+              ? 'bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 shadow-lg border border-primary/20' 
+              : 'hover:bg-gradient-to-r hover:from-muted/50 hover:via-muted/30 hover:to-muted/50 hover:shadow-md border border-transparent hover:border-border/50'
           }`}>
             {/* Glowing background effect */}
-            <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-violet-400/10 via-purple-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+            <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 via-primary/3 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
               isSelected ? 'opacity-100' : ''
             }`} />
             
@@ -106,8 +106,8 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
               variant="ghost"
               className={`w-full justify-start text-left h-auto p-4 transition-all duration-300 relative z-10 border-none hover:bg-transparent ${
                 isSelected 
-                  ? 'text-violet-700 dark:text-violet-300 font-semibold' 
-                  : 'hover:text-violet-600 dark:hover:text-violet-400'
+                  ? 'text-primary font-semibold' 
+                  : 'hover:text-foreground'
               }`}
               onClick={() => onTopicSelect(topic.id)}
             >
@@ -120,7 +120,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                       onToggleExpanded(topic.id);
                     }}
                     className={`flex-shrink-0 p-1 rounded-md transition-all duration-200 ${
-                      isSelected ? 'hover:bg-violet-200/50' : 'hover:bg-violet-100/50'
+                      isSelected ? 'hover:bg-primary/10' : 'hover:bg-muted/50'
                     }`}
                   >
                     {isExpanded ? (
@@ -134,17 +134,17 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                 {/* Topic icon */}
                 <div className={`flex-shrink-0 p-2 rounded-lg transition-all duration-200 ${
                   isSelected 
-                    ? 'bg-gradient-to-br from-violet-400/20 to-blue-400/20' 
-                    : 'bg-gradient-to-br from-violet-100/50 to-blue-100/50 group-hover:from-violet-200/50 group-hover:to-blue-200/50'
+                    ? 'bg-primary/10' 
+                    : 'bg-muted/50 group-hover:bg-muted/70'
                 }`}>
                   {hasChildren ? (
                     isExpanded ? (
-                      <FolderOpen className="w-5 h-5 text-violet-600" />
+                      <FolderOpen className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
                     ) : (
-                      <Folder className="w-5 h-5 text-violet-600" />
+                      <Folder className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
                     )
                   ) : (
-                    <FileText className="w-5 h-5 text-blue-600" />
+                    <FileText className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
                   )}
                 </div>
                 
@@ -152,15 +152,15 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className={`font-medium truncate ${
-                      isSelected ? 'text-violet-800 dark:text-violet-200' : ''
+                      isSelected ? 'text-primary' : ''
                     }`}>
                       {topic.name}
                     </span>
                     {isSearchResult(topic) && topic.similarity && (
                       <Badge 
                         variant="outline" 
-                        className={`text-xs shrink-0 border-violet-300/50 ${
-                          isSelected ? 'bg-violet-100/50 text-violet-700' : 'bg-violet-50/50 text-violet-600'
+                        className={`text-xs shrink-0 ${
+                          isSelected ? 'border-primary/30 bg-primary/5 text-primary' : 'border-border/50 bg-muted/30 text-muted-foreground'
                         }`}
                       >
                         {Math.round(topic.similarity * 100)}%
@@ -169,8 +169,8 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                     {topic.childTopics.length > 0 && (
                       <Badge 
                         variant="outline" 
-                        className={`text-xs shrink-0 border-blue-300/50 ${
-                          isSelected ? 'bg-blue-100/50 text-blue-700' : 'bg-blue-50/50 text-blue-600'
+                        className={`text-xs shrink-0 ${
+                          isSelected ? 'border-primary/30 bg-primary/5 text-primary' : 'border-border/50 bg-muted/30 text-muted-foreground'
                         }`}
                       >
                         {topic.childTopics.length}
@@ -179,7 +179,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                   </div>
                   {topic.description && (
                     <p className={`text-sm line-clamp-2 mb-1 ${
-                      isSelected ? 'text-violet-600/80 dark:text-violet-300/80' : 'text-muted-foreground'
+                      isSelected ? 'text-primary/80' : 'text-muted-foreground'
                     }`}>
                       {topic.description}
                     </p>
@@ -188,7 +188,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                     <div className="flex items-center gap-1 mt-1">
                       <svg 
                         className={`w-3 h-3 shrink-0 ${
-                          isSelected ? 'text-violet-500/60' : 'text-muted-foreground'
+                          isSelected ? 'text-primary/60' : 'text-muted-foreground'
                         }`} 
                         fill="none" 
                         stroke="currentColor" 
@@ -197,7 +197,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                       </svg>
                       <span className={`text-xs ${
-                        isSelected ? 'text-violet-600/80' : 'text-muted-foreground'
+                        isSelected ? 'text-primary/80' : 'text-muted-foreground'
                       }`}>
                         {topic.projectLinks.length} link{topic.projectLinks.length !== 1 ? 's' : ''}
                       </span>
@@ -206,8 +206,8 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                   {isSearchResult(topic) && topic.matchedIn && (
                     <Badge 
                       variant="outline" 
-                      className={`text-xs mt-1 border-purple-300/50 ${
-                        isSelected ? 'bg-purple-100/50 text-purple-700' : 'bg-purple-50/50 text-purple-600'
+                      className={`text-xs mt-1 ${
+                        isSelected ? 'border-primary/30 bg-primary/5 text-primary' : 'border-border/50 bg-muted/30 text-muted-foreground'
                       }`}
                     >
                       Matched in {topic.matchedIn}
@@ -258,7 +258,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
     <div className="space-y-2 p-2">
       {/* Tree container with subtle background */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/30 rounded-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-muted/20 via-transparent to-muted/20 rounded-2xl" />
         <div className="relative z-10 space-y-1 p-2">
           {topics.map((topic, index) => {
             const isLast = index === topics.length - 1;
