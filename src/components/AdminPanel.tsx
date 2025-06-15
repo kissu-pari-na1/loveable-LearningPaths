@@ -77,16 +77,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
-        <Settings className="w-4 h-4 text-violet-600" />
-        <h2 className="text-lg font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+        <Settings className="w-4 h-4 text-primary" />
+        <h2 className="text-lg font-medium bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
           Admin Panel
         </h2>
       </div>
       
       {/* Add Topic */}
-      <Card className="border border-violet-200/50 bg-gradient-to-br from-violet-50/50 to-blue-50/50 dark:from-violet-900/20 dark:to-blue-900/20 shadow-lg backdrop-blur-sm">
+      <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-white to-primary/5 dark:from-primary/10 dark:via-slate-800 dark:to-primary/10 shadow-lg backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2 text-violet-700 dark:text-violet-300">
+          <CardTitle className="text-sm flex items-center gap-2 text-primary font-medium">
             <Plus className="w-3 h-3" />
             Add New Topic
           </CardTitle>
@@ -96,17 +96,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             placeholder="Topic name"
             value={newTopic.name}
             onChange={(e) => setNewTopic({ ...newTopic, name: e.target.value })}
-            className="border-violet-200/50 focus:border-violet-400 h-8 text-xs"
+            className="border-primary/30 focus:border-primary h-8 text-xs"
           />
           <Textarea
             placeholder="Description"
             value={newTopic.description}
             onChange={(e) => setNewTopic({ ...newTopic, description: e.target.value })}
             rows={2}
-            className="border-violet-200/50 focus:border-violet-400 resize-none text-xs"
+            className="border-primary/30 focus:border-primary resize-none text-xs"
           />
           <Select value={newTopic.parentId} onValueChange={(value) => setNewTopic({ ...newTopic, parentId: value })}>
-            <SelectTrigger className="border-violet-200/50 focus:border-violet-400 h-8 text-xs">
+            <SelectTrigger className="border-primary/30 focus:border-primary h-8 text-xs">
               <SelectValue placeholder="Select parent (optional)" />
             </SelectTrigger>
             <SelectContent className="max-h-32">
@@ -122,7 +122,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </Select>
           <Button 
             onClick={handleAddTopic} 
-            className="w-full bg-gradient-to-r from-violet-500 to-blue-500 hover:from-violet-600 hover:to-blue-600 text-white shadow-md h-8 text-xs"
+            className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white shadow-md h-8 text-xs font-medium"
           >
             <Plus className="w-3 h-3 mr-1" />
             Add Topic
@@ -131,9 +131,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       </Card>
 
       {/* Move Topic */}
-      <Card className="border border-blue-200/50 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/20 shadow-lg backdrop-blur-sm">
+      <Card className="border-2 border-blue-200/50 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/20 dark:to-indigo-950/20 shadow-lg backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2 text-blue-700 dark:text-blue-300">
+          <CardTitle className="text-sm flex items-center gap-2 text-blue-700 dark:text-blue-300 font-medium">
             <Move className="w-3 h-3" />
             Move Topic
           </CardTitle>
@@ -174,7 +174,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           
           <Button 
             onClick={handleMoveTopic} 
-            className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-md h-8 text-xs"
+            className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-md h-8 text-xs font-medium"
             disabled={!moveTopicId}
           >
             <Move className="w-3 h-3 mr-1" />

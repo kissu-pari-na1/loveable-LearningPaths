@@ -93,8 +93,28 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-medium;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Standardize font weights across the application */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium;
+  }
+
+  /* Ensure consistent button font weights */
+  button {
+    @apply font-medium;
+  }
+
+  /* Standard label font weight */
+  label {
+    @apply font-medium;
+  }
+
+  /* Standard text input font weight */
+  input, textarea, select {
+    @apply font-normal;
   }
 }
 
@@ -114,6 +134,11 @@
   .shimmer {
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     animation: shimmer 2s infinite;
+  }
+  
+  /* Standard tree view hover styles */
+  .tree-item-hover {
+    @apply hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/10 hover:text-primary transition-all duration-200 hover:shadow-sm;
   }
   
   @keyframes shimmer {
