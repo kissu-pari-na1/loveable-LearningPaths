@@ -7,7 +7,7 @@ import { SubtopicsSection } from '@/components/topic/SubtopicsSection';
 import { OverviewEditingView } from '@/components/topic/OverviewEditingView';
 import { OverviewDisplayView } from '@/components/topic/OverviewDisplayView';
 import { DescriptionTabContent } from '@/components/topic/DescriptionTabContent';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface NewLinkData {
   title: string;
@@ -41,6 +41,8 @@ interface TopicDetailTabsProps {
 export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   topic,
   isAdminMode,
+  activeTab,
+  onTabChange,
   showAddLink,
   newLink,
   onToggleAddLink,
@@ -59,103 +61,101 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
 }) => {
   const hasSubtopics = topic.childTopics.length > 0;
 
+  const handleReadMoreClick = () => {
+    onTabChange('description');
+  };
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <ScrollArea className="h-full w-full">
-        <div className="space-y-6 p-1 pb-6">
-          {/* Overview Section */}
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-card/50">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-                <span className="text-lg">📋</span>
-                Overview
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {isEditing ? (
-                <OverviewEditingView
-                  editForm={editForm}
-                  onSave={onSave}
-                  onCancel={onCancel}
-                  onEditFormChange={onEditFormChange}
-                />
-              ) : (
-                <OverviewDisplayView
-                  topic={topic}
-                  isAdminMode={isAdminMode}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                />
+      <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full">
+        {/* Sticky Tab Header */}
+        <div className="flex-shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 px-4 py-3">
+          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-none lg:inline-flex">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <span className="text-sm">📋</span>
+              <span className="hidden sm:inline">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger value="description" className="flex items-center gap-2">
+              <span className="text-sm">📝</span>
+              <span className="hidden sm:inline">Description</span>
+            </TabsTrigger>
+            <TabsTrigger value="resources" className="flex items-center gap-2">
+              <span className="text-sm">🔗</span>
+              <span className="hidden sm:inline">Resources</span>
+              {topic.projectLinks.length > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+                  {topic.projectLinks.length}
+                </span>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Description Section */}
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-card/50">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-                <span className="text-lg">📝</span>
-                Description
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <DescriptionTabContent topic={topic} />
-            </CardContent>
-          </Card>
-
-          {/* Resources Section */}
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-card/50">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-                <span className="text-lg">🔗</span>
-                Resources
-                {topic.projectLinks.length > 0 && (
-                  <span className="ml-2 px-2 py-1 text-xs bg-gradient-to-r from-primary to-purple-600 text-primary-foreground rounded-full shadow-sm">
-                    {topic.projectLinks.length}
+            </TabsTrigger>
+            {(hasSubtopics || isAdminMode) && (
+              <TabsTrigger value="subtopics" className="flex items-center gap-2">
+                <span className="text-sm">📂</span>
+                <span className="hidden sm:inline">Subtopics</span>
+                {hasSubtopics && (
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+                    {topic.childTopics.length}
                   </span>
                 )}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ProjectLinksSection
-                topic={topic}
-                isAdminMode={isAdminMode}
-                showAddLink={showAddLink}
-                newLink={newLink}
-                onToggleAddLink={onToggleAddLink}
-                onAddLink={onAddLink}
-                onRemoveLink={onRemoveLink}
-                onNewLinkChange={onNewLinkChange}
-              />
-            </CardContent>
-          </Card>
+              </TabsTrigger>
+            )}
+          </TabsList>
+        </div>
 
-          {/* Subtopics Section */}
-          {(hasSubtopics || isAdminMode) && (
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-card/50">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-                  <span className="text-lg">📂</span>
-                  Subtopics
-                  {hasSubtopics && (
-                    <span className="ml-2 px-2 py-1 text-xs bg-gradient-to-r from-primary to-purple-600 text-primary-foreground rounded-full shadow-sm">
-                      {topic.childTopics.length}
-                    </span>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <SubtopicsSection
+        {/* Scrollable Tab Content */}
+        <div className="flex-1 overflow-hidden">
+          <ScrollArea className="h-full w-full">
+            <div className="p-4 pb-6">
+              <TabsContent value="overview" className="mt-0">
+                {isEditing ? (
+                  <OverviewEditingView
+                    editForm={editForm}
+                    onSave={onSave}
+                    onCancel={onCancel}
+                    onEditFormChange={onEditFormChange}
+                  />
+                ) : (
+                  <OverviewDisplayView
+                    topic={topic}
+                    isAdminMode={isAdminMode}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    onReadMoreClick={handleReadMoreClick}
+                  />
+                )}
+              </TabsContent>
+
+              <TabsContent value="description" className="mt-0">
+                <DescriptionTabContent topic={topic} />
+              </TabsContent>
+
+              <TabsContent value="resources" className="mt-0">
+                <ProjectLinksSection
                   topic={topic}
                   isAdminMode={isAdminMode}
-                  onSubtopicClick={onSubtopicClick}
-                  onAddSubtopic={onAddSubtopic}
+                  showAddLink={showAddLink}
+                  newLink={newLink}
+                  onToggleAddLink={onToggleAddLink}
+                  onAddLink={onAddLink}
+                  onRemoveLink={onRemoveLink}
+                  onNewLinkChange={onNewLinkChange}
                 />
-              </CardContent>
-            </Card>
-          )}
+              </TabsContent>
+
+              {(hasSubtopics || isAdminMode) && (
+                <TabsContent value="subtopics" className="mt-0">
+                  <SubtopicsSection
+                    topic={topic}
+                    isAdminMode={isAdminMode}
+                    onSubtopicClick={onSubtopicClick}
+                    onAddSubtopic={onAddSubtopic}
+                  />
+                </TabsContent>
+              )}
+            </div>
+          </ScrollArea>
         </div>
-      </ScrollArea>
+      </Tabs>
     </div>
   );
 };
