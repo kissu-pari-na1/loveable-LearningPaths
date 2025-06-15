@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
@@ -27,7 +26,7 @@ const DrawerOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/50", className)}
+    className={cn("fixed inset-0 z-50 bg-gradient-to-br from-black/20 via-violet-900/30 to-purple-900/40 backdrop-blur-sm", className)}
     {...props}
   />
 ))
@@ -42,12 +41,12 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-lg border bg-background shadow-lg",
+        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-lg border border-violet-200/50 bg-gradient-to-br from-white via-violet-50/50 to-purple-50/30 shadow-2xl shadow-violet-500/20 dark:border-violet-800/50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-violet-950/80 dark:to-purple-950/50 dark:shadow-violet-900/30",
         className
       )}
       {...props}
     >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
+      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-gradient-to-r from-violet-300 to-purple-300 dark:from-violet-600 dark:to-purple-600" />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
