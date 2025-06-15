@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Topic, ProjectLink } from '@/types/Topic';
 import { Button } from '@/components/ui/button';
@@ -80,8 +79,8 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
 
   const getTypeColor = (type: 'Personal' | 'Project') => {
     return type === 'Personal' 
-      ? 'bg-blue-500 text-white border-blue-600 hover:bg-blue-600' 
-      : 'bg-green-500 text-white border-green-600 hover:bg-green-600';
+      ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800' 
+      : 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-300 dark:border-green-800';
   };
 
   return (
@@ -264,14 +263,13 @@ export const ProjectLinksSection: React.FC<ProjectLinksSectionProps> = ({
                         {link.types.map((type) => {
                           const IconComponent = getTypeIcon(type);
                           return (
-                            <Badge 
+                            <span 
                               key={type} 
-                              variant="outline"
-                              className={`text-xs font-medium px-2 py-1 border flex items-center gap-1 ${getTypeColor(type)}`}
+                              className={`text-xs font-medium px-2 py-1 rounded-md border flex items-center gap-1 ${getTypeColor(type)}`}
                             >
                               <IconComponent className="w-2.5 h-2.5" />
                               {type}
-                            </Badge>
+                            </span>
                           );
                         })}
                       </div>
