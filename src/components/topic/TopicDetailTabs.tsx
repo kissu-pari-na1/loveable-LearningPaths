@@ -69,31 +69,31 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
   return (
     <div className="flex flex-col h-full">
       <Tabs value={activeTab} onValueChange={onTabChange} className="flex flex-col h-full">
-        {/* Enhanced Fixed Tab Header */}
-        <div className="flex-shrink-0 sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border/60 px-6 py-4">
-          <TabsList className="h-12 bg-muted/30 backdrop-blur-sm border border-border/40 p-1 rounded-xl shadow-sm w-full lg:w-auto">
+        {/* Enhanced Fixed Tab Header with Better Background */}
+        <div className="flex-shrink-0 sticky top-0 z-30 bg-gradient-to-r from-background/95 via-background/98 to-background/95 backdrop-blur-md border-b border-border/40 px-6 py-4">
+          <TabsList className="h-12 bg-gradient-to-r from-card/50 to-muted/30 backdrop-blur-sm border border-border/30 p-1 rounded-xl shadow-lg w-full lg:w-auto">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/10 data-[state=active]:to-primary/5 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/20 hover:bg-gradient-to-r hover:from-muted/50 hover:to-muted/30"
             >
-              <FileText className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+              <FileText className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
               <span className="hidden sm:inline text-sm">Overview</span>
             </TabsTrigger>
             <TabsTrigger 
               value="description" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/10 data-[state=active]:to-primary/5 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/20 hover:bg-gradient-to-r hover:from-muted/50 hover:to-muted/30"
             >
-              <BookOpen className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+              <BookOpen className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
               <span className="hidden sm:inline text-sm">Description</span>
             </TabsTrigger>
             <TabsTrigger 
               value="resources" 
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/10 data-[state=active]:to-primary/5 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/20 hover:bg-gradient-to-r hover:from-muted/50 hover:to-muted/30"
             >
-              <Link className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+              <Link className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
               <span className="hidden sm:inline text-sm">Resources</span>
               {topic.projectLinks.length > 0 && (
-                <span className="ml-2 px-2 py-0.5 text-xs bg-primary/10 text-primary border border-primary/20 rounded-full font-medium">
+                <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-primary/15 to-primary/10 text-primary border border-primary/25 rounded-full font-medium shadow-sm">
                   {topic.projectLinks.length}
                 </span>
               )}
@@ -101,12 +101,12 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             {(hasSubtopics || isAdminMode) && (
               <TabsTrigger 
                 value="subtopics" 
-                className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/30"
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/10 data-[state=active]:to-primary/5 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/20 hover:bg-gradient-to-r hover:from-muted/50 hover:to-muted/30"
               >
-                <Folder className="w-4 h-4 text-muted-foreground data-[state=active]:text-primary" />
+                <Folder className="w-4 h-4 text-muted-foreground transition-colors data-[state=active]:text-primary" />
                 <span className="hidden sm:inline text-sm">Subtopics</span>
                 {hasSubtopics && (
-                  <span className="ml-2 px-2 py-0.5 text-xs bg-primary/10 text-primary border border-primary/20 rounded-full font-medium">
+                  <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-primary/15 to-primary/10 text-primary border border-primary/25 rounded-full font-medium shadow-sm">
                     {topic.childTopics.length}
                   </span>
                 )}
@@ -115,8 +115,8 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
           </TabsList>
         </div>
 
-        {/* Scrollable Tab Content */}
-        <div className="flex-1 overflow-auto">
+        {/* Scrollable Tab Content with Better Background */}
+        <div className="flex-1 overflow-auto bg-gradient-to-br from-background/50 to-muted/20">
           <div className="p-6 pb-8">
             <TabsContent value="overview" className="mt-0 focus-visible:outline-none">
               {isEditing ? (
