@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic, SearchResult } from '@/types/Topic';
 import { Badge } from '@/components/ui/badge';
@@ -115,7 +114,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                       e.stopPropagation();
                       onToggleExpanded(topic.id);
                     }}
-                    className={`flex-shrink-0 p-1 rounded-md transition-all duration-200 ${
+                    className={`flex-shrink-0 p-1 rounded-md ${
                       isSelected ? 'hover:bg-violet-200/50' : 'hover:bg-muted'
                     }`}
                   >
@@ -128,7 +127,7 @@ export const TopicTree: React.FC<TopicTreeProps> = ({
                 )}
                 
                 {/* Topic icon */}
-                <div className={`flex-shrink-0 p-2 rounded-lg transition-all duration-200 ${
+                <div className={`flex-shrink-0 p-2 rounded-lg ${
                   isSelected 
                     ? 'bg-gradient-to-br from-violet-400/20 to-blue-400/20' 
                     : 'bg-muted/50 group-hover:bg-muted'
