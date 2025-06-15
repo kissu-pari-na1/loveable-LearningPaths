@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Topic } from '@/types/Topic';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -8,6 +7,7 @@ import { OverviewEditingView } from '@/components/topic/OverviewEditingView';
 import { OverviewDisplayView } from '@/components/topic/OverviewDisplayView';
 import { DescriptionTabContent } from '@/components/topic/DescriptionTabContent';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FileText, BookOpen, Link, Folder } from 'lucide-react';
 
 interface NewLinkData {
   title: string;
@@ -72,15 +72,15 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
         <div className="flex-shrink-0 sticky top-0 z-20 bg-background border-b border-border px-4 py-3 shadow-sm">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-none lg:inline-flex">
             <TabsTrigger value="overview" className="flex items-center gap-2">
-              <span className="text-sm">📋</span>
+              <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">Overview</span>
             </TabsTrigger>
             <TabsTrigger value="description" className="flex items-center gap-2">
-              <span className="text-sm">📝</span>
+              <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Description</span>
             </TabsTrigger>
             <TabsTrigger value="resources" className="flex items-center gap-2">
-              <span className="text-sm">🔗</span>
+              <Link className="w-4 h-4" />
               <span className="hidden sm:inline">Resources</span>
               {topic.projectLinks.length > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
@@ -90,7 +90,7 @@ export const TopicDetailTabs: React.FC<TopicDetailTabsProps> = ({
             </TabsTrigger>
             {(hasSubtopics || isAdminMode) && (
               <TabsTrigger value="subtopics" className="flex items-center gap-2">
-                <span className="text-sm">📂</span>
+                <Folder className="w-4 h-4" />
                 <span className="hidden sm:inline">Subtopics</span>
                 {hasSubtopics && (
                   <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
