@@ -37,7 +37,7 @@ export const OverviewDisplayView: React.FC<OverviewDisplayViewProps> = ({
             variant="outline"
             size="sm"
             onClick={() => onParentTopicClick(parentTopic.id)}
-            className="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-200"
+            className="flex items-center gap-2 bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-200 text-gray-900 dark:text-slate-100"
           >
             <ArrowUp className="w-4 h-4" />
             <span className="font-medium">Back to {parentTopic.name}</span>
